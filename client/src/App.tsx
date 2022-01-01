@@ -5,6 +5,7 @@ import {
   Home,
   Login,
   Register,
+  RestaurantInfo,
   Restaurants,
   VerifyOtp,
 } from "./pages";
@@ -28,15 +29,28 @@ function App() {
                 </>
               }
             />
-            <Route
-              path="/restaurants"
-              element={
-                <>
-                  <Header />
-                  <Restaurants />
-                </>
-              }
-            />
+
+            {/* protected until enter location */}
+            <Route path="/restaurants">
+              <Route
+                path=""
+                element={
+                  <>
+                    <Header />
+                    <Restaurants />
+                  </>
+                }
+              />
+              <Route
+                path=":id"
+                element={
+                  <>
+                    <Header />
+                    <RestaurantInfo />
+                  </>
+                }
+              />
+            </Route>
             <Route
               path="/login"
               element={

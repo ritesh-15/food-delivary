@@ -5,10 +5,22 @@ export const HomeContainer = styled.main`
 `;
 
 export const HeroSection = styled.div`
-  background: url("https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTR8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60")
+  background: url("https://images.pexels.com/photos/326279/pexels-photo-326279.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
     no-repeat center center/cover;
   padding-bottom: 3em;
   margin-top: 6em;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    height: 100%;
+    z-index: -1;
+  }
 `;
 
 export const HeroSectionInfo = styled.div`
@@ -33,7 +45,7 @@ export const HeroSectionInfo = styled.div`
     font-weight: 300;
   }
 
-  @media (max-width: 680px) {
+  @media (max-width: 768px) {
     max-width: 100%;
     text-align: center;
 
@@ -44,27 +56,6 @@ export const HeroSectionInfo = styled.div`
     p {
       font-size: 1.5rem;
     }
-  }
-`;
-
-export const HeroSectionImages = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  height: 100%;
-  z-index: 5;
-  overflow: hidden;
-
-  img {
-    width: 100%;
-    clip-path: polygon(22% 0, 100% 0%, 100% 99%, 0 100%);
-    height: 100%;
-    z-index: 5;
-  }
-
-  @media (max-width: 680px) {
-    display: none;
   }
 `;
 
@@ -118,3 +109,85 @@ export const HeroLocation = styled.div`
     }
   }
 `;
+
+export const JoinWithUsContainer = styled.div`
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2em;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  p {
+    font-size: 1rem;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 0.5em;
+    color: ${({ theme }) => theme.colors.textLight};
+  }
+
+  button {
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+    margin: 0 auto;
+    max-width: 200px;
+    margin-top: 1em;
+  }
+`;
+
+export const FeaturesContaienr = styled.div`
+  background: #2b1e16;
+
+  margin: 2em 0;
+  padding: 1em 0;
+
+  @media (max-width: 768px) {
+    div {
+      flex-direction: column;
+    }
+  }
+`;
+
+export const FeatureCard = styled.div`
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  div {
+    height: 200px;
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 250px;
+      height: 100%;
+    }
+  }
+
+  h1 {
+    text-align: center;
+    margin: 0.5em 0;
+    font-weight: 500;
+  }
+
+  p {
+    text-align: center;
+    display: block;
+    width: 70%;
+    font-size: 0.95rem;
+    color: ${({ theme }) => theme.colors.textLight};
+  }
+
+  @media (max-width: 768px) {
+    margin: 1em 0;
+  }
+`;
+
+export const FooterContainer = styled.div``;

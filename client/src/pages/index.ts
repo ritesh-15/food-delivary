@@ -4,5 +4,14 @@ import Register from "./register/Register";
 import VerifyOtp from "./verify-otp/VerifyOtp";
 import CompleteProfile from "./complete-profile/CompleteProfile";
 import Restaurants from "./restaurants/Restaurants";
+import RestaurantInfo from "./restaurant[id]/RestaurantInfo";
 
-export { Home, Login, Register, VerifyOtp, CompleteProfile, Restaurants };
+export {
+  Home,
+  Login,
+  Register,
+  VerifyOtp,
+  CompleteProfile,
+  Restaurants,
+  RestaurantInfo,
+};
