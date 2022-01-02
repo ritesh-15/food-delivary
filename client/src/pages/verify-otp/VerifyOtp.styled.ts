@@ -9,10 +9,10 @@ export const VerifyContainer = styled.div`
 export const VerifyMain = styled.div`
   margin-top: 4em;
   background: ${({ theme }) => theme.colors.bg};
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   padding: 1em;
   height: fit-content;
-  width: 400px;
+  width: 450px;
   border-radius: 0.25em;
   animation: popup 0.8s ease 1;
 

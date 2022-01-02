@@ -8,8 +8,8 @@ export const HeroSection = styled.div`
   background: url("https://images.pexels.com/photos/326279/pexels-photo-326279.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1")
     no-repeat center center/cover;
   padding-bottom: 3em;
-  margin-top: 6em;
   position: relative;
+  margin-top: 2em;
 
   &::after {
     position: absolute;

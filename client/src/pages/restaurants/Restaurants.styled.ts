@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const RestaurantsContainer = styled.div`
   padding-top: 3em;
   margin-bottom: 2em;
-  margin-top: 69px;
 `;
 
 export const Title = styled.div`

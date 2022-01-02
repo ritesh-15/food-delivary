@@ -7,9 +7,19 @@ export const RestaurantContainer = styled.div`
   margin: 0.5em 0;
   cursor: pointer;
   transition: all 160ms ease-in;
+  animation: bounce 0.5s 1 ease-in forwards;
 
   &:hover {
     box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+  }
+
+  @keyframes bounce {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.05);
+    }
   }
 `;
 

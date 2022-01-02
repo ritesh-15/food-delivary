@@ -6,6 +6,7 @@ import {
   RestaurantsContainer,
   Title,
 } from "./Restaurants.styled";
+import RestaurantSkeleton from "./RestaurantSkeleton";
 
 const Restaurants: FC = () => {
   return (
@@ -19,8 +20,9 @@ const Restaurants: FC = () => {
           <Restaurant />
           <Restaurant />
           <Restaurant />
-          <Restaurant />
-          <Restaurant />
+          <RestaurantSkeleton />
+          <RestaurantSkeleton />
+          <RestaurantSkeleton />
         </MainContainer>
       </RestaurantsContainer>
     </Container>

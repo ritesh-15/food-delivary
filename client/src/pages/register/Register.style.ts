@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const RegisterContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 70px;
   margin-bottom: 2em;
 `;
 

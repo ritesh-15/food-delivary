@@ -21,7 +21,7 @@ export const GlobalStyle = createGlobalStyle<GlobalProps>`
         font-family: 'Poppins', sans-serif;
         color: ${({ theme }) => theme.colors.text};
         background: ${({ theme }) => theme.colors.bg};
-        overflow-x: hidden;
+        overflow: none auto;
     }
 
     a{
