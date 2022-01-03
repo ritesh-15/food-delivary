@@ -8,6 +8,7 @@ const Button = styled.button`
   border: none;
   font-family: inherit;
   border-radius: 0.25em;
+  transition: background 160ms ease-in;
 `;
 
 export default Button;

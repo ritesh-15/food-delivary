@@ -9,8 +9,6 @@ export const CompleteProfileContainer = styled.div`
   grid-template-columns: 1fr 3fr;
   padding-top: 2em;
   grid-gap: 4em;
-  margin-top: 70px;
-  min-height: 100vh;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -38,7 +36,7 @@ export const StatusDiv = styled.div<StatusDivProps>`
   div {
     background: ${({ theme, active }) =>
       active ? theme.colors.primary : "transparent"};
-    border-color: ${({ active, theme }) =>
+    border-color: ${({ active }) =>
       active ? "transparent" : "hsl(44, 0%, 90%)"};
 
     &::after {

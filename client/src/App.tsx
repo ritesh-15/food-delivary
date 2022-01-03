@@ -4,6 +4,7 @@ import {
   CompleteProfile,
   Home,
   Login,
+  Profile,
   Register,
   RestaurantInfo,
   Restaurants,
@@ -26,6 +27,15 @@ function App() {
                 <>
                   <Header />
                   <Home />
+                </>
+              }
+            />
+            <Route
+              path="/account"
+              element={
+                <>
+                  <Header />
+                  <Profile />
                 </>
               }
             />

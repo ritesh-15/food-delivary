@@ -16,28 +16,10 @@ import {
 import { Star, FavoriteBorder, Search as Icon } from "@mui/icons-material";
 import Button from "../../styles/Button";
 import { Product } from "../../components";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useWindowScroll } from "../../hooks";
 
 function RestaurantInfo() {
-  const [isSticky, setIsSticky] = useState(false);
-
-  const translateInfoContainer = () => {
-    if (window.scrollY >= 70) {
-      setIsSticky(true);
-    } else {
-      setIsSticky(false);
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", (e) => {
-      translateInfoContainer();
-    });
-    return () => {
-      window.removeEventListener("scroll", () => {});
-    };
-  }, []);
+  const isSticky = useWindowScroll(70);
 
   return (
     <Container>

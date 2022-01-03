@@ -16,14 +16,8 @@ export default function PersonalInformation() {
   const [values, setValues] = useState({
     firstName: "",
     lastName: "",
-    gender: "",
     phone: "",
-    middleName: "",
   });
-
-  const options: string[] = ["Male", "Female", "Other", "Prefer not to tell"];
-
-  const [gender, setGender] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -34,22 +28,13 @@ export default function PersonalInformation() {
     <PersonalInformationContainer>
       <PersonalInformationForm>
         <Row>
-          <h1>General information</h1>
+          <h1>Personal details</h1>
           <Grid>
             <FormControl>
               <Input
                 title="First name"
                 value={values.firstName}
                 name="firstName"
-                type="text"
-                onChange={handleChange}
-              />
-            </FormControl>
-            <FormControl>
-              <Input
-                title="Middle name"
-                value={values.middleName}
-                name="middleName"
                 type="text"
                 onChange={handleChange}
               />
@@ -63,18 +48,9 @@ export default function PersonalInformation() {
                 onChange={handleChange}
               />
             </FormControl>
-            <FormControl>
-              <SelectBox
-                options={options}
-                changeCurrent={setGender}
-                current={gender}
-                label="Select gender"
-              />
-            </FormControl>
           </Grid>
         </Row>
         <Row>
-          <h1>Contact information</h1>
           <FormControl>
             <Input
               title="Mobile number"
