@@ -3,14 +3,14 @@ import styled from "styled-components";
 export const UpdateContainer = styled.div`
   h1 {
     font-weight: 500;
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   div {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 1em;
+    margin-top: 0.5em;
     width: 100% !important;
 
     p {

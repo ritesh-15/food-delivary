@@ -4,9 +4,13 @@ import Flex from "../../styles/Flex";
 import { PersonOutline, ShoppingBag, Search } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
-export default function Header() {
+interface HeaderProps {
+  sticky?: boolean;
+}
+
+export default function Header(props: HeaderProps) {
   return (
-    <HeaderContainer>
+    <HeaderContainer sticky={props.sticky}>
       <Nav>
         <Container>
           <Flex>

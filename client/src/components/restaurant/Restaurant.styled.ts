@@ -10,7 +10,7 @@ export const RestaurantContainer = styled.div`
   animation: bounce 0.5s 1 ease-in forwards;
 
   &:hover {
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
   }
 
   @keyframes bounce {

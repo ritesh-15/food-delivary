@@ -1,6 +1,7 @@
 import { ThemeProvider } from "styled-components";
 import { Header } from "./components";
 import {
+  Checkout,
   CompleteProfile,
   Home,
   Login,
@@ -25,7 +26,7 @@ function App() {
               path="/"
               element={
                 <>
-                  <Header />
+                  <Header sticky />
                   <Home />
                 </>
               }
@@ -34,7 +35,7 @@ function App() {
               path="/account"
               element={
                 <>
-                  <Header />
+                  <Header sticky />
                   <Profile />
                 </>
               }
@@ -46,7 +47,7 @@ function App() {
                 path=""
                 element={
                   <>
-                    <Header />
+                    <Header sticky />
                     <Restaurants />
                   </>
                 }
@@ -65,7 +66,7 @@ function App() {
               path="/login"
               element={
                 <>
-                  <Header />
+                  <Header sticky />
                   <Login />
                 </>
               }
@@ -74,7 +75,7 @@ function App() {
               path="/register"
               element={
                 <>
-                  <Header />
+                  <Header sticky />
                   <Register />
                 </>
               }
@@ -83,7 +84,7 @@ function App() {
               path="/verify-otp"
               element={
                 <>
-                  <Header />
+                  <Header sticky />
                   <VerifyOtp />
                 </>
               }
@@ -92,8 +93,17 @@ function App() {
               path="/complete-profile"
               element={
                 <>
-                  <Header />
+                  <Header sticky />
                   <CompleteProfile />
+                </>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <>
+                  <Header sticky />
+                  <Checkout />
                 </>
               }
             />

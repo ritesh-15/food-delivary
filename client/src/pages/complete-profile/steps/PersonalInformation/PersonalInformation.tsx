@@ -48,18 +48,16 @@ export default function PersonalInformation() {
                 onChange={handleChange}
               />
             </FormControl>
+            <FormControl>
+              <Input
+                title="Mobile number"
+                value={values.phone}
+                name="phone"
+                type="text"
+                onChange={handleChange}
+              />
+            </FormControl>
           </Grid>
-        </Row>
-        <Row>
-          <FormControl>
-            <Input
-              title="Mobile number"
-              value={values.phone}
-              name="phone"
-              type="text"
-              onChange={handleChange}
-            />
-          </FormControl>
         </Row>
 
         <Button onClick={nextStep}>Continue</Button>

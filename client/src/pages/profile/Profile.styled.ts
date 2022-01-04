@@ -6,16 +6,34 @@ export const Wrapper = styled.div`
 
 export const ProfileTop = styled.div`
   display: flex;
-  align-items: center;
   border-bottom: 1px solid hsl(0, 0%, 80%);
   padding-bottom: 1em;
 `;
 
 export const Image = styled.div`
-  width: 110px;
-  max-height: 110px;
-  overflow: hidden;
-  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  div {
+    width: 110px;
+    max-height: 110px;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  input {
+    display: none;
+  }
+
+  label {
+    display: block;
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 1em;
+    cursor: pointer;
+    color: ${({ theme }) => theme.colors.textLight};
+  }
 
   img {
     width: 100%;

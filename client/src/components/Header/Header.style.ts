@@ -1,10 +1,16 @@
 import styled from "styled-components";
 
-export const HeaderContainer = styled.header`
+interface Props {
+  sticky?: boolean;
+}
+
+export const HeaderContainer = styled.header<Props>`
   background: ${({ theme }) => theme.colors.pure};
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   z-index: 100;
   width: 100%;
+  position: ${({ sticky }) => (sticky ? "sticky" : "relative")};
+  top: 0;
 `;
 
 export const Nav = styled.nav`

@@ -17,6 +17,9 @@ const Profile = () => {
     lastname: "Khore",
     email: "riteshkhore@gmail.com",
     number: "9960130524",
+    city: "pune",
+    landmark: "station",
+    pincode: "413115",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -29,10 +32,14 @@ const Profile = () => {
       <Wrapper>
         <ProfileTop>
           <Image>
-            <img
-              src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-              alt=""
-            />
+            <div>
+              <img
+                src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
+                alt=""
+              />
+            </div>
+            <label htmlFor="avatar">Change profile photo</label>
+            <input type="file" id="avatar" />
           </Image>
           <ProfileTopInfo>
             <h1>Ritesh Khore</h1>
@@ -69,7 +76,30 @@ const Profile = () => {
               name="number"
             />
           </Row>
-          <Button>Update</Button>
+
+          <Row>
+            <UpdateInput
+              value={values.city}
+              onChange={handleChange}
+              title="City"
+              name="city"
+            />
+            <UpdateInput
+              value={values.pincode}
+              onChange={handleChange}
+              title="Pin code"
+              name="pincode"
+            />
+          </Row>
+          <Row>
+            <UpdateInput
+              value={values.landmark}
+              onChange={handleChange}
+              title="Land mark"
+              name="landmark"
+            />
+          </Row>
+          <Button>Save</Button>
         </ProfileDetails>
       </Wrapper>
     </Container>
