@@ -4,17 +4,16 @@ import {
   StyledBox,
   Arrow,
 } from "./SelectBox.styled";
-import Flex from "../../styles/Flex";
 import { ChangeEvent, useState } from "react";
 import { useRef } from "react";
 import { MutableRefObject } from "react";
-import { useEffect } from "react";
 
 interface SelectBoxProps {
   current: string;
   changeCurrent(value: string): void;
   options: any[];
   label: string;
+  search?: boolean;
 }
 
 export default function SelectBox(props: SelectBoxProps): JSX.Element {
@@ -37,19 +36,21 @@ export default function SelectBox(props: SelectBoxProps): JSX.Element {
     <StyledBox>
       <Selected onClick={() => setActive(!active)}>
         <label htmlFor="">{current || label}</label>
-        <Arrow />
+        <Arrow active={active} />
       </Selected>
-      <OptionsContainer ref={ref} active={active}>
-        <div>
-          <input
-            name="search"
-            type="text"
-            value={search}
-            onChange={handleChange}
-            autoComplete="off"
-            placeholder="Search here"
-          />
-        </div>
+      <OptionsContainer search={props.search} ref={ref} active={active}>
+        {props.search && (
+          <div>
+            <input
+              name="search"
+              type="text"
+              value={search}
+              onChange={handleChange}
+              autoComplete="off"
+              placeholder="Search here"
+            />
+          </div>
+        )}
         {options
           .filter((option: string) => {
             if (search === "") return option;

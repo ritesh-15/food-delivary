@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 interface FlexProps {
-  justify?: "space between" | "center";
+  justify?: "space between" | "center" | "flex-start";
   align?: "center" | "flex-start" | "flex-end";
 }
 

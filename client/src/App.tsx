@@ -1,6 +1,7 @@
 import { ThemeProvider } from "styled-components";
 import { Header } from "./components";
 import {
+  AddRestuarant,
   Checkout,
   CompleteProfile,
   Home,
@@ -104,6 +105,15 @@ function App() {
                 <>
                   <Header sticky />
                   <Checkout />
+                </>
+              }
+            />
+            <Route
+              path="/add-restaurant"
+              element={
+                <>
+                  <Header sticky />
+                  <AddRestuarant />
                 </>
               }
             />

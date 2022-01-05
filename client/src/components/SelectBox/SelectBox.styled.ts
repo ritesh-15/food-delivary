@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface OptionContainerProps {
   active: boolean;
+  search?: boolean;
 }
 
 export const StyledBox = styled.div`
@@ -14,7 +15,7 @@ export const Selected = styled.div`
   padding: 1em;
   border-radius: 0.25em;
   cursor: pointer;
-  text-select: none;
+  user-select: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -41,7 +42,8 @@ export const OptionsContainer = styled.div<OptionContainerProps>`
     cursor: pointer;
 
     &:first-child {
-      background: rgba(0, 0, 0, 0.025);
+      background: ${({ search }) =>
+        search ? "rgba(0, 0, 0, 0.025)" : "transparent"};
     }
 
     input {
@@ -60,7 +62,7 @@ export const OptionsContainer = styled.div<OptionContainerProps>`
   }
 `;
 
-export const Arrow = styled(KeyboardArrowDown)`
-  color: :rgba(0,0,0,0.5);
-
+export const Arrow = styled(KeyboardArrowDown)<OptionContainerProps>`
+  color: rgba(0, 0, 0, 0.5);
+  transform: ${({ active }) => (active ? "rotate(180deg)" : "rotate(0)")};
 `;

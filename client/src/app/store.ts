@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+import addRestaurantSlice from "../features/addrestaurantsteps/addRestaurantSlice";
 import completeProfileSlice from "../features/complete-profile-slice/completeProfileSlice";
 
 export const store = configureStore({
   reducer: {
     completeProfile: completeProfileSlice,
+    restaurantStep: addRestaurantSlice,
   },
 });
 

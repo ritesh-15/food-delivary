@@ -10,7 +10,7 @@ export const RestaurantContainer = styled.div`
   animation: bounce 0.5s 1 ease-in forwards;
 
   &:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
 
   @keyframes bounce {
@@ -25,7 +25,7 @@ export const RestaurantContainer = styled.div`
 
 export const RestaurantImage = styled.div`
   max-width: 100%;
-  height: 300px;
+  height: 250px;
   overflow: hidden;
   border-radius: 1em;
 
