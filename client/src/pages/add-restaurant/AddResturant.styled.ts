@@ -18,7 +18,7 @@ export const Heading = styled.div`
 `;
 
 export const StatusDiv = styled.div`
-  margin-top: 2em;
+  /* margin-top: 2em; */
   width: 25%;
 `;
 
@@ -44,7 +44,7 @@ export const Status = styled.div<props>`
     width: 50px;
     height: 50px;
     background: ${({ theme, active }) =>
-      active ? theme.colors.secondary : "rgba(0, 0, 0, 0.05)"};
+      active ? theme.colors.primary : "rgba(0, 0, 0, 0.05)"};
     border-radius: 50%;
     position: relative;
     transition: background 160ms ease-in;
@@ -55,7 +55,7 @@ export const Status = styled.div<props>`
       width: 2px;
       height: 160%;
       background: ${({ theme, active }) =>
-        active ? theme.colors.secondary : "rgba(0, 0, 0, 0.05)"};
+        active ? theme.colors.primary : "rgba(0, 0, 0, 0.05)"};
       left: 0;
       right: 0;
       top: 50px;
@@ -67,12 +67,12 @@ export const Status = styled.div<props>`
     font-size: 0.95rem;
     margin-right: 4em;
     color: ${({ theme, active }) =>
-      active ? theme.colors.secondary : theme.colors.textLight};
+      active ? theme.colors.primary : theme.colors.textLight};
   }
 `;
 
 export const FormContainer = styled.div`
   display: flex;
-  margin-top: 2em;
+  margin-top: 4em;
   justify-content: space-between;
 `;
