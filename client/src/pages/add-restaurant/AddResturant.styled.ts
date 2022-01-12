@@ -4,6 +4,7 @@ export const Wrapper = styled.div``;
 
 export const AddRestaurantContainer = styled.div`
   padding-top: 2em;
+  padding-bottom: 2em;
 `;
 
 export const Heading = styled.div`
@@ -17,62 +18,75 @@ export const Heading = styled.div`
   }
 `;
 
-export const StatusDiv = styled.div`
-  /* margin-top: 2em; */
-  width: 25%;
+export const FormContainer = styled.div`
+  width: 100%;
+  margin-top: 4em;
+
+  button {
+    background: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+    margin-top: 2em;
+  }
+
+  h1 {
+    margin-bottom: 2em;
+    border-bottom: 1px solid hsl(0, 0%, 80%);
+    padding-bottom: 1em;
+    font-size: 1.15rem;
+  }
 `;
 
-interface props {
-  active: boolean;
-}
+export const Row = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2em;
+  margin-bottom: 2em;
 
-export const Status = styled.div<props>`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 5em;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+`;
 
-  &:last-child {
-    div {
-      &::after {
-        display: none;
-      }
+export const FormControl = styled.div``;
+
+export const ImageContainer = styled.div`
+  margin-bottom: 2em;
+
+  div {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    overflow: hidden;
+    border-radius: 1em;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
-  div {
-    width: 50px;
-    height: 50px;
-    background: ${({ theme, active }) =>
-      active ? theme.colors.primary : "rgba(0, 0, 0, 0.05)"};
-    border-radius: 50%;
-    position: relative;
-    transition: background 160ms ease-in;
+  label {
+    margin-top: 1em;
+    color: ${({ theme }) => theme.colors.primary};
+    display: block;
+    cursor: pointer;
+  }
 
-    &::after {
-      content: "";
-      position: absolute;
-      width: 2px;
-      height: 160%;
-      background: ${({ theme, active }) =>
-        active ? theme.colors.primary : "rgba(0, 0, 0, 0.05)"};
-      left: 0;
-      right: 0;
-      top: 50px;
-      margin: 0 auto;
-    }
+  input {
+    display: none;
+  }
+`;
+
+export const Agreement = styled.div`
+  display: flex;
+  align-items: center;
+
+  input {
+    cursor: pointer;
   }
 
   p {
-    font-size: 0.95rem;
-    margin-right: 4em;
-    color: ${({ theme, active }) =>
-      active ? theme.colors.primary : theme.colors.textLight};
+    margin-left: 1em;
   }
-`;
-
-export const FormContainer = styled.div`
-  display: flex;
-  margin-top: 4em;
-  justify-content: space-between;
 `;
