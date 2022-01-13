@@ -9,19 +9,21 @@ export interface Theme {
     pure: string;
     textLight: string;
     red: string;
+    disabled: string;
   };
 }
 
 export const lightTheme: Theme = {
   colors: {
-    primary: "hsl(199, 79%, 32%)",
+    primary: "hsl(354, 92%, 50%)",
     secondary: "hsl(150, 87%, 43%)",
-    primaryHover: "hsl(24, 94%, 45%)",
+    primaryHover: "hsl(354, 92%, 50%)",
     secondaryHover: "hsl(151, 62%, 35%)",
     text: "hsl(151, 0%, 0%)",
     bg: "#fff",
     pure: "#fff",
     textLight: "hsl(0,0%,50%)",
     red: "hsl(360, 100%, 53%)",
+    disabled: "hsl(355, 13%, 90%)",
   },
 };

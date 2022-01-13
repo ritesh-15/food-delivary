@@ -8,6 +8,7 @@ import SkeletonElement from "./skeletonelement/SkeletonElement";
 import Cart from "./cart/Cart";
 import CartProduct from "./cartproduct/CartProduct";
 import UpdateInput from "./update-input/UpdateInput";
+import AddRestaurantModal from "./add-restaurant-modal/AddRestaurantModal";
 
 export {
   Header,
@@ -20,4 +21,5 @@ export {
   Cart,
   CartProduct,
   UpdateInput,
+  AddRestaurantModal,
 };

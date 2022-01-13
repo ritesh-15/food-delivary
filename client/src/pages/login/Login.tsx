@@ -46,9 +46,11 @@ export default function Login() {
             />
           </LoginFormControll>
 
-          <Button>Log In</Button>
+          <Button hover disabled>
+            Log In
+          </Button>
           <small>or</small>
-          <Button>Request OTP</Button>
+          <Button disabled>Request OTP</Button>
         </LoginForm>
         <ForgotPassword>
           <a href="">Forgot Password?</a>

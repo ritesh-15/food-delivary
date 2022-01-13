@@ -10,7 +10,12 @@ import Button from "../../styles/Button";
 import { Link } from "react-router-dom";
 
 export default function Register() {
-  const [values, setValues] = useState({ email: "", password: "" });
+  const [values, setValues] = useState({
+    email: "",
+    name: "",
+    password: "",
+    number: "",
+  });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
@@ -27,6 +32,15 @@ export default function Register() {
           </p>
           <RegisterFormControll>
             <Input
+              value={values.name}
+              onChange={handleChange}
+              name="email"
+              type="text"
+              title="Name"
+            />
+          </RegisterFormControll>
+          <RegisterFormControll>
+            <Input
               value={values.email}
               onChange={handleChange}
               name="email"
@@ -34,7 +48,27 @@ export default function Register() {
               title="Email address"
             />
           </RegisterFormControll>
-          <Button>Send Otp</Button>
+          <RegisterFormControll>
+            <Input
+              value={values.number}
+              onChange={handleChange}
+              name="number"
+              type="text"
+              title="Phone number"
+            />
+          </RegisterFormControll>
+          <RegisterFormControll>
+            <Input
+              value={values.password}
+              onChange={handleChange}
+              name="password"
+              type="password"
+              title="password"
+            />
+          </RegisterFormControll>
+          <Button disabled hover>
+            Send Otp
+          </Button>
         </RegisterForm>
       </RegisterMain>
     </RegisterContainer>

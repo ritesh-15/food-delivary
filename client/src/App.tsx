@@ -117,6 +117,15 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/search"
+              element={
+                <>
+                  <Header sticky />
+                  <AddRestuarant />
+                </>
+              }
+            />
           </Routes>
         </Router>
       </ThemeProvider>

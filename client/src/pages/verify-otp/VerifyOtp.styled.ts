@@ -12,7 +12,7 @@ export const VerifyMain = styled.div`
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   padding: 1em;
   height: fit-content;
-  width: 450px;
+  width: 400px;
   border-radius: 0.25em;
   animation: popup 0.8s ease 1;
 
@@ -75,5 +75,9 @@ export const VerifyFormControll = styled.div`
     padding: 0;
     margin-top: 0.5em;
     font-size: 0.95rem;
+
+    &:hover {
+      background: transparent;
+    }
   }
 `;

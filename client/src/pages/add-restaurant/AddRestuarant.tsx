@@ -1,5 +1,5 @@
 import { ChangeEvent, useState } from "react";
-import { Input, SelectBox } from "../../components";
+import { AddRestaurantModal, Input, SelectBox } from "../../components";
 import Button from "../../styles/Button";
 import Container from "../../styles/Container";
 import {
@@ -28,6 +28,7 @@ export default function AddRestuarant() {
     dailyCustomers: "",
   });
 
+  const [isSubmited, setIsSubmited] = useState(false);
   const [foodType, setFoodType] = useState("");
   const [image, setImage] = useState("");
 
@@ -40,6 +41,7 @@ export default function AddRestuarant() {
   return (
     <Wrapper>
       <Container>
+        {isSubmited && <AddRestaurantModal />}
         <AddRestaurantContainer>
           <Heading>
             <h1>Hey, Ritesh welcome to foodies application portal !</h1>
@@ -154,7 +156,9 @@ export default function AddRestuarant() {
                 with you.
               </p>
             </Agreement>
-            <Button>Submit Application</Button>
+            <Button disabled hover>
+              Submit Application
+            </Button>
           </FormContainer>
         </AddRestaurantContainer>
       </Container>

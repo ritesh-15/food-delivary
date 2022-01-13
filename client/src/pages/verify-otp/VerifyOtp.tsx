@@ -31,7 +31,9 @@ export default function VerifyOtp() {
             />
             <Button>Resend OTP in 00:16</Button>
           </VerifyFormControll>
-          <Button>Continue</Button>
+          <Button disabled hover>
+            Continue
+          </Button>
         </VerifyForm>
       </VerifyMain>
     </VerifyContainer>

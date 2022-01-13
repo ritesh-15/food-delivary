@@ -12,7 +12,7 @@ export const LoginMain = styled.div`
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
   padding: 1em;
   height: fit-content;
-  width: 450px;
+  width: 400px;
   border-radius: 0.25em;
   animation: popup 0.8s ease 1;
 
@@ -59,18 +59,10 @@ export const LoginForm = styled.form`
     transition: all 0.25s ease-in;
     width: 100%;
 
-    &:hover {
-      background: ${({ theme }) => theme.colors.primaryHover};
-    }
-
     &:last-child {
       background: transparent;
       color: ${({ theme }) => theme.colors.primary};
-      box-shadow: 0px 1px 5px 0px rgba(214, 214, 214, 1);
-
-      &:hover {
-        box-shadow: 0px 1px 3px 0px rgba(214, 214, 214, 1);
-      }
+      border: 1px solid ${({ theme }) => theme.colors.primary};
     }
   }
 `;
