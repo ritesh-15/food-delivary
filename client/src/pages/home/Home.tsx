@@ -25,7 +25,7 @@ export default function Home() {
             </p>
             <HeroLocation>
               <input type="text" placeholder="Enter your location" />
-              <Button>Locate</Button>
+              <Button hover>Locate</Button>
             </HeroLocation>
           </HeroSectionInfo>
         </Container>

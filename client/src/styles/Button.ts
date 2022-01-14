@@ -16,7 +16,6 @@ const Button = styled.button<Props>`
   position: relative;
   overflow: hidden;
   z-index: 1;
-  font-weight: 500;
 
   &::after {
     content: "";
@@ -26,7 +25,7 @@ const Button = styled.button<Props>`
     width: 100%;
     bottom: 0;
     height: 100%;
-    background: hsl(354, 92%, 70%);
+    background: hsl(24, 94%, 40%);
     top: 0;
     transition: all 250ms ease-in;
     z-index: -1;

@@ -156,9 +156,7 @@ export default function AddRestuarant() {
                 with you.
               </p>
             </Agreement>
-            <Button disabled hover>
-              Submit Application
-            </Button>
+            <Button hover>Submit Application</Button>
           </FormContainer>
         </AddRestaurantContainer>
       </Container>

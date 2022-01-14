@@ -3,9 +3,10 @@ import { Header } from "./components";
 import {
   AddRestuarant,
   Checkout,
-  CompleteProfile,
   Home,
   Login,
+  OrderInfo,
+  Orders,
   Profile,
   Register,
   RestaurantInfo,
@@ -91,15 +92,6 @@ function App() {
               }
             />
             <Route
-              path="/complete-profile"
-              element={
-                <>
-                  <Header sticky />
-                  <CompleteProfile />
-                </>
-              }
-            />
-            <Route
               path="/checkout"
               element={
                 <>
@@ -118,11 +110,20 @@ function App() {
               }
             />
             <Route
-              path="/search"
+              path="/orders"
               element={
                 <>
                   <Header sticky />
-                  <AddRestuarant />
+                  <Orders />
+                </>
+              }
+            />
+            <Route
+              path="/order/:id"
+              element={
+                <>
+                  <Header sticky />
+                  <OrderInfo />
                 </>
               }
             />

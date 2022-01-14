@@ -89,10 +89,6 @@ export const HeroLocation = styled.div`
     border-radius: 0 0.2em 0.2em 0;
     font-weight: 600;
     height: 66px;
-
-    &:hover {
-      background: ${({ theme }) => theme.colors.primaryHover};
-    }
   }
 
   @media (max-width: 680px) {
