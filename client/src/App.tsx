@@ -16,6 +16,7 @@ import {
 import { GlobalStyle } from "./styles/globalStyle";
 import { lightTheme } from "./styles/themeProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Applications } from "./pages/admin";
 
 function App() {
   return (
@@ -127,6 +128,19 @@ function App() {
                 </>
               }
             />
+
+            {/* Admin routes  */}
+            <Route path="/admin">
+              <Route
+                path="applications"
+                element={
+                  <>
+                    <Header sticky />
+                    <Applications />
+                  </>
+                }
+              />
+            </Route>
           </Routes>
         </Router>
       </ThemeProvider>
