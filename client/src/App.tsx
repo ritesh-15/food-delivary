@@ -1,5 +1,5 @@
 import { ThemeProvider } from "styled-components";
-import { Header } from "./components";
+import { AdminSidebar, Header } from "./components";
 import {
   AddRestuarant,
   Checkout,
@@ -17,6 +17,11 @@ import { GlobalStyle } from "./styles/globalStyle";
 import { lightTheme } from "./styles/themeProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Applications } from "./pages/admin";
+import styled from "styled-components";
+
+const FlexContainer = styled.div`
+  display: flex;
+`;
 
 function App() {
   return (
@@ -130,14 +135,15 @@ function App() {
             />
 
             {/* Admin routes  */}
+
             <Route path="/admin">
               <Route
                 path="applications"
                 element={
-                  <>
-                    <Header sticky />
+                  <FlexContainer>
+                    <AdminSidebar />
                     <Applications />
-                  </>
+                  </FlexContainer>
                 }
               />
             </Route>

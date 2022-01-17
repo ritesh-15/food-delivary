@@ -2,11 +2,13 @@ import styled from "styled-components";
 
 export const AdminSidebarContainer = styled.div`
   width: 100%;
-  height: calc(100vh - 68.8px);
+  min-height: 100vh;
   background: #fff;
   max-width: 300px;
   border-right: 1px solid rgba(0, 0, 0, 0.2);
   padding: 1em 0;
+  position: sticky;
+  top: 0;
 `;
 
 export const Menu = styled.ul`

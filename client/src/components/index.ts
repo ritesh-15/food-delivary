@@ -10,6 +10,7 @@ import CartProduct from "./cartproduct/CartProduct";
 import UpdateInput from "./update-input/UpdateInput";
 import AddRestaurantModal from "./add-restaurant-modal/AddRestaurantModal";
 import AdminSidebar from "./admin-sidebar/AdminSidebar";
+import AdminApplication from "./admin-application/AdminApplication";
 
 export {
   Header,
@@ -24,4 +25,5 @@ export {
   UpdateInput,
   AddRestaurantModal,
   AdminSidebar,
+  AdminApplication,
 };
