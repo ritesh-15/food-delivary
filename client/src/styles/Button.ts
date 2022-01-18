@@ -25,7 +25,7 @@ const Button = styled.button<Props>`
     width: 100%;
     bottom: 0;
     height: 100%;
-    background: hsl(24, 94%, 40%);
+    background: ${({ theme }) => theme.colors.primaryHover};
     top: 0;
     transition: all 250ms ease-in;
     z-index: -1;

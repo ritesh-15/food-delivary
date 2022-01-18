@@ -12,7 +12,7 @@ export const ApplicationWrap = styled.div`
   border-radius: 0.5em;
   cursor: pointer;
   margin-bottom: 1em;
-  background: hsl(204, 68%, 38%);
+  background: hsl(200, 44%, 39%);
 
   p,
   span {
@@ -88,6 +88,12 @@ export const Actions = styled.div`
   button {
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: 0.5em;
+    }
 
     &:last-child {
       margin-left: 1em;

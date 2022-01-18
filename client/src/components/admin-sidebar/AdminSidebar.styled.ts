@@ -20,10 +20,7 @@ export const Menu = styled.ul`
     align-items: center;
     cursor: pointer;
     margin-bottom: 1em;
-
-    &:hover {
-      background: hsl(33, 100%, 95%);
-    }
+    background: inherit;
 
     span {
       margin-left: 1em;

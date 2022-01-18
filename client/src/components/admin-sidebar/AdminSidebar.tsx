@@ -1,35 +1,57 @@
 import { AdminSidebarContainer, Menu } from "./AdminSidebar.styled";
 import { Dashboard, Create, Group, Home } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+const activeStyle = {
+  background: "hsl(200, 44%, 39%)",
+  color: "#fff",
+};
+
+const notActiveStyle = {
+  color: "rgba(0,0,0,0.7)",
+  background: "#fff",
+};
 
 const AdminSidebar = () => {
   return (
     <AdminSidebarContainer>
       <Menu>
-        <Link to="/admin/dashboard">
+        <NavLink
+          style={({ isActive }) => (isActive ? activeStyle : notActiveStyle)}
+          to="/admin/dashboard"
+        >
           <li>
             <Dashboard />
             <span>Dashboard</span>
           </li>
-        </Link>
-        <Link to="/admin/applications">
+        </NavLink>
+        <NavLink
+          style={({ isActive }) => (isActive ? activeStyle : notActiveStyle)}
+          to="/admin/applications"
+        >
           <li>
             <Create />
             <span>Applications</span>
           </li>
-        </Link>
-        <Link to="/admin/users">
+        </NavLink>
+        <NavLink
+          style={({ isActive }) => (isActive ? activeStyle : notActiveStyle)}
+          to="/admin/users"
+        >
           <li>
             <Group />
             <span>Users</span>
           </li>
-        </Link>
-        <Link to="/admin/restaurants">
+        </NavLink>
+        <NavLink
+          to="/admin/restaurants"
+          style={({ isActive }) => (isActive ? activeStyle : notActiveStyle)}
+        >
           <li>
             <Home />
             <span>Restaurants</span>
           </li>
-        </Link>
+        </NavLink>
       </Menu>
     </AdminSidebarContainer>
   );

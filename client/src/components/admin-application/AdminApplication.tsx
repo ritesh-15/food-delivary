@@ -10,8 +10,12 @@ import {
   Information,
   Title,
 } from "./AdminApplication.styled";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
-import { useState } from "react";
+import {
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+  Check,
+  Close,
+} from "@mui/icons-material";
 import { FC } from "react";
 
 interface props {
@@ -108,8 +112,14 @@ const AdminApplication: FC<props> = ({ index, toggle, active }) => {
             </Information>
           </ApplicationDetails>
           <Actions>
-            <Button>Accept</Button>
-            <Button>Reject</Button>
+            <Button hover>
+              <Check />
+              <span>Accept</span>
+            </Button>
+            <Button>
+              <Close />
+              <span>Reject</span>
+            </Button>
           </Actions>
         </ContentDiv>
       )}

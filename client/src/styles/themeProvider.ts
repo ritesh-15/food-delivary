@@ -15,15 +15,15 @@ export interface Theme {
 
 export const lightTheme: Theme = {
   colors: {
-    primary: "hsl(24, 94%, 52%)",
+    primary: "hsl(349, 79%, 54%)",
     secondary: "hsl(150, 87%, 43%)",
-    primaryHover: "hsl(354, 92%, 50%)",
+    primaryHover: "hsl(349, 79%, 40%)",
     secondaryHover: "hsl(151, 62%, 35%)",
     text: "hsl(151, 0%, 0%)",
     bg: "#fff",
     pure: "#fff",
     textLight: "hsl(0,0%,50%)",
     red: "hsl(360, 100%, 53%)",
-    disabled: "hsl(24, 18%, 85%)",
+    disabled: "hsl(0, 0%, 80%)",
   },
 };

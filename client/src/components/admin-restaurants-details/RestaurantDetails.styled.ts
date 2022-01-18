@@ -4,6 +4,7 @@ export const Wrapper = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 1em;
   border-radius: 0.5em;
+  margin-bottom: 1em;
 `;
 
 export const TopSection = styled.div`
@@ -96,8 +97,36 @@ export const Title = styled.div`
 
 export const Controls = styled.div`
   display: flex;
+  margin-top: 1em;
+  justify-content: flex-end;
 `;
 
-export const BlockButton = styled.div``;
+export const BlockButton = styled.div`
+  button {
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
+    display: flex;
+    align-items: center;
 
-export const DeleteButton = styled.div``;
+    span {
+      margin-left: 0.5em;
+      text-transform: capitalize;
+    }
+  }
+`;
+
+export const DeleteButton = styled.div`
+  margin-left: 1em;
+
+  button {
+    background: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: 0.5em;
+      text-transform: capitalize;
+    }
+  }
+`;

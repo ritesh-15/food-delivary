@@ -13,6 +13,7 @@ import {
 } from "./RestaurantDetails.styled";
 import StarIcon from "@mui/icons-material/Star";
 import Button from "../../styles/Button";
+import { Block, Delete } from "@mui/icons-material";
 
 const RestaurantDetails = () => {
   return (
@@ -79,10 +80,16 @@ const RestaurantDetails = () => {
         </Grid>
         <Controls>
           <BlockButton>
-            <Button>Block temporary</Button>
+            <Button>
+              <Block />
+              <span>Block temporary</span>
+            </Button>
           </BlockButton>
           <DeleteButton>
-            <Button>Delete permenatly</Button>
+            <Button hover>
+              <Delete />
+              <span>Delete permenantly</span>
+            </Button>
           </DeleteButton>
         </Controls>
       </MoreDetailsContainer>

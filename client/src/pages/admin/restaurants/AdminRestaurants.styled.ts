@@ -13,7 +13,7 @@ export const Heading = styled.div`
   border-radius: 0.5em;
   cursor: pointer;
   margin-bottom: 1em;
-  background: hsl(204, 68%, 38%);
+  background: hsl(200, 44%, 39%);
 
   p,
   span {
