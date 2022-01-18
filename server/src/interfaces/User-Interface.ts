@@ -7,16 +7,14 @@ interface Address {
   street: string;
 }
 
-interface User {
+export interface User {
   name: string;
   email: string;
   password: string;
   number: number | string;
-  address: Address[];
+  addresses: Address[];
   isRestaurantOwner: boolean;
   isAdmin: boolean;
   isSuspended: boolean;
   _id: ObjectId;
 }
-
-export default User;

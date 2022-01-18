@@ -20,6 +20,10 @@ class ErrorHandler {
   static unAuthorised(message: string = "Un authorised!") {
     return new ErrorHandler(message, 401);
   }
+
+  static serverError(message: string = "Internal server error!") {
+    return new ErrorHandler(message, 500);
+  }
 }
 
 export default ErrorHandler;
