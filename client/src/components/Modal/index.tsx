@@ -1,4 +1,3 @@
-import { FC } from "react";
 import { ModalContainer, ModalHeader, Wrapper } from "./Modal.style";
 import CloseIcon from "@mui/icons-material/Close";
 

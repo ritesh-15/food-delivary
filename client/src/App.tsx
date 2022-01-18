@@ -16,7 +16,7 @@ import {
 import { GlobalStyle } from "./styles/globalStyle";
 import { lightTheme } from "./styles/themeProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Applications } from "./pages/admin";
+import { AdminRestaurants, Applications } from "./pages/admin";
 import styled from "styled-components";
 
 const FlexContainer = styled.div`
@@ -140,10 +140,25 @@ function App() {
               <Route
                 path="applications"
                 element={
-                  <FlexContainer>
-                    <AdminSidebar />
-                    <Applications />
-                  </FlexContainer>
+                  <>
+                    <Header sticky />
+                    <FlexContainer>
+                      <AdminSidebar />
+                      <Applications />
+                    </FlexContainer>
+                  </>
+                }
+              />
+              <Route
+                path="restaurants"
+                element={
+                  <>
+                    <Header sticky />
+                    <FlexContainer>
+                      <AdminSidebar />
+                      <AdminRestaurants />
+                    </FlexContainer>
+                  </>
                 }
               />
             </Route>

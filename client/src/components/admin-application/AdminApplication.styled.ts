@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ApplicationContainer = styled.div`
-  position: relative;
+  margin-bottom: 1em;
 `;
 
 export const ApplicationWrap = styled.div`
@@ -86,7 +86,7 @@ export const Actions = styled.div`
   justify-content: flex-end;
 
   button {
-    background: ${({ theme }) => theme.colors.secondary};
+    background: ${({ theme }) => theme.colors.primary};
     color: #fff;
 
     &:last-child {
@@ -98,27 +98,10 @@ export const Actions = styled.div`
   }
 `;
 
-interface props {
-  open: boolean;
-}
-
-export const ContentDiv = styled.div<props>`
+export const ContentDiv = styled.div`
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 0.25em;
   padding: 1em;
-  position: absolute;
   width: 100%;
   background: #fff;
-  z-index: 100;
-  animation: show 1s ease 1;
-  transition: all 160ms ease-in;
-
-  @keyframes show {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
 `;

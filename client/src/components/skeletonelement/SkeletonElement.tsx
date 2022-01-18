@@ -1,7 +1,6 @@
 import { FC } from "react";
 import {
   ImageSkeleton,
-  SkeletonElementContainer,
   TextSkeleton,
   TitleSkeleton,
 } from "./SkeletonElement.styled";

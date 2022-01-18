@@ -11,6 +11,7 @@ import UpdateInput from "./update-input/UpdateInput";
 import AddRestaurantModal from "./add-restaurant-modal/AddRestaurantModal";
 import AdminSidebar from "./admin-sidebar/AdminSidebar";
 import AdminApplication from "./admin-application/AdminApplication";
+import RestaurantDetails from "./admin-restaurants-details/RestaurantDetails";
 
 export {
   Header,
@@ -26,4 +27,5 @@ export {
   AddRestaurantModal,
   AdminSidebar,
   AdminApplication,
+  RestaurantDetails,
 };

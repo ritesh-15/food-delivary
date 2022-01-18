@@ -8,7 +8,6 @@ import {
 import { Input } from "../../components";
 import { ChangeEvent, useState } from "react";
 import Button from "../../styles/Button";
-import Flex from "../../styles/Flex";
 import { Link } from "react-router-dom";
 
 export default function Login() {
@@ -53,7 +52,7 @@ export default function Login() {
           <Button disabled>Request OTP</Button>
         </LoginForm>
         <ForgotPassword>
-          <a href="">Forgot Password?</a>
+          <a href="/">Forgot Password?</a>
         </ForgotPassword>
       </LoginMain>
     </LoginContainer>

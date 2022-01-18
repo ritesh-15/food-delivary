@@ -1,7 +1,6 @@
 import {
   FeatureCard,
   FeaturesContaienr,
-  FooterContainer,
   HeroLocation,
   HeroSection,
   HeroSectionInfo,

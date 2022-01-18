@@ -30,7 +30,6 @@ export default function AddRestuarant() {
 
   const [isSubmited, setIsSubmited] = useState(false);
   const [foodType, setFoodType] = useState("");
-  const [image, setImage] = useState("");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

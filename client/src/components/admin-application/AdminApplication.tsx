@@ -16,14 +16,14 @@ import { FC } from "react";
 
 interface props {
   index: number;
+  toggle(index: number): void;
+  active: number;
 }
 
-const AdminApplication: FC<props> = ({ index }) => {
-  const [open, setOpen] = useState(false);
-
+const AdminApplication: FC<props> = ({ index, toggle, active }) => {
   return (
     <ApplicationContainer>
-      <ApplicationWrap onClick={() => setOpen(!open)}>
+      <ApplicationWrap onClick={() => toggle(index)}>
         <div>
           <h1>Application ID</h1>
           <p>4578913365</p>
@@ -41,7 +41,7 @@ const AdminApplication: FC<props> = ({ index }) => {
           <span>Pending</span>
         </div>
         <div>
-          {open ? (
+          {active === index ? (
             <KeyboardArrowUp style={{ color: "#fff" }} />
           ) : (
             <KeyboardArrowDown style={{ color: "#fff" }} />
@@ -49,8 +49,8 @@ const AdminApplication: FC<props> = ({ index }) => {
         </div>
       </ApplicationWrap>
 
-      {open && (
-        <ContentDiv open={open}>
+      {active === index && (
+        <ContentDiv>
           <ApplicationHeading>
             <Image>
               <img
