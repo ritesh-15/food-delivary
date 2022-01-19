@@ -12,6 +12,7 @@ import {
   ImageContainer,
   Agreement,
 } from "./AddResturant.styled";
+import PostAddIcon from "@mui/icons-material/PostAdd";
 
 const FOOD_TYPE = ["Vegiterian", "Non vegeterian", "Both"];
 
@@ -155,7 +156,10 @@ export default function AddRestuarant() {
                 with you.
               </p>
             </Agreement>
-            <Button hover>Submit Application</Button>
+            <Button hover>
+              <PostAddIcon />
+              <span>Submit application</span>
+            </Button>
           </FormContainer>
         </AddRestaurantContainer>
       </Container>

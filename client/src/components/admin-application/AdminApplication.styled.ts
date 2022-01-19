@@ -1,113 +1,72 @@
 import styled from "styled-components";
 
 export const ApplicationContainer = styled.div`
-  margin-bottom: 1em;
+  width: 100%;
 `;
 
-export const ApplicationWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1em;
-  border-radius: 0.5em;
-  cursor: pointer;
-  margin-bottom: 1em;
-  background: hsl(200, 44%, 39%);
-
-  p,
-  span {
-    margin-top: 0.5em;
-    display: block;
-    color: hsl(204, 0%, 90%);
-  }
-
-  h1 {
-    font-weight: 500;
-    color: #fff;
-  }
-`;
-
-export const ApplicationHeading = styled.div`
-  display: flex;
-`;
-
-export const Title = styled.div`
-  margin-left: 1em;
-
-  div {
-    margin-bottom: 0.5em;
-  }
-
-  h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
-  }
-
-  p {
-    color: hsl(0, 0%, 50%);
-    margin-top: 0.5em;
-  }
-`;
-
-export const Image = styled.div`
-  width: 200px;
-  height: 200px;
+export const Table = styled.table`
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
   overflow: hidden;
   border-radius: 0.25em;
+  width: 100%;
+  text-align: left;
+`;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+export const TableHead = styled.thead`
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+`;
+
+export const TableBody = styled.tbody``;
+
+export const TR = styled.tr`
+  padding: 1em;
+
+  &:nth-child(even) {
+    background: #fff5f7;
   }
 `;
 
-export const ApplicationDetails = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+export const TH = styled.th`
+  padding: 1em;
+  font-weight: 600;
+  letter-spacing: 0.15em;
 `;
 
-export const Information = styled.div`
-  padding: 1em 0;
+interface Props {
+  status?: string;
+}
 
-  h1 {
-    font-weight: 500;
+export const TD = styled.td<Props>`
+  padding: 1em;
+
+  a {
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   p {
-    margin-top: 0.5em;
+    max-width: 300px;
   }
-`;
 
-export const Actions = styled.div`
-  margin-top: 1em;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  button {
-    background: ${({ theme }) => theme.colors.primary};
-    color: #fff;
-    display: flex;
-    align-items: center;
-
-    span {
-      margin-left: 0.5em;
-    }
-
-    &:last-child {
-      margin-left: 1em;
-      background: transparent;
-      border: 1px solid hsl(11, 100%, 53%);
-      color: hsl(11, 100%, 53%);
-    }
+  small {
+    color: ${({ status }) =>
+      status === "Pending"
+        ? "#a68a00"
+        : status === "Rejected"
+        ? "#c62828"
+        : "#388e3c"};
+    background: ${({ status }) =>
+      status === "Pending"
+        ? "#fff0c2"
+        : status === "Rejected"
+        ? "#ffcdd2"
+        : "#c8e6c9"};
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: 500;
+    border-radius: 4px;
+    width: fit-content;
+    padding: 0.2rem 1rem;
   }
-`;
-
-export const ContentDiv = styled.div`
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-  border-radius: 0.25em;
-  padding: 1em;
-  width: 100%;
-  background: #fff;
 `;

@@ -12,6 +12,7 @@ import AddRestaurantModal from "./add-restaurant-modal/AddRestaurantModal";
 import AdminSidebar from "./admin-sidebar/AdminSidebar";
 import AdminApplication from "./admin-application/AdminApplication";
 import RestaurantDetails from "./admin-restaurants-details/RestaurantDetails";
+import AdminTopBar from "./admin-topbar/AdminTopBar";
 
 export {
   Header,
@@ -28,4 +29,5 @@ export {
   AdminSidebar,
   AdminApplication,
   RestaurantDetails,
+  AdminTopBar,
 };

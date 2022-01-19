@@ -1,132 +1,70 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  padding: 1em;
-  border-radius: 0.5em;
-  margin-bottom: 1em;
-`;
+export const Wrapper = styled.div``;
 
-export const TopSection = styled.div`
-  display: flex;
-`;
-
-export const ImageContainer = styled.div`
-  width: 200px;
-  height: 200px;
+export const Table = styled.table`
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
   overflow: hidden;
-  border-radius: 1em;
+  border-radius: 0.25em;
+  width: 100%;
+  text-align: left;
+`;
 
-  img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+export const TableHead = styled.thead`
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+`;
+
+export const TableBody = styled.tbody``;
+
+export const TR = styled.tr`
+  padding: 1em;
+
+  &:nth-child(even) {
+    background: #fff5f7;
   }
 `;
 
-export const DetailsContainer = styled.div`
-  margin-left: 2em;
+export const TH = styled.th`
+  padding: 1em;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+`;
 
-  h1 {
-    font-size: 1.5rem;
-    font-weight: 600;
+interface Props {
+  status?: string;
+}
+
+export const TD = styled.td<Props>`
+  padding: 1em;
+
+  a {
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   p {
-    margin-top: 0.5em;
+    max-width: 300px;
   }
 
-  span {
-    margin-top: 0.5em;
-    color: rgba(0, 0, 0, 0.5);
-    display: block;
-  }
-
-  div {
-    background: ${({ theme }) => theme.colors.secondary};
+  small {
+    color: ${({ status }) =>
+      status === "Pending"
+        ? "#a68a00"
+        : status === "Rejected"
+        ? "#c62828"
+        : "#388e3c"};
+    background: ${({ status }) =>
+      status === "Pending"
+        ? "#fff0c2"
+        : status === "Rejected"
+        ? "#ffcdd2"
+        : "#c8e6c9"};
     text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    border-radius: 0.25em;
-    padding: 0.2em;
-    max-width: fit-content;
-    margin-top: 1em;
-
-    span {
-      font-size: 0.75rem;
-      margin-left: 0.25em;
-      margin-top: 0;
-      color: #fff;
-    }
-  }
-`;
-
-export const MoreDetailsContainer = styled.div`
-  margin-top: 1em;
-`;
-
-export const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-`;
-
-export const InformationContainer = styled.div`
-  padding: 1em 0;
-
-  h1 {
-    font-size: 1.1rem;
+    text-transform: capitalize;
     font-weight: 500;
-  }
-
-  p {
-    margin-top: 0.5em;
-  }
-`;
-
-export const Title = styled.div`
-  padding: 1em 0;
-  border-bottom: 1px solid hsl(0, 0%, 80%);
-
-  h1 {
-    font-weight: 500;
-    color: ${({ theme }) => theme.colors.primary};
-  }
-`;
-
-export const Controls = styled.div`
-  display: flex;
-  margin-top: 1em;
-  justify-content: flex-end;
-`;
-
-export const BlockButton = styled.div`
-  button {
-    border: 1px solid ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.primary};
-    display: flex;
-    align-items: center;
-
-    span {
-      margin-left: 0.5em;
-      text-transform: capitalize;
-    }
-  }
-`;
-
-export const DeleteButton = styled.div`
-  margin-left: 1em;
-
-  button {
-    background: ${({ theme }) => theme.colors.primary};
-    color: #fff;
-    display: flex;
-    align-items: center;
-
-    span {
-      margin-left: 0.5em;
-      text-transform: capitalize;
-    }
+    border-radius: 4px;
+    width: fit-content;
+    padding: 0.2rem 1rem;
   }
 `;

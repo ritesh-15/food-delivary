@@ -3,8 +3,7 @@ import { Dashboard, Create, Group, Home } from "@mui/icons-material";
 import { NavLink } from "react-router-dom";
 
 const activeStyle = {
-  background: "hsl(200, 44%, 39%)",
-  color: "#fff",
+  color: "hsl(349, 79%, 54%)",
 };
 
 const notActiveStyle = {

@@ -26,6 +26,11 @@ export const FormContainer = styled.div`
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
     margin-top: 2em;
+    display: flex;
+
+    span {
+      margin-left: 0.5em;
+    }
   }
 
   h1 {
