@@ -1,5 +1,6 @@
 import {
   ApplicationContainer,
+  SearchDiv,
   Table,
   TableBody,
   TableHead,
@@ -10,12 +11,19 @@ import {
 import { FC } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import SearchIcon from "@mui/icons-material/Search";
 
 const AdminApplication: FC = () => {
   const [status, setStatus] = useState("Paid");
 
   return (
     <ApplicationContainer>
+      <SearchDiv>
+        <div>
+          <SearchIcon style={{ color: "hsl(0,0%,40%)" }} />
+          <input type="text" placeholder="Search application" />
+        </div>
+      </SearchDiv>
       <Table>
         <TableHead>
           <TR>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Actions,
   FormControl,
@@ -5,31 +6,80 @@ import {
   HeadingContainer,
   Image,
   MainContainer,
+  OrdersChart,
   SubTitle,
-  Table,
-  TableBody,
-  TableHead,
-  TD,
-  TH,
   Title,
-  TR,
   Wrapper,
-} from "./AdminSingleApplication.styled";
-import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { useState } from "react";
+} from "./AdminRestaurantSingle.styled";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+  BarElement,
+} from "chart.js";
 import Button from "../../../styles/Button";
-import { ViewDocument } from "../../../components";
+import { Block, DeleteOutlineOutlined } from "@mui/icons-material";
 
-const AdminSingleApplication = () => {
-  const [status, setStatus] = useState("Accepted");
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+  BarElement
+);
+
+const AdminRestaurantSingle = () => {
+  const [status, setStatus] = useState("active");
+
+  const data = {
+    labels: [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "July",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ],
+    datasets: [
+      {
+        label: "Orders",
+        data: [1, 2, 3, 4, 2, 3, 5, 7, 4, 5.7, 4, 6],
+        borderWidth: 1,
+        tension: 0.25,
+        backgroundColor: "hsl(349, 79%, 54%)",
+        borderColor: "hsl(349, 79%, 54%)",
+      },
+    ],
+  };
+
+  const options = {
+    scales: {
+      y: {
+        display: false,
+      },
+    },
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
 
   return (
     <Wrapper>
-      {/* <ViewDocument
-        src="/acknowledgementSlip.pdf"
-        fileType="pdf"
-        title="Food certificate"
-      /> */}
       <HeadingContainer>
         <Image>
           <img
@@ -41,34 +91,35 @@ const AdminSingleApplication = () => {
           <h1>PK Biryani House</h1>
           <p>Biryani, Maharashtrian, Malwani, Mughlai</p>
           <span>Swargate, Pune</span>
-          <small>Accepted</small>
+          <small>Active</small>
         </Title>
       </HeadingContainer>
       <MainContainer>
-        <SubTitle>Application Details</SubTitle>
+        <SubTitle>Basic information</SubTitle>
         <Grid>
           <FormControl>
-            <h1>Application ID</h1>
+            <h1>Restaurant ID</h1>
             <p>4789561236</p>
           </FormControl>
           <FormControl>
-            <h1>Application Date</h1>
+            <h1>Registration Date</h1>
             <p>11-02-2003</p>
           </FormControl>
-        </Grid>
-        <SubTitle>Applicant Details</SubTitle>
-        <Grid>
           <FormControl>
-            <h1>Application Name</h1>
+            <h1>Owner Name</h1>
             <p>Khore Ritesh Pradip </p>
           </FormControl>
           <FormControl>
-            <h1>Applicant ID</h1>
+            <h1>Onwer user ID</h1>
             <p>4789561236</p>
           </FormControl>
           <FormControl>
-            <h1>Applicant Email Address</h1>
+            <h1>Owner Email Address</h1>
             <p>riteshkhore@gmail.com</p>
+          </FormControl>
+          <FormControl>
+            <h1>Owner contact number</h1>
+            <p>9960130524</p>
           </FormControl>
         </Grid>
         <SubTitle>Restaurant Details</SubTitle>
@@ -80,10 +131,6 @@ const AdminSingleApplication = () => {
           <FormControl>
             <h1>Famous For </h1>
             <p>Pav bhaji</p>
-          </FormControl>
-          <FormControl>
-            <h1>Applicant Email Address</h1>
-            <p>4789561236</p>
           </FormControl>
           <FormControl>
             <h1>Number of food products</h1>
@@ -119,44 +166,23 @@ const AdminSingleApplication = () => {
           </FormControl>
         </Grid>
 
-        <SubTitle>Documents uploaded</SubTitle>
-        <Table>
-          <TableHead>
-            <TR>
-              <TH>Document name</TH>
-              <TH>Action</TH>
-            </TR>
-          </TableHead>
-          <TableBody>
-            <TR>
-              <TD>
-                <p>Applicant identity proof</p>
-              </TD>
-              <TD>
-                <RemoveRedEyeIcon
-                  style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
-                />
-              </TD>
-            </TR>
-            <TR>
-              <TD>
-                <p>Food authority certificate</p>
-              </TD>
-              <TD>
-                <RemoveRedEyeIcon
-                  style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
-                />
-              </TD>
-            </TR>
-          </TableBody>
-        </Table>
+        <Actions>
+          <Button hover>
+            <Block />
+            <span>Block</span>
+          </Button>
+          <Button>
+            <DeleteOutlineOutlined />
+            <span>Delete</span>
+          </Button>
+        </Actions>
       </MainContainer>
-      <Actions>
-        <Button hover>Accept</Button>
-        <Button>Reject</Button>
-      </Actions>
+      <OrdersChart>
+        <h1>Orders Per Month</h1>
+        <Line data={data} options={options} />
+      </OrdersChart>
     </Wrapper>
   );
 };
 
-export default AdminSingleApplication;
+export default AdminRestaurantSingle;

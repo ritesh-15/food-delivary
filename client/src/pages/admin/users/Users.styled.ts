@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
-export const ApplicationContainer = styled.div`
+export const Wrapper = styled.div`
   width: 100%;
+  padding: 2em;
 `;
 
 export const SearchDiv = styled.div`
@@ -79,18 +80,8 @@ export const TD = styled.td<Props>`
   }
 
   small {
-    color: ${({ status }) =>
-      status === "Pending"
-        ? "#a68a00"
-        : status === "Rejected"
-        ? "#c62828"
-        : "#388e3c"};
-    background: ${({ status }) =>
-      status === "Pending"
-        ? "#fff0c2"
-        : status === "Rejected"
-        ? "#ffcdd2"
-        : "#c8e6c9"};
+    color: ${({ status }) => (status === "Block" ? "#c62828" : "#388e3c")};
+    background: ${({ status }) => (status === "Block" ? "#ffcdd2" : "#c8e6c9")};
     text-align: center;
     text-transform: capitalize;
     font-weight: 500;

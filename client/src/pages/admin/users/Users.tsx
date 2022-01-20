@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   SearchDiv,
@@ -8,25 +9,25 @@ import {
   TH,
   TR,
   Wrapper,
-} from "./RestaurantDetails.styled";
+} from "./Users.styled";
 import SearchIcon from "@mui/icons-material/Search";
 
-const RestaurantDetails = () => {
+const Users = () => {
   return (
     <Wrapper>
       <SearchDiv>
         <div>
           <SearchIcon style={{ color: "hsl(0,0%,40%)" }} />
-          <input type="text" placeholder="Search restaurant" />
+          <input type="text" placeholder="Search user" />
         </div>
       </SearchDiv>
       <Table>
         <TableHead>
           <TR>
-            <TH>Restaurant ID</TH>
-            <TH>Restaurant Name</TH>
-            <TH>Restaurant Status</TH>
-            <TH>Registration Date</TH>
+            <TH>User ID</TH>
+            <TH>User Name</TH>
+            <TH>Status</TH>
+            <TH>Joined Date</TH>
           </TR>
         </TableHead>
         <TableBody>
@@ -35,7 +36,7 @@ const RestaurantDetails = () => {
               <Link to="/admin/restaurants/4">4589123664</Link>
             </TD>
             <TD>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+              <p>Ritesh Khore</p>
             </TD>
             <TD>
               <small>Active</small>
@@ -47,10 +48,22 @@ const RestaurantDetails = () => {
               <Link to="/admin/restaurants/4">4589123664</Link>
             </TD>
             <TD>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+              <p>Ritesh Khore</p>
             </TD>
             <TD>
               <small>Active</small>
+            </TD>
+            <TD>11/05/2002</TD>
+          </TR>
+          <TR>
+            <TD>
+              <Link to="/admin/restaurants/4">4589123664</Link>
+            </TD>
+            <TD>
+              <p>Ritesh Khore</p>
+            </TD>
+            <TD status="Block">
+              <small>Block</small>
             </TD>
             <TD>11/05/2002</TD>
           </TR>
@@ -60,4 +73,4 @@ const RestaurantDetails = () => {
   );
 };
 
-export default RestaurantDetails;
+export default Users;

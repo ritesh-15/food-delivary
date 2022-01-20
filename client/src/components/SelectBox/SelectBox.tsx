@@ -36,9 +36,13 @@ export default function SelectBox(props: SelectBoxProps): JSX.Element {
     <StyledBox>
       <Selected onClick={() => setActive(!active)}>
         <label htmlFor="">{current || label}</label>
-        <Arrow active={active} />
+        <Arrow active={active ? true : false} />
       </Selected>
-      <OptionsContainer search={props.search} ref={ref} active={active}>
+      <OptionsContainer
+        search={props.search}
+        ref={ref}
+        active={active ? true : false}
+      >
         {props.search && (
           <div>
             <input

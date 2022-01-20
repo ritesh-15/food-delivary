@@ -112,6 +112,12 @@ export const Actions = styled.div`
   button {
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-left: 0.25em;
+    }
 
     &:last-child {
       border: 1px solid ${({ theme }) => theme.colors.primary};
@@ -167,3 +173,18 @@ export const TD = styled.td<Props>`
     max-width: 300px;
   }
 `;
+
+export const OrdersChart = styled.div`
+  padding: 1em;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 2rem;
+  border-radius: 8px;
+
+  h1 {
+    margin-bottom: 2rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+`;
+
+export const OrderCard = styled.div``;

@@ -9,10 +9,18 @@ import {
   Heading,
   Row,
   Wrapper,
-  ImageContainer,
   Agreement,
+  Table,
+  TableHead,
+  TH,
+  TableBody,
+  TR,
+  TD,
+  DocumentsDiv,
 } from "./AddResturant.styled";
 import PostAddIcon from "@mui/icons-material/PostAdd";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const FOOD_TYPE = ["Vegiterian", "Non vegeterian", "Both"];
 
@@ -32,9 +40,33 @@ export default function AddRestuarant() {
   const [isSubmited, setIsSubmited] = useState(false);
   const [foodType, setFoodType] = useState("");
 
+  // documents state
+  const [restaurantImage, setRestaurantImage] = useState<File | string>("");
+  const [identityProof, setIdentityProof] = useState<File | string>("");
+  const [foodCertificate, setFoodCetificate] = useState<File | string>("");
+
+  const setDocument = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, files } = e.target;
+
+    if (!files) return;
+
+    const file = files[0];
+
+    console.log(name);
+
+    if (name === "restaurantImage") {
+      setRestaurantImage(file);
+    } else if (name === "identityProof") {
+      setIdentityProof(file);
+    } else if (name === "foodCertificate") {
+      setFoodCetificate(file);
+    }
+  };
+
+  console.log({ restaurantImage, identityProof, foodCertificate });
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
     setValues({ ...values, [name]: value });
   };
 
@@ -137,17 +169,116 @@ export default function AddRestuarant() {
                 />
               </FormControl>
             </Row>
-            <h1>Upload restaurant image</h1>
-            <ImageContainer>
-              <div>
-                <img
-                  src="https://media.istockphoto.com/photos/delicious-meal-picture-id1295387240?b=1&k=20&m=1295387240&s=170667a&w=0&h=KtWYFjSBgpNgVkE3P-WKZ2F6V-VxyUBBtJIP_k8IANM="
-                  alt=""
-                />
-              </div>
-              <label htmlFor="cover">Choose Image</label>
-              <input type="file" id="cover" />
-            </ImageContainer>
+            <DocumentsDiv>
+              <h1>Upload required documents</h1>
+              <Table>
+                <TableHead>
+                  <TR>
+                    <TH>Doucment name</TH>
+                    <TH>Upload status</TH>
+                    <TH>Action</TH>
+                  </TR>
+                </TableHead>
+                <TableBody>
+                  <TR>
+                    <TD>
+                      <p>Image of restaurant</p>
+                    </TD>
+                    <TD status={!restaurantImage ? "Missing" : "Uploaded"}>
+                      <small>
+                        {restaurantImage ? "Uploaded" : "Not uploaded"}
+                      </small>
+                    </TD>
+                    <TD>
+                      {restaurantImage ? (
+                        <CheckCircleIcon />
+                      ) : (
+                        <>
+                          <label htmlFor="file">
+                            <CloudUploadIcon
+                              style={{
+                                color: "hsl(0,0%,50%)",
+                                cursor: "pointer",
+                              }}
+                            />
+                          </label>
+                          <input
+                            name="restaurantImage"
+                            onChange={setDocument}
+                            type="file"
+                            id="file"
+                          />
+                        </>
+                      )}
+                    </TD>
+                  </TR>
+                  <TR>
+                    <TD>
+                      <p>Applicant Identity proof</p>
+                    </TD>
+                    <TD status={!identityProof ? "Missing" : "Uploaded"}>
+                      <small>
+                        {identityProof ? "Uploaded" : "Not uploaded"}
+                      </small>
+                    </TD>
+                    <TD>
+                      {identityProof ? (
+                        <CheckCircleIcon />
+                      ) : (
+                        <>
+                          <label htmlFor="file">
+                            <CloudUploadIcon
+                              style={{
+                                color: "hsl(0,0%,50%)",
+                                cursor: "pointer",
+                              }}
+                            />
+                          </label>
+                          <input
+                            name="identityProof"
+                            onChange={setDocument}
+                            type="file"
+                            id="file"
+                          />
+                        </>
+                      )}
+                    </TD>
+                  </TR>
+                  <TR>
+                    <TD>
+                      <p>Food authority certificate</p>
+                    </TD>
+                    <TD status={!foodCertificate ? "Missing" : "Uploaded"}>
+                      <small>
+                        {foodCertificate ? "Uploaded" : "Not uploaded"}
+                      </small>
+                    </TD>
+                    <TD>
+                      {foodCertificate ? (
+                        <CheckCircleIcon />
+                      ) : (
+                        <>
+                          <label htmlFor="file">
+                            <CloudUploadIcon
+                              style={{
+                                color: "hsl(0,0%,50%)",
+                                cursor: "pointer",
+                              }}
+                            />
+                          </label>
+                          <input
+                            name="foodCertificate"
+                            onChange={setDocument}
+                            type="file"
+                            id="file"
+                          />
+                        </>
+                      )}
+                    </TD>
+                  </TR>
+                </TableBody>
+              </Table>
+            </DocumentsDiv>
             <h1>Agreement</h1>
             <Agreement>
               <input type="checkbox" />

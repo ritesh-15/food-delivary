@@ -2,6 +2,35 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div``;
 
+export const SearchDiv = styled.div`
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+
+  div {
+    display: flex;
+    align-items: center;
+    padding: 1em;
+    background: #f7f7f7;
+    width: 100%;
+    max-width: 500px;
+    border-radius: 8px;
+
+    &:focus-within {
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      background: #fff;
+    }
+
+    input {
+      outline: none;
+      border: none;
+      font-size: 1rem;
+      margin-left: 0.5em;
+      background: transparent;
+    }
+  }
+`;
+
 export const Table = styled.table`
   border-collapse: collapse;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);

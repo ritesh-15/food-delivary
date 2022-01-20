@@ -18,8 +18,10 @@ import { lightTheme } from "./styles/themeProvider";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
   AdminRestaurants,
+  AdminRestaurantSingle,
   AdminSingleApplication,
   Applications,
+  Users,
 } from "./pages/admin";
 import styled from "styled-components";
 
@@ -175,6 +177,32 @@ function App() {
                     <FlexContainer>
                       <AdminSidebar />
                       <AdminRestaurants />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="users"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <AdminSidebar />
+                      <Users />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="restaurants/:id"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <AdminSidebar />
+                      <AdminRestaurantSingle />
                     </FlexContainer>
                   </>
                 }

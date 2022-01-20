@@ -13,6 +13,8 @@ import AdminSidebar from "./admin-sidebar/AdminSidebar";
 import AdminApplication from "./admin-application/AdminApplication";
 import RestaurantDetails from "./admin-restaurants-details/RestaurantDetails";
 import AdminTopBar from "./admin-topbar/AdminTopBar";
+import ViewDocument from "./view-document/ViewDocument";
+import Radio from "./radio/Radio";
 
 export {
   Header,
@@ -30,4 +32,6 @@ export {
   AdminApplication,
   RestaurantDetails,
   AdminTopBar,
+  ViewDocument,
+  Radio,
 };
