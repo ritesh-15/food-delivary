@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 100%;
-  padding: 2em;
+  padding: 1em;
 `;
 
 export const SearchDiv = styled.div`
@@ -34,14 +34,35 @@ export const SearchDiv = styled.div`
   }
 `;
 
+export const TableWrapper = styled.div`
+  overflow-x: auto;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+
+  &::-webkit-scrollbar {
+    height: 7px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.2);
+    }
+  }
+`;
+
 export const Table = styled.table`
   border-collapse: collapse;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   background: #fff;
   overflow: hidden;
   border-radius: 0.25em;
   width: 100%;
   text-align: left;
+  min-width: 1100px;
+  border-radius: 8px;
 `;
 
 export const TableHead = styled.thead`

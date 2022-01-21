@@ -9,6 +9,6 @@ export const Wrapper = styled.div`
 `;
 
 export const MainContainer = styled.div`
-  padding: 2em;
+  padding: 1em;
   width: 100%;
 `;

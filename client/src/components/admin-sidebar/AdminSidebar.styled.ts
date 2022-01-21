@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const AdminSidebarContainer = styled.div`
+interface SidebarProps {
+  open: boolean;
+}
+
+export const AdminSidebarContainer = styled.div<SidebarProps>`
   width: 100%;
   height: calc(100vh - 81px);
   background: #fff;
@@ -9,6 +13,13 @@ export const AdminSidebarContainer = styled.div`
   padding: 1em 0;
   position: sticky;
   top: 81px;
+  z-index: 100;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    left: ${(props) => (props.open ? "0" : "-100%")};
+    transition: all 160ms ease-in;
+  }
 `;
 
 export const Menu = styled.ul`

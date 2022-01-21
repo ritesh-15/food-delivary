@@ -21,6 +21,8 @@ import {
   AdminRestaurantSingle,
   AdminSingleApplication,
   Applications,
+  Dashboard,
+  UserInfo,
   Users,
 } from "./pages/admin";
 import styled from "styled-components";
@@ -196,6 +198,19 @@ function App() {
               />
 
               <Route
+                path="users/:id"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <AdminSidebar />
+                      <UserInfo />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
                 path="restaurants/:id"
                 element={
                   <>
@@ -203,6 +218,19 @@ function App() {
                     <FlexContainer>
                       <AdminSidebar />
                       <AdminRestaurantSingle />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="dashboard"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <AdminSidebar />
+                      <Dashboard />
                     </FlexContainer>
                   </>
                 }

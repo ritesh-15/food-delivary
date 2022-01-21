@@ -4,6 +4,7 @@ import {
   Table,
   TableBody,
   TableHead,
+  TableWrapper,
   TD,
   TH,
   TR,
@@ -20,42 +21,44 @@ const RestaurantDetails = () => {
           <input type="text" placeholder="Search restaurant" />
         </div>
       </SearchDiv>
-      <Table>
-        <TableHead>
-          <TR>
-            <TH>Restaurant ID</TH>
-            <TH>Restaurant Name</TH>
-            <TH>Restaurant Status</TH>
-            <TH>Registration Date</TH>
-          </TR>
-        </TableHead>
-        <TableBody>
-          <TR>
-            <TD>
-              <Link to="/admin/restaurants/4">4589123664</Link>
-            </TD>
-            <TD>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-            </TD>
-            <TD>
-              <small>Active</small>
-            </TD>
-            <TD>11/05/2002</TD>
-          </TR>
-          <TR>
-            <TD>
-              <Link to="/admin/restaurants/4">4589123664</Link>
-            </TD>
-            <TD>
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-            </TD>
-            <TD>
-              <small>Active</small>
-            </TD>
-            <TD>11/05/2002</TD>
-          </TR>
-        </TableBody>
-      </Table>
+      <TableWrapper>
+        <Table>
+          <TableHead>
+            <TR>
+              <TH>Restaurant ID</TH>
+              <TH>Restaurant Name</TH>
+              <TH>Restaurant Status</TH>
+              <TH>Registration Date</TH>
+            </TR>
+          </TableHead>
+          <TableBody>
+            <TR>
+              <TD>
+                <Link to="/admin/restaurants/4">4589123664</Link>
+              </TD>
+              <TD>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+              </TD>
+              <TD>
+                <small>Active</small>
+              </TD>
+              <TD>11/05/2002</TD>
+            </TR>
+            <TR>
+              <TD>
+                <Link to="/admin/restaurants/4">4589123664</Link>
+              </TD>
+              <TD>
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+              </TD>
+              <TD>
+                <small>Active</small>
+              </TD>
+              <TD>11/05/2002</TD>
+            </TR>
+          </TableBody>
+        </Table>
+      </TableWrapper>
     </Wrapper>
   );
 };

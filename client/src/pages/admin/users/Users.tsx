@@ -5,6 +5,7 @@ import {
   Table,
   TableBody,
   TableHead,
+  TableWrapper,
   TD,
   TH,
   TR,
@@ -21,54 +22,32 @@ const Users = () => {
           <input type="text" placeholder="Search user" />
         </div>
       </SearchDiv>
-      <Table>
-        <TableHead>
-          <TR>
-            <TH>User ID</TH>
-            <TH>User Name</TH>
-            <TH>Status</TH>
-            <TH>Joined Date</TH>
-          </TR>
-        </TableHead>
-        <TableBody>
-          <TR>
-            <TD>
-              <Link to="/admin/restaurants/4">4589123664</Link>
-            </TD>
-            <TD>
-              <p>Ritesh Khore</p>
-            </TD>
-            <TD>
-              <small>Active</small>
-            </TD>
-            <TD>11/05/2002</TD>
-          </TR>
-          <TR>
-            <TD>
-              <Link to="/admin/restaurants/4">4589123664</Link>
-            </TD>
-            <TD>
-              <p>Ritesh Khore</p>
-            </TD>
-            <TD>
-              <small>Active</small>
-            </TD>
-            <TD>11/05/2002</TD>
-          </TR>
-          <TR>
-            <TD>
-              <Link to="/admin/restaurants/4">4589123664</Link>
-            </TD>
-            <TD>
-              <p>Ritesh Khore</p>
-            </TD>
-            <TD status="Block">
-              <small>Block</small>
-            </TD>
-            <TD>11/05/2002</TD>
-          </TR>
-        </TableBody>
-      </Table>
+      <TableWrapper>
+        <Table>
+          <TableHead>
+            <TR>
+              <TH>User ID</TH>
+              <TH>User Name</TH>
+              <TH>Status</TH>
+              <TH>Joined Date</TH>
+            </TR>
+          </TableHead>
+          <TableBody>
+            <TR>
+              <TD>
+                <Link to="/admin/users/4">4589123664</Link>
+              </TD>
+              <TD>
+                <p>Ritesh Khore</p>
+              </TD>
+              <TD>
+                <small>Active</small>
+              </TD>
+              <TD>11/05/2002</TD>
+            </TR>
+          </TableBody>
+        </Table>
+      </TableWrapper>
     </Wrapper>
   );
 };

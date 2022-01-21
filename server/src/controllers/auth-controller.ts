@@ -5,50 +5,58 @@ import bcrypt from "bcrypt";
 import { User as UserInterface } from "../interfaces/User-Interface";
 import TokenService from "../services/Token-service";
 import Token from "../models/Token-model";
+import OtpService from "../services/OtpService";
 class AuthController {
   static async register(req: Request, res: Response, next: NextFunction) {
     const { name, email, number, password } = req.body;
 
-    if (!name || !email || !number || !password) return;
+    if (!name || !email || !number || !password)
+      return next(ErrorHandler.badRequest("All fields are required !"));
 
     try {
-      const isUserFound = await User.findOne({ email });
+      const isFoundUser = await User.findOne({ email });
 
-      if (isUserFound)
+      if (isFoundUser)
         return next(ErrorHandler.badRequest("User already exists!"));
 
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      const newUser = {
+      const data = {
         name,
-        password: hashedPassword,
         email,
+        password: hashedPassword,
         number,
       };
 
-      const user: UserInterface = await User.create(newUser);
+      const user = await User.create(data);
 
-      const { accessToken, refreshToken } = TokenService.generateTokens(
-        user._id
-      );
-
-      await Token.create({ userId: user._id, token: refreshToken });
-
-      res.cookie("accessToken", accessToken, {
-        maxAge: 1000 * 60 * 60 * 24 * 2,
-        httpOnly: true,
-      });
-
-      res.cookie("refreshToken", refreshToken, {
-        maxAge: 1000 * 60 * 60 * 24 * 2,
-        httpOnly: true,
+      return res.json({
+        ok: true,
+        user: {
+          email: user.email,
+          _id: user.id,
+        },
       });
     } catch (error) {
-      return next(ErrorHandler.serverError());
+      return next(ErrorHandler.serverError("Internal server error !"));
     }
   }
 
-  static async sendOTP(req: Request, res: Response, next: NextFunction) {}
+  static async sendOTP(req: Request, res: Response, next: NextFunction) {
+    const { email } = req.body;
+
+    if (!email)
+      return next(ErrorHandler.badRequest("All fields are required !"));
+
+    const otp = new OtpService(email);
+
+    const hashedOtp = otp.hash();
+
+    return res.json({
+      ok: true,
+      hash: hashedOtp,
+    });
+  }
 
   // login controller
   static async login(req: Request, res: Response, next: NextFunction) {}

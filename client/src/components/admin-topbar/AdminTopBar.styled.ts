@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import MenuIcon from "@mui/icons-material/Menu";
 
 export const Wrapper = styled.div`
   padding: 1em;
@@ -13,6 +14,11 @@ export const MainContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
 
   button {
     background: ${({ theme }) => theme.colors.primary};
@@ -29,5 +35,15 @@ export const MainContainer = styled.div`
     font-size: 1.5rem;
     font-weight: 600;
     /* margin-left: 0.5em; */
+  }
+`;
+
+export const Menu = styled(MenuIcon)`
+  cursor: pointer;
+  margin-right: 0.5em;
+  display: block;
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;

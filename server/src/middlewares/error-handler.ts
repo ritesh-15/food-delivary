@@ -12,12 +12,14 @@ const errorHandler = (
       message: error.message,
       generatedAt: error.generatedAt,
       status: error.status,
+      ok: false,
     });
   } else {
     return res.status(500).json({
       message: "Internal server error!",
       generatedAt: Date.now(),
       status: 500,
+      ok: true,
     });
   }
 };
