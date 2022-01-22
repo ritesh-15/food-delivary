@@ -7,6 +7,8 @@ import connection from "./db/connection";
 import ErrorHandler from "./services/Error-Handler";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
+import passport from "passport";
+import { passportJwt } from "./middlewares/passport";
 
 const app = express();
 
@@ -16,6 +18,9 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json({ limit: "10mb" }));
 
 app.use(cookieParser());
+
+app.use(passport.initialize());
+passportJwt(passport);
 
 app.use(
   rateLimit({

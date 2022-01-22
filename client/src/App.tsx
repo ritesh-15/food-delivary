@@ -1,5 +1,10 @@
 import { ThemeProvider } from "styled-components";
-import { AdminSidebar, AdminTopBar, Header } from "./components";
+import {
+  AdminSidebar,
+  AdminTopBar,
+  Header,
+  RestaurantSidebar,
+} from "./components";
 import {
   AddRestuarant,
   Checkout,
@@ -26,6 +31,12 @@ import {
   Users,
 } from "./pages/admin";
 import styled from "styled-components";
+import {
+  AllProducts,
+  NewProduct,
+  RestaurantDashboard,
+  RestaurantProduct,
+} from "./pages/restaurant-admin";
 
 const FlexContainer = styled.div`
   display: flex;
@@ -141,6 +152,61 @@ function App() {
                 </>
               }
             />
+
+            {/* Restaruant admin routes */}
+            <Route path="/admin/restaurant">
+              <Route
+                path="dashboard"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <RestaurantSidebar />
+                      <RestaurantDashboard />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="products"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <RestaurantSidebar />
+                      <AllProducts />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="products/:id"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <RestaurantSidebar />
+                      <RestaurantProduct />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="products/new"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <RestaurantSidebar />
+                      <NewProduct />
+                    </FlexContainer>
+                  </>
+                }
+              />
+            </Route>
 
             {/* Admin routes  */}
 

@@ -15,6 +15,7 @@ import RestaurantDetails from "./admin-restaurants-details/RestaurantDetails";
 import AdminTopBar from "./admin-topbar/AdminTopBar";
 import ViewDocument from "./view-document/ViewDocument";
 import Radio from "./radio/Radio";
+import RestaurantSidebar from "./restaurant-sidebar/RestaurantSidebar";
 
 export {
   Header,
@@ -34,4 +35,5 @@ export {
   AdminTopBar,
   ViewDocument,
   Radio,
+  RestaurantSidebar,
 };

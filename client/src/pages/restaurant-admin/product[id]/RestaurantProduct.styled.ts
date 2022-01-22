@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  padding: 1em;
   width: 100%;
+  padding: 1em;
 `;
 
 export const HeadingContainer = styled.div`
@@ -38,23 +38,16 @@ export const Title = styled.div<Props>`
   p {
     margin: 0.25em 0;
     color: rgba(0, 0, 0, 0.7);
+    font-weight: 300;
+    max-width: 50%;
   }
 
   small {
     display: block;
     margin-top: 1rem;
-    color: ${({ status }) =>
-      status === "Pending"
-        ? "#a68a00"
-        : status === "Rejected"
-        ? "#c62828"
-        : "#388e3c"};
+    color: ${({ status }) => (status === "nonveg" ? "#c62828" : "#388e3c")};
     background: ${({ status }) =>
-      status === "Pending"
-        ? "#fff0c2"
-        : status === "Rejected"
-        ? "#ffcdd2"
-        : "#c8e6c9"};
+      status === "nonveg" ? "#ffcdd2" : "#c8e6c9"};
     text-align: center;
     text-transform: capitalize;
     font-weight: 500;
@@ -116,27 +109,7 @@ export const Actions = styled.div`
     align-items: center;
 
     span {
-      margin-left: 0.25em;
+      margin-left: 0.5em;
     }
-
-    &:last-child {
-      border: 1px solid ${({ theme }) => theme.colors.primary};
-      color: ${({ theme }) => theme.colors.primary};
-      background: transparent;
-      margin-left: 1rem;
-    }
-  }
-`;
-
-export const OrdersChart = styled.div`
-  padding: 1em;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  margin-top: 2rem;
-  border-radius: 8px;
-
-  h1 {
-    margin-bottom: 2rem;
-    font-size: 1.25rem;
-    font-weight: 500;
   }
 `;

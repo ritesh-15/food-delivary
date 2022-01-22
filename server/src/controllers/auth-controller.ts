@@ -9,6 +9,7 @@ import UserDto from "../dtos/UserDto";
 import jwt from "jsonwebtoken";
 import { FORGOT_PASSWORD_SECRET } from "../keys/secrets";
 import EmailService from "../services/EmailService";
+import { User as UserInterface } from "../interfaces/User-Interface";
 
 class AuthController {
   static async register(req: Request, res: Response, next: NextFunction) {
@@ -217,10 +218,10 @@ class AuthController {
   }
 
   static async logout(req: Request, res: Response, next: NextFunction) {
-    const authId = req.headers.authorization;
+    const authId = <UserInterface>req.user;
 
     try {
-      await Token.deleteMany({ userId: authId });
+      await Token.deleteMany({ userId: authId._id });
 
       res.clearCookie("accessToken");
       res.clearCookie("refreshToken");

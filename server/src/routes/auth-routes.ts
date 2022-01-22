@@ -1,6 +1,6 @@
 import { Router } from "express";
 import AuthController from "../controllers/auth-controller";
-import { AuthMiddleware } from "../middlewares/authMiddleware";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router: Router = Router();
 
@@ -20,7 +20,7 @@ router.route("/verify-otp").post(AuthController.verifyOtp);
 router.route("/refresh").get(AuthController.refresh);
 
 // log out
-router.route("/logout").delete(AuthMiddleware, AuthController.logout);
+router.route("/logout").delete(authMiddleware, AuthController.logout);
 
 // forgot password
 router.route("/forgot-password").post(AuthController.forgotPassword);

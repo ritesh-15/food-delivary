@@ -19,7 +19,7 @@ const AdminTopBar = () => {
             <Menu onClick={() => dispatch(setOpen(!open))} />
             <h1>Foodies</h1>
           </div>
-          <Button hover>
+          <Button>
             <LogoutIcon />
             <span>Log out</span>
           </Button>

@@ -21,8 +21,8 @@ export const MainContainer = styled.div`
   }
 
   button {
-    background: ${({ theme }) => theme.colors.primary};
-    color: #fff;
+    background: transparent;
+    color: ${({ theme }) => theme.colors.primary};
     display: flex;
     align-items: center;
 
