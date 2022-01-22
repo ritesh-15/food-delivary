@@ -1,12 +1,12 @@
 class ErrorHandler {
   message: string;
   status: number;
-  generatedAt: number;
+  generatedAt: Date;
 
   constructor(message: string, status: number) {
     this.message = message;
     this.status = status;
-    this.generatedAt = Date.now();
+    this.generatedAt = new Date(Date.now());
   }
 
   static badRequest(message: string = "Bad request!") {
@@ -23,6 +23,10 @@ class ErrorHandler {
 
   static serverError(message: string = "Internal server error!") {
     return new ErrorHandler(message, 500);
+  }
+
+  static forbidden(message: string = "Forbidden!") {
+    return new ErrorHandler(message, 403);
   }
 }
 

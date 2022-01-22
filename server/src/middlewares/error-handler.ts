@@ -9,17 +9,21 @@ const errorHandler = (
 ) => {
   if (error instanceof ErrorHandler) {
     return res.status(error.status).json({
-      message: error.message,
-      generatedAt: error.generatedAt,
-      status: error.status,
       ok: false,
+      error: {
+        message: error.message,
+        generatedAt: error.generatedAt,
+        status: error.status,
+      },
     });
   } else {
     return res.status(500).json({
-      message: "Internal server error!",
-      generatedAt: Date.now(),
-      status: 500,
-      ok: true,
+      ok: false,
+      error: {
+        message: "Internal Server Error",
+        generatedAt: new Date(Date.now()),
+        status: 500,
+      },
     });
   }
 };
