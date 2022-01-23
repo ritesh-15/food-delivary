@@ -5,13 +5,14 @@ class EmailService {
   from: string;
   to: string;
   subject: string;
-  text: string | any;
+  text?: string | any;
+  html?: string;
 
-  constructor(to: string, subject: string, text: string | any) {
+  constructor(to: string, subject: string, html?: string) {
     this.from = SENDER_MAIL;
     this.subject = subject;
     this.to = to;
-    this.text = text;
+    this.html = html;
   }
 
   async send() {
@@ -27,7 +28,7 @@ class EmailService {
       from: this.from,
       to: this.to,
       subject: this.subject,
-      text: this.text,
+      html: this.html,
     };
 
     return await transporter.sendMail(options);

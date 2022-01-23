@@ -28,6 +28,10 @@ class ErrorHandler {
   static forbidden(message: string = "Forbidden!") {
     return new ErrorHandler(message, 403);
   }
+
+  static unProcessebleEntity(message: string = "Unprocesseble entity") {
+    return new ErrorHandler(message, 422);
+  }
 }
 
 export default ErrorHandler;

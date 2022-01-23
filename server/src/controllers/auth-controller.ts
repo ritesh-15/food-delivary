@@ -10,13 +10,21 @@ import jwt from "jsonwebtoken";
 import { FORGOT_PASSWORD_SECRET } from "../keys/secrets";
 import EmailService from "../services/EmailService";
 import { User as UserInterface } from "../interfaces/User-Interface";
+import {
+  loginSchemaValidation,
+  registerSchemaValidation,
+} from "../validation/authValidation";
+import Joi from "joi";
 
 class AuthController {
   static async register(req: Request, res: Response, next: NextFunction) {
     const { name, email, number, password } = req.body;
 
-    if (!name || !email || !number || !password)
-      return next(ErrorHandler.badRequest("All fields are required !"));
+    try {
+      await registerSchemaValidation.validateAsync(req.body);
+    } catch (error: any) {
+      return next(ErrorHandler.unProcessebleEntity(error.nessage));
+    }
 
     try {
       const isFoundUser = await User.findOne({ email });
@@ -53,33 +61,61 @@ class AuthController {
     if (!email)
       return next(ErrorHandler.badRequest("All fields are required !"));
 
-    const otp = new OtpService(email);
-
-    let hashedOtp = otp.hash();
-
-    hashedOtp = `${hashedOtp}.${otp.expiresIn}`;
-
-    const mail = new EmailService(
-      email,
-      "Account verification",
-      `One time passowrd is ${otp.otp}`
-    );
-
-    await mail.send();
-
-    return res.json({
-      ok: true,
-      otp: {
-        hash: hashedOtp,
-        email: email,
-      },
+    const schema = Joi.object({
+      email: Joi.string().email().required(),
     });
+
+    try {
+      await schema.validateAsync({ email });
+    } catch (error) {
+      return next(ErrorHandler.serverError("Invalide email address!"));
+    }
+
+    try {
+      const user = await User.findOne({ email });
+
+      if (!user) return next(ErrorHandler.notFound("User not found!"));
+
+      const otp = new OtpService(email);
+
+      let hashedOtp = otp.hash();
+
+      hashedOtp = `${hashedOtp}.${otp.expiresIn}`;
+
+      const mail = new EmailService(
+        email,
+        "Account verification",
+        `
+      <p>Hi, <h1>${user.name}</h1></p>
+      <p style="display:block;">
+        Welcome to foodies. We are glad you are using our flatform. Your account registration has been done succesfully. To verify your account we have send verification code to you by this email.
+      </p>
+      <p style="display:block;">Verification Code <h1 style="color:hsl(27, 97%, 54%)">${otp.otp}</h1> </p>
+      <p style="display:block;">
+        This verification code is valide for 2 min only after that it will expires. 
+      </p>
+      <p>Thank you.</p>
+      `
+      );
+
+      await mail.send();
+
+      return res.json({
+        ok: true,
+        otp: {
+          hash: hashedOtp,
+          email: email,
+        },
+      });
+    } catch (error) {
+      return next(ErrorHandler.serverError("Internal server error !"));
+    }
   }
 
   static async verifyOtp(req: Request, res: Response, next: NextFunction) {
-    const { email, hash, otp } = req.body;
+    const { email, hash, code } = req.body;
 
-    if (!email || !hash || !otp)
+    if (!email || !hash || !code)
       return next(ErrorHandler.badRequest("All fields are required!"));
 
     const givenHash = <string>hash;
@@ -91,7 +127,7 @@ class AuthController {
     if (Date.now() > expiresIn)
       return next(ErrorHandler.badRequest("Otp expires!"));
 
-    const isValideOtp = OtpService.verify(email, otp, expiresIn, hashedOtp);
+    const isValideOtp = OtpService.verify(email, code, expiresIn, hashedOtp);
 
     if (!isValideOtp)
       return next(ErrorHandler.badRequest("Otp does not match!"));
@@ -129,8 +165,11 @@ class AuthController {
   static async login(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body;
 
-    if (!email || !password)
-      return next(ErrorHandler.badRequest("All fields are required!"));
+    try {
+      await loginSchemaValidation.validateAsync(req.body);
+    } catch (error: any) {
+      return next(ErrorHandler.unProcessebleEntity(error.message));
+    }
 
     try {
       const user = await User.findOne({ email }).select("+password");

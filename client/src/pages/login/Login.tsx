@@ -6,17 +6,48 @@ import {
   LoginMain,
 } from "./Login.style";
 import { Input } from "../../components";
-import { ChangeEvent, useState } from "react";
 import Button from "../../styles/Button";
 import { Link } from "react-router-dom";
+import {
+  useErrorMessage,
+  useFetchLoading,
+  useForm,
+  useUser,
+} from "../../hooks";
+import { loginValidation } from "../../validations/authvalidations";
+import { loginApi } from "../../api/authenticationApi";
+
+interface LoginState {
+  email: string;
+  password: string;
+}
+
+const initialState: LoginState = { email: "", password: "" };
 
 export default function Login() {
-  const [values, setValues] = useState({ email: "", password: "" });
+  const { changeUserState } = useUser();
+  const { changeErrorMessage } = useErrorMessage();
+  const { setIsLoading } = useFetchLoading();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+  const login = async (values: LoginState) => {
+    setIsLoading(true);
+    try {
+      const res = await loginApi(values);
+      if (res.data.ok) {
+        changeUserState(res.data.user);
+      }
+      setIsLoading(false);
+    } catch (err: any) {
+      setIsLoading(false);
+      changeErrorMessage(err.response.data.error.message);
+    }
   };
+
+  const { values, handleChange, handleSubmit, errors } = useForm(
+    initialState,
+    loginValidation,
+    login
+  );
 
   return (
     <LoginContainer>
@@ -33,6 +64,7 @@ export default function Login() {
               name="email"
               type="email"
               title="Email address"
+              error={errors.email}
             />
           </LoginFormControll>
           <LoginFormControll>
@@ -42,14 +74,13 @@ export default function Login() {
               name="password"
               type="password"
               title="Password"
+              error={errors.password}
             />
           </LoginFormControll>
 
-          <Button hover disabled>
+          <Button onClick={handleSubmit} type="submit" hover>
             Log In
           </Button>
-          <small>or</small>
-          <Button disabled>Request OTP</Button>
         </LoginForm>
         <ForgotPassword>
           <a href="/">Forgot Password?</a>

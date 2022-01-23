@@ -15,9 +15,9 @@ export interface Theme {
 
 export const lightTheme: Theme = {
   colors: {
-    primary: "hsl(349, 79%, 54%)",
+    primary: "hsl(27, 97%, 54%)",
     secondary: "hsl(150, 87%, 43%)",
-    primaryHover: "hsl(349, 79%, 40%)",
+    primaryHover: "hsl(27, 97%, 45%)",
     secondaryHover: "hsl(151, 62%, 35%)",
     text: "hsl(151, 0%, 0%)",
     bg: "#fff",

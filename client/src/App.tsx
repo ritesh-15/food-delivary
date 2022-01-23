@@ -3,7 +3,10 @@ import {
   AdminSidebar,
   AdminTopBar,
   Header,
+  ErrorMessage,
   RestaurantSidebar,
+  Loader,
+  SucessModal,
 } from "./components";
 import {
   AddRestuarant,
@@ -35,18 +38,28 @@ import {
   AllProducts,
   NewProduct,
   RestaurantDashboard,
+  RestaurantOrders,
   RestaurantProduct,
+  RestaurantSingleOrder,
 } from "./pages/restaurant-admin";
+import { useErrorMessage, useFetchLoading, useSuccessModal } from "./hooks";
 
 const FlexContainer = styled.div`
   display: flex;
 `;
 
 function App() {
+  const { message } = useErrorMessage();
+  const { isLoading } = useFetchLoading();
+  const { state } = useSuccessModal();
+
   return (
     <>
       <ThemeProvider theme={lightTheme}>
         <GlobalStyle />
+        {state.open && <SucessModal />}
+        {isLoading && <Loader />}
+        {message && <ErrorMessage />}
         <Router>
           <Routes>
             <Route
@@ -176,6 +189,32 @@ function App() {
                     <FlexContainer>
                       <RestaurantSidebar />
                       <AllProducts />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="orders"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <RestaurantSidebar />
+                      <RestaurantOrders />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="orders/:id"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <RestaurantSidebar />
+                      <RestaurantSingleOrder />
                     </FlexContainer>
                   </>
                 }

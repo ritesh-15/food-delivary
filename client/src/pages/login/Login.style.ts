@@ -46,24 +46,11 @@ export const LoginForm = styled.form`
     }
   }
 
-  small {
-    text-align: center;
-    display: block;
-    margin: 1em 0;
-    color: ${({ theme }) => theme.colors.textLight};
-  }
-
   button {
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
     transition: all 0.25s ease-in;
     width: 100%;
-
-    &:last-child {
-      background: transparent;
-      color: ${({ theme }) => theme.colors.primary};
-      border: 1px solid ${({ theme }) => theme.colors.primary};
-    }
   }
 `;
 

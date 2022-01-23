@@ -46,13 +46,6 @@ export const VerifyForm = styled.form`
     }
   }
 
-  small {
-    text-align: center;
-    display: block;
-    margin: 1em 0;
-    color: ${({ theme }) => theme.colors.textLight};
-  }
-
   button {
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
@@ -67,14 +60,21 @@ export const VerifyForm = styled.form`
 
 export const VerifyFormControll = styled.div`
   margin-bottom: 2em;
+`;
+
+export const ResendButton = styled.div`
+  width: 100%;
+  margin-top: 1rem;
 
   button {
-    background: transparent;
+    background: transparent !important;
     color: ${({ theme }) => theme.colors.textLight};
     width: fit-content;
     padding: 0;
-    margin-top: 0.5em;
     font-size: 0.95rem;
+    margin-bottom: 1em;
+    text-align: center;
+    width: 100%;
 
     &:hover {
       background: transparent;

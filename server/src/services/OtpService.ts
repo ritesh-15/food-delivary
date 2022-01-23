@@ -10,7 +10,7 @@ class OtpService {
 
   constructor(payload: string, otp?: string, expiresIn?: number) {
     this.time = new Date();
-    this.expiresIn = expiresIn || Date.now() + 1000 * 60 * 10;
+    this.expiresIn = expiresIn || Date.now() + 1000 * 60 * 2;
     this.payload = payload;
     this.otp = otp || crypto.randomBytes(3).toString("hex");
     this.data = `${this.payload}.${this.otp}.${this.expiresIn}`;

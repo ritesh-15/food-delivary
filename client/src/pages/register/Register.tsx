@@ -1,4 +1,3 @@
-import { ChangeEvent, useState } from "react";
 import {
   RegisterContainer,
   RegisterForm,
@@ -8,19 +7,83 @@ import {
 import { Input } from "../../components";
 import Button from "../../styles/Button";
 import { Link } from "react-router-dom";
+import {
+  useErrorMessage,
+  useFetchLoading,
+  useForm,
+  useSuccessModal,
+  useUser,
+} from "../../hooks";
+import { registerValidation } from "../../validations/authvalidations";
+import { registerApi, sendOtpApi } from "../../api/authenticationApi";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+interface RegisterState {
+  name: string;
+  email: string;
+  password: string;
+  number: string;
+}
+
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+  number: "",
+};
 
 export default function Register() {
-  const [values, setValues] = useState({
-    email: "",
-    name: "",
-    password: "",
-    number: "",
-  });
+  const { setIsLoading } = useFetchLoading();
+  const { changeErrorMessage } = useErrorMessage();
+  const { changeOtpState } = useUser();
+  const navigate = useNavigate();
+  const { setSuccessModal } = useSuccessModal();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+  const [isMounted, setIsMounted] = useState<boolean>(true);
+
+  useEffect(() => {
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
+
+  // request for account verification
+  const accountVerification = async (email: string) => {
+    setIsLoading(true);
+    try {
+      const { data } = await sendOtpApi({ email });
+      if (data.ok) {
+        changeOtpState(data.otp);
+        setSuccessModal("Verification code sent successfully!");
+        navigate("/verify-otp");
+      }
+      setIsLoading(false);
+    } catch (err: any) {
+      setIsLoading(false);
+      changeErrorMessage(err.response.data.error.message);
+    }
   };
+
+  const register = async (values: RegisterState) => {
+    setIsLoading(true);
+    try {
+      const { data } = await registerApi(values);
+      if (data.ok) {
+        await accountVerification(data.user.email);
+      }
+      setIsLoading(false);
+    } catch (err: any) {
+      setIsLoading(false);
+      changeErrorMessage(err.response.data.error.message);
+    }
+  };
+
+  const { handleChange, handleSubmit, values, errors } = useForm(
+    initialState,
+    registerValidation,
+    register
+  );
 
   return (
     <RegisterContainer>
@@ -34,9 +97,10 @@ export default function Register() {
             <Input
               value={values.name}
               onChange={handleChange}
-              name="email"
+              name="name"
               type="text"
               title="Name"
+              error={errors.name}
             />
           </RegisterFormControll>
           <RegisterFormControll>
@@ -46,6 +110,7 @@ export default function Register() {
               name="email"
               type="email"
               title="Email address"
+              error={errors.email}
             />
           </RegisterFormControll>
           <RegisterFormControll>
@@ -55,6 +120,7 @@ export default function Register() {
               name="number"
               type="text"
               title="Phone number"
+              error={errors.number}
             />
           </RegisterFormControll>
           <RegisterFormControll>
@@ -64,10 +130,11 @@ export default function Register() {
               name="password"
               type="password"
               title="password"
+              error={errors.password}
             />
           </RegisterFormControll>
-          <Button disabled hover>
-            Send Otp
+          <Button onClick={handleSubmit} hover>
+            Verify
           </Button>
         </RegisterForm>
       </RegisterMain>
