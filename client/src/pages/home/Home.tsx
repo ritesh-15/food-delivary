@@ -10,6 +10,7 @@ import {
 import Container from "../../styles/Container";
 import Button from "../../styles/Button";
 import Flex from "../../styles/Flex";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -62,7 +63,9 @@ export default function Home() {
         <JoinWithUsContainer>
           <h1>Want to be your restaurant on foodies ?</h1>
           <p>Join our team and grow your restaurant online in your locality.</p>
-          <Button>Join With Us</Button>
+          <Link to="/add-restaurant">
+            <Button>Join With Us</Button>
+          </Link>
         </JoinWithUsContainer>
       </Container>
     </HomeContainer>

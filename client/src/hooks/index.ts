@@ -3,9 +3,10 @@ import useWindowScroll from "./window-scroll/useWindowScroll";
 import useRestaurantStep from "./add-restaurant-steps/useRestaurantStep";
 import useForm from "./useform/useForm";
 import useUser from "./useUser/useUser";
-import useErrorMessage from "./useErrorMessage/useErrorMessage";
+import useMessage from "./useMessage/useMessage";
 import useFetchLoading from "./useFetchLoading/useFetchLoading";
 import useSuccessModal from "./useSuccessModal/useSuccessModal";
+import useRefresh from "./useRefresh/useRefresh";
 
 export {
   useCompleteProfileSteps,
@@ -13,7 +14,8 @@ export {
   useRestaurantStep,
   useForm,
   useUser,
-  useErrorMessage,
+  useMessage,
   useFetchLoading,
   useSuccessModal,
+  useRefresh,
 };

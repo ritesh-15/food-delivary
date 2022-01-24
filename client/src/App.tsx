@@ -7,6 +7,7 @@ import {
   RestaurantSidebar,
   Loader,
   SucessModal,
+  Address,
 } from "./components";
 import {
   AddRestuarant,
@@ -42,16 +43,28 @@ import {
   RestaurantProduct,
   RestaurantSingleOrder,
 } from "./pages/restaurant-admin";
-import { useErrorMessage, useFetchLoading, useSuccessModal } from "./hooks";
+import {
+  useFetchLoading,
+  useMessage,
+  useRefresh,
+  useSuccessModal,
+} from "./hooks";
+import Protected from "./routes/Protected";
+import RestaurantAdmin from "./routes/RestaurantAdmin";
+import AdminRoute from "./routes/AdminRoute";
+import AuthRoutes from "./routes/AuthRoutes";
+import VerifyOtpRoute from "./routes/VerifyOtpRoute";
+import HomeRoute from "./routes/HomeRoute";
 
 const FlexContainer = styled.div`
   display: flex;
 `;
 
 function App() {
-  const { message } = useErrorMessage();
+  const { message } = useMessage();
   const { isLoading } = useFetchLoading();
   const { state } = useSuccessModal();
+  useRefresh();
 
   return (
     <>
@@ -59,27 +72,32 @@ function App() {
         <GlobalStyle />
         {state.open && <SucessModal />}
         {isLoading && <Loader />}
+        {/* <Address /> */}
         {message && <ErrorMessage />}
         <Router>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <Header sticky />
-                  <Home />
-                </>
-              }
-            />
-            <Route
-              path="/account"
-              element={
-                <>
-                  <Header sticky />
-                  <Profile />
-                </>
-              }
-            />
+            <Route path="/" element={<HomeRoute />}>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <Header sticky />
+                    <Home />
+                  </>
+                }
+              />
+            </Route>
+            <Route path="/account" element={<Protected />}>
+              <Route
+                path="/account"
+                element={
+                  <>
+                    <Header sticky />
+                    <Profile />
+                  </>
+                }
+              />
+            </Route>
 
             {/* protected until enter location */}
             <Route path="/restaurants">
@@ -102,33 +120,42 @@ function App() {
                 }
               />
             </Route>
-            <Route
-              path="/login"
-              element={
-                <>
-                  <Header sticky />
-                  <Login />
-                </>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <>
-                  <Header sticky />
-                  <Register />
-                </>
-              }
-            />
-            <Route
-              path="/verify-otp"
-              element={
-                <>
-                  <Header sticky />
-                  <VerifyOtp />
-                </>
-              }
-            />
+            <Route path="/login" element={<AuthRoutes />}>
+              <Route
+                path=""
+                element={
+                  <>
+                    <Header sticky />
+                    <Login />
+                  </>
+                }
+              />
+            </Route>
+
+            <Route path="/register" element={<AuthRoutes />}>
+              <Route
+                path="/register"
+                element={
+                  <>
+                    <Header sticky />
+                    <Register />
+                  </>
+                }
+              />
+            </Route>
+
+            <Route element={<VerifyOtpRoute />}>
+              <Route
+                path="/verify-otp"
+                element={
+                  <>
+                    <Header sticky />
+                    <VerifyOtp />
+                  </>
+                }
+              />
+            </Route>
+
             <Route
               path="/checkout"
               element={
@@ -138,36 +165,45 @@ function App() {
                 </>
               }
             />
-            <Route
-              path="/add-restaurant"
-              element={
-                <>
-                  <Header sticky />
-                  <AddRestuarant />
-                </>
-              }
-            />
-            <Route
-              path="/orders"
-              element={
-                <>
-                  <Header sticky />
-                  <Orders />
-                </>
-              }
-            />
-            <Route
-              path="/order/:id"
-              element={
-                <>
-                  <Header sticky />
-                  <OrderInfo />
-                </>
-              }
-            />
+
+            <Route path="/add-restaurant" element={<Protected />}>
+              <Route
+                path="/add-restaurant"
+                element={
+                  <>
+                    <Header sticky />
+                    <AddRestuarant />
+                  </>
+                }
+              />
+            </Route>
+
+            <Route path="/orders" element={<Protected />}>
+              <Route
+                path="/orders"
+                element={
+                  <>
+                    <Header sticky />
+                    <Orders />
+                  </>
+                }
+              />
+            </Route>
+
+            <Route path="/order/:id" element={<Protected />}>
+              <Route
+                path="/order/:id"
+                element={
+                  <>
+                    <Header sticky />
+                    <OrderInfo />
+                  </>
+                }
+              />
+            </Route>
 
             {/* Restaruant admin routes */}
-            <Route path="/admin/restaurant">
+            <Route path="/admin/restaurant" element={<RestaurantAdmin />}>
               <Route
                 path="dashboard"
                 element={
@@ -249,7 +285,7 @@ function App() {
 
             {/* Admin routes  */}
 
-            <Route path="/admin">
+            <Route path="/admin" element={<AdminRoute />}>
               <Route
                 path="applications"
                 element={

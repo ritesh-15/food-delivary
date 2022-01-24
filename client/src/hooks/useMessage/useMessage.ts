@@ -1,22 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { setError } from "../../features/error-message/errorMessageSlice";
 
-const useErrorMessage = () => {
+const useMessage = () => {
   const dispatch = useDispatch();
 
-  const { message } = useSelector((state: RootState) => state.error);
+  const { message, error } = useSelector((state: RootState) => state.error);
 
-  const changeErrorMessage = (message: string) => {
-    dispatch(setError(message));
+  const setMessage = (message: string, error: boolean = false) => {
+    dispatch(setError({ message, error }));
   };
 
   let time: NodeJS.Timeout;
 
   useEffect(() => {
     time = setTimeout(() => {
-      dispatch(setError(""));
+      dispatch(setError({ message: "", error: false }));
     }, 3000);
 
     return () => {
@@ -24,7 +24,7 @@ const useErrorMessage = () => {
     };
   }, [message]);
 
-  return { changeErrorMessage, message };
+  return { setMessage, message, error };
 };
 
-export default useErrorMessage;
+export default useMessage;

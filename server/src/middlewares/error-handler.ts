@@ -17,6 +17,7 @@ const errorHandler = (
       },
     });
   } else {
+    console.log(error.message);
     return res.status(500).json({
       ok: false,
       error: {

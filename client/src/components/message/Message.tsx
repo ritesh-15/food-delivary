@@ -1,13 +1,13 @@
-import { useErrorMessage } from "../../hooks";
+import { useMessage } from "../../hooks";
 import { MessageWrapper } from "./Message.styled";
 
-function ErrorMessage() {
-  const { message } = useErrorMessage();
+function Message() {
+  const { message, error } = useMessage();
   return (
-    <MessageWrapper>
+    <MessageWrapper error={error}>
       <p>{message}</p>
     </MessageWrapper>
   );
 }
 
-export default ErrorMessage;
+export default Message;

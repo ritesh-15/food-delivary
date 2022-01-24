@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { UpdateInput } from "../../components";
+import { useUser } from "../../hooks";
 import Button from "../../styles/Button";
 import Container from "../../styles/Container";
 import {
@@ -12,14 +13,12 @@ import {
 } from "./Profile.styled";
 
 const Profile = () => {
+  const { user } = useUser();
+
   const [values, setValues] = useState({
-    firstname: "Ritesh",
-    lastname: "Khore",
-    email: "riteshkhore@gmail.com",
-    number: "9960130524",
-    city: "pune",
-    landmark: "station",
-    pincode: "413115",
+    name: user ? user.name : "",
+    email: user ? user.email : "",
+    number: user ? user.number.toString() : "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -31,44 +30,29 @@ const Profile = () => {
     <Container>
       <Wrapper>
         <ProfileTop>
-          <Image>
-            <div>
-              <img
-                src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8YXZhdGFyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
-                alt=""
-              />
-            </div>
-            <label htmlFor="avatar">Change profile photo</label>
-            <input type="file" id="avatar" />
-          </Image>
           <ProfileTopInfo>
-            <h1>Ritesh Khore</h1>
-            <span>riteshkhore@gmail.com</span>
-            <span>9960130524</span>
+            <h1>{user?.name}</h1>
+            <span>{user?.email}</span>
+            <span>{user?.number}</span>
           </ProfileTopInfo>
         </ProfileTop>
         <ProfileDetails>
           <Row>
             <UpdateInput
-              value={values.firstname}
+              value={values.name}
               onChange={handleChange}
               title="First name"
-              name="firstname"
+              name="name"
             />
-            <UpdateInput
-              value={values.lastname}
-              onChange={handleChange}
-              title="Last name"
-              name="lastname"
-            />
-          </Row>
-          <Row>
+
             <UpdateInput
               value={values.email}
               onChange={handleChange}
               title="Email address"
               name="email"
             />
+          </Row>
+          <Row>
             <UpdateInput
               value={values.number}
               onChange={handleChange}
@@ -77,28 +61,6 @@ const Profile = () => {
             />
           </Row>
 
-          <Row>
-            <UpdateInput
-              value={values.city}
-              onChange={handleChange}
-              title="City"
-              name="city"
-            />
-            <UpdateInput
-              value={values.pincode}
-              onChange={handleChange}
-              title="Pin code"
-              name="pincode"
-            />
-          </Row>
-          <Row>
-            <UpdateInput
-              value={values.landmark}
-              onChange={handleChange}
-              title="Land mark"
-              name="landmark"
-            />
-          </Row>
           <Button>Save</Button>
         </ProfileDetails>
       </Wrapper>

@@ -9,6 +9,7 @@ import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import { passportJwt } from "./middlewares/passport";
+import applicationsRoutes from "./routes/application-routes";
 
 const app = express();
 
@@ -49,6 +50,8 @@ connection();
 const URL_START: string = "/api/v1";
 
 app.use(URL_START, authRoutes);
+
+app.use(URL_START, applicationsRoutes);
 
 // error handler
 

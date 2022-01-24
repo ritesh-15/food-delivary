@@ -8,9 +8,9 @@ import { Input } from "../../components";
 import Button from "../../styles/Button";
 import { Link } from "react-router-dom";
 import {
-  useErrorMessage,
   useFetchLoading,
   useForm,
+  useMessage,
   useSuccessModal,
   useUser,
 } from "../../hooks";
@@ -35,7 +35,7 @@ const initialState = {
 
 export default function Register() {
   const { setIsLoading } = useFetchLoading();
-  const { changeErrorMessage } = useErrorMessage();
+  const { setMessage } = useMessage();
   const { changeOtpState } = useUser();
   const navigate = useNavigate();
   const { setSuccessModal } = useSuccessModal();
@@ -61,7 +61,7 @@ export default function Register() {
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
-      changeErrorMessage(err.response.data.error.message);
+      setMessage(err.response.data.error.message, true);
     }
   };
 
@@ -75,7 +75,7 @@ export default function Register() {
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
-      changeErrorMessage(err.response.data.error.message);
+      setMessage(err.response.data.error.message, true);
     }
   };
 

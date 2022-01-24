@@ -8,12 +8,7 @@ import {
 import { Input } from "../../components";
 import Button from "../../styles/Button";
 import { Link } from "react-router-dom";
-import {
-  useErrorMessage,
-  useFetchLoading,
-  useForm,
-  useUser,
-} from "../../hooks";
+import { useFetchLoading, useForm, useMessage, useUser } from "../../hooks";
 import { loginValidation } from "../../validations/authvalidations";
 import { loginApi } from "../../api/authenticationApi";
 
@@ -26,7 +21,7 @@ const initialState: LoginState = { email: "", password: "" };
 
 export default function Login() {
   const { changeUserState } = useUser();
-  const { changeErrorMessage } = useErrorMessage();
+  const { setMessage } = useMessage();
   const { setIsLoading } = useFetchLoading();
 
   const login = async (values: LoginState) => {
@@ -39,7 +34,7 @@ export default function Login() {
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
-      changeErrorMessage(err.response.data.error.message);
+      setMessage(err.response.data.error.message, true);
     }
   };
 

@@ -19,6 +19,8 @@ import RestaurantSidebar from "./restaurant-sidebar/RestaurantSidebar";
 import ErrorMessage from "./message/Message";
 import Loader from "./fetch-loader/Loader";
 import SucessModal from "./success-modal/SucessModal";
+import Address from "./address/Address";
+import Map from "./map/Map";
 
 export {
   Header,
@@ -42,4 +44,6 @@ export {
   ErrorMessage,
   Loader,
   SucessModal,
+  Address,
+  Map,
 };

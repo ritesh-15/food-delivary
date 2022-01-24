@@ -7,7 +7,7 @@ const LoaderContainer = styled.div`
   top: 0;
   bottom: 0;
   z-index: 500;
-  background: #ffffff;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;

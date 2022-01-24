@@ -43,8 +43,6 @@ export const Image = styled.div`
 `;
 
 export const ProfileTopInfo = styled.div`
-  margin-left: 2em;
-
   h1 {
     font-size: 1.5rem;
     font-weight: 500;

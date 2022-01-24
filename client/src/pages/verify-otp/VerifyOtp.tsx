@@ -8,7 +8,7 @@ import {
 import { Input } from "../../components";
 import Button from "../../styles/Button";
 import {
-  useErrorMessage,
+  useMessage,
   useFetchLoading,
   useForm,
   useSuccessModal,
@@ -28,7 +28,7 @@ const initialState: OtpState = {
 
 export default function VerifyOtp() {
   const { setIsLoading } = useFetchLoading();
-  const { changeErrorMessage } = useErrorMessage();
+  const { setMessage } = useMessage();
   const { otpState, changeUserState, changeOtpState } = useUser();
   const { setSuccessModal } = useSuccessModal();
 
@@ -49,7 +49,7 @@ export default function VerifyOtp() {
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
-      changeErrorMessage(err.response.data.error.message);
+      setMessage(err.response.data.error.message, true);
     }
   };
 
@@ -67,7 +67,7 @@ export default function VerifyOtp() {
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
-      changeErrorMessage(err.response.data.error.message);
+      setMessage(err.response.data.error.message, true);
     }
   };
 

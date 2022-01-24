@@ -1,14 +1,22 @@
 import { HeaderContainer, Nav, NavBrand, NavItems } from "./Header.style";
 import Container from "../../styles/Container";
 import Flex from "../../styles/Flex";
-import { PersonOutline, ShoppingBag, Search } from "@mui/icons-material";
+import {
+  PersonOutline,
+  ShoppingBag,
+  Search,
+  AccountCircle,
+} from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useUser } from "../../hooks";
 
 interface HeaderProps {
   sticky?: boolean;
 }
 
 export default function Header(props: HeaderProps) {
+  const { user } = useUser();
+
   return (
     <HeaderContainer sticky={props.sticky}>
       <Nav>
@@ -17,10 +25,6 @@ export default function Header(props: HeaderProps) {
             <NavBrand>
               <Link to="/">
                 <Flex>
-                  {/* <img
-                    src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8N3x8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-                    alt=""
-                  /> */}
                   <h1>Foodies</h1>
                 </Flex>
               </Link>
@@ -34,20 +38,33 @@ export default function Header(props: HeaderProps) {
                       <span>Search</span>
                     </Flex>
                   </li>
-                  <li>
-                    <Link to="/login">
-                      <Flex>
-                        <PersonOutline />
-                        <span>Sign In</span>
-                      </Flex>
-                    </Link>
-                  </li>
+                  {!user && (
+                    <li>
+                      <Link to="/login">
+                        <Flex>
+                          <PersonOutline />
+                          <span>Sign In</span>
+                        </Flex>
+                      </Link>
+                    </li>
+                  )}
+
                   <li>
                     <Flex>
                       <ShoppingBag />
                       <span>Cart</span>
                     </Flex>
                   </li>
+                  {user && (
+                    <li>
+                      <Link to="/account">
+                        <Flex>
+                          <AccountCircle />
+                          <span>{user.name}</span>
+                        </Flex>
+                      </Link>
+                    </li>
+                  )}
                 </Flex>
               </ul>
             </NavItems>
