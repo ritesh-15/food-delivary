@@ -17,7 +17,6 @@ const useRefresh = () => {
       setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
-      setMessage("Session expires please login again", true);
     }
   };
 

@@ -31,7 +31,7 @@ const Address = () => {
 
     try {
       const { data } = await axios.get(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${addressCordinates[0]},${addressCordinates[1]}.json?limit=1&types=postcode%2Caddress%2Clocality%2Cdistrict%2Cpoi%2Cregion%2Ccountry%2Cplace%2Cneighborhood&access_token=pk.eyJ1Ijoicml0ZXNoa2hvcmUxNSIsImEiOiJja3lzN3JkaHMxMHh2Mm9tbWJ5YTJpbW1rIn0.3srv_m-eyJLcRvyNRNIKnQ`
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${addressCordinates[0]},${addressCordinates[1]}.json?limit=1&types=postcode%2Caddress%2Clocality%2Cdistrict%2Cpoi%2Cregion%2Ccountry%2Cplace%2Cneighborhood&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
       );
       console.log(data);
       setPlaceName(data.features[0].place_name);

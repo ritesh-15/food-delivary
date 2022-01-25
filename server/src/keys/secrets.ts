@@ -21,3 +21,5 @@ export const FORGOT_PASSWORD_SECRET = <string>(
 export const SENDER_MAIL = <string>process.env.SENDER_MAIL;
 
 export const SENDER_MAIL_PASSWORD = <string>process.env.SENDER_MAIL_PASSWORD;
+
+export const APP_BASE_URL = <string>process.env.APP_BASE_URL;

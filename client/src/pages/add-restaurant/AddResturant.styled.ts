@@ -18,7 +18,7 @@ export const Heading = styled.div`
   }
 `;
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.form`
   width: 100%;
   margin-top: 4em;
 
@@ -34,7 +34,7 @@ export const FormContainer = styled.div`
   }
 
   h1 {
-    margin-bottom: 2em;
+    margin-bottom: 1em;
     border-bottom: 1px solid hsl(0, 0%, 80%);
     padding-bottom: 1em;
     font-size: 1.15rem;
@@ -142,4 +142,11 @@ export const TD = styled.td<Props>`
     width: fit-content;
     padding: 0.2rem 1rem;
   }
+`;
+
+export const MapContainer = styled.div`
+  height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
 `;

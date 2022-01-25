@@ -10,12 +10,17 @@ import cookieParser from "cookie-parser";
 import passport from "passport";
 import { passportJwt } from "./middlewares/passport";
 import applicationsRoutes from "./routes/application-routes";
+import uploadRouter from "./routes/uploadfile-routes";
+import path from "path";
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
 // middlewares
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 app.use(express.json({ limit: "10mb" }));
 
 app.use(cookieParser());
@@ -52,6 +57,8 @@ const URL_START: string = "/api/v1";
 app.use(URL_START, authRoutes);
 
 app.use(URL_START, applicationsRoutes);
+
+app.use(URL_START, uploadRouter);
 
 // error handler
 

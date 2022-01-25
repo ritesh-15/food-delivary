@@ -7,6 +7,7 @@ export interface ApplicationInterface {
   updateAt: Date;
   userId: ObjectId;
   isAgreed: boolean;
+  status: string;
   restaurantInfo: {
     name: string;
     famousFor: string;
@@ -35,6 +36,12 @@ export interface ApplicationInterface {
       uploadStatus: boolean;
       filePath: string;
       uploadedAt: Date;
+      url: string;
     }
   ];
+  rejectionDetails?: {
+    reason: string;
+    message: string;
+    geneteatedAt: Date;
+  };
 }

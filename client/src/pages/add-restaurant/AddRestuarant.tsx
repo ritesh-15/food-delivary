@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from "react";
-import { AddRestaurantModal, Input, SelectBox } from "../../components";
+import { ChangeEvent, useEffect, useState } from "react";
+import { AddRestaurantModal, Input, Map, SelectBox } from "../../components";
 import Button from "../../styles/Button";
 import Container from "../../styles/Container";
 import {
@@ -17,28 +17,69 @@ import {
   TR,
   TD,
   DocumentsDiv,
+  MapContainer,
 } from "./AddResturant.styled";
 import PostAddIcon from "@mui/icons-material/PostAdd";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import {
+  useFetchLoading,
+  useForm,
+  useMessage,
+  useSuccessModal,
+} from "../../hooks";
+import { newApplicationValidation } from "../../validations/application";
+import axios from "axios";
+import { uploadMultipleFile } from "../../api/uploadDocumentApi";
+import { newApplicationApi } from "../../api/applicationApi";
 
 const FOOD_TYPE = ["Vegiterian", "Non vegeterian", "Both"];
 
+interface ApplicationState {
+  name: string;
+  famousFor: string;
+  numberOfFoodProducts: string;
+  minimumFoodPrice: string;
+  numberOfDailyCustomers: string;
+  email: string;
+  number: string;
+}
+
+const initialState: ApplicationState = {
+  name: "",
+  numberOfFoodProducts: "",
+  famousFor: "",
+  minimumFoodPrice: "",
+  numberOfDailyCustomers: "",
+  email: "",
+  number: "",
+};
+
 export default function AddRestuarant() {
-  const [values, setValues] = useState({
-    name: "",
-    subDetails: "",
-    numberOfFoods: "",
-    minimumPriceOfFood: "",
-    city: "",
+  const [isSubmited, setIsSubmited] = useState<boolean>(false);
+  const [foodType, setFoodType] = useState<string>("");
+  const [isAgreed, setIsAgreed] = useState<boolean>(false);
+  const { setIsLoading } = useFetchLoading();
+  const { setMessage } = useMessage();
+  const { setSuccessModal } = useSuccessModal();
+
+  const [cordinates, setCordinates] = useState<number[]>();
+  const [addressInfo, setAddressInfo] = useState({
+    cordinates: {
+      lat: 0,
+      lng: 0,
+    },
+    placeName: "",
+    country: "",
+    state: "",
+    district: "",
+    locality: "",
     pinCode: "",
-    contactNumber: "",
-    emailAddress: "",
-    dailyCustomers: "",
   });
 
-  const [isSubmited, setIsSubmited] = useState(false);
-  const [foodType, setFoodType] = useState("");
+  const changeCordinates = (values: number[]) => {
+    setCordinates(values);
+  };
 
   // documents state
   const [restaurantImage, setRestaurantImage] = useState<File | string>("");
@@ -52,8 +93,6 @@ export default function AddRestuarant() {
 
     const file = files[0];
 
-    console.log(name);
-
     if (name === "restaurantImage") {
       setRestaurantImage(file);
     } else if (name === "identityProof") {
@@ -63,12 +102,104 @@ export default function AddRestuarant() {
     }
   };
 
-  console.log({ restaurantImage, identityProof, foodCertificate });
+  // get the cordinates from the map
+  const getUserLocation = async () => {
+    if (!cordinates) return;
+    try {
+      const { data } = await axios.get(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${cordinates[0]},${cordinates[1]}.json?limit=1&types=postcode%2Caddress%2Clocality%2Cdistrict%2Cpoi%2Cregion%2Ccountry%2Cplace%2Cneighborhood&access_token=${process.env.REACT_APP_MAPBOX_TOKEN}`
+      );
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setValues({ ...values, [name]: value });
+      const location = data.features[0];
+
+      setAddressInfo(() => {
+        return {
+          placeName: location.place_name,
+          cordinates: { lat: location.center[0], lng: location.center[1] },
+          country: location.context.filter((e: any) =>
+            e.id.includes("country")
+          )[0]?.text,
+          state: location.context.filter((e: any) => e.id.includes("region"))[0]
+            ?.text,
+          district: location.context.filter((e: any) =>
+            e.id.includes("district")
+          )[0]?.text,
+          locality: location.context.filter((e: any) =>
+            e.id.includes("place")
+          )[0]?.text,
+          pinCode: "",
+        };
+      });
+    } catch (err) {}
   };
+
+  useEffect(() => {
+    getUserLocation();
+  }, [cordinates]);
+
+  // upload the documents
+  const uploadDocuments = async () => {
+    const formdata = new FormData();
+
+    formdata.append("file", restaurantImage);
+    formdata.append("file", identityProof);
+    formdata.append("file", foodCertificate);
+
+    try {
+      const { data } = await uploadMultipleFile(formdata);
+      return data.files;
+    } catch (error: any) {}
+  };
+
+  const createNewApplication = async (values: ApplicationState) => {
+    if (!restaurantImage || !identityProof || !foodCertificate || !foodType)
+      return setMessage("All fields are required!", true);
+
+    setIsLoading(true);
+
+    try {
+      const files: any = await uploadDocuments();
+      const sendData = {
+        restaurantInfo: { ...values, foodType },
+        addressInfo: {
+          cordinates: {
+            lat: addressInfo.cordinates.lat,
+            lng: addressInfo.cordinates.lng,
+          },
+          placeName: addressInfo.placeName,
+          country: addressInfo.country,
+          state: addressInfo.state,
+          district: addressInfo.district,
+          locality: addressInfo.locality,
+          pinCode: parseInt(addressInfo.pinCode),
+        },
+        isAgreed,
+        documents: files.map((file: any) => {
+          return {
+            filename: file.filename,
+            destination: file.destination,
+            nameOfDocuement: file.originalname,
+            filepath: file.filename,
+          };
+        }),
+      };
+
+      const { data } = await newApplicationApi(sendData);
+
+      if (data.ok) {
+        setSuccessModal("Application has been submited successfully!");
+      }
+      setIsLoading(false);
+    } catch (error: any) {
+      setIsLoading(false);
+    }
+  };
+
+  const { values, handleChange, handleSubmit, errors } = useForm(
+    initialState,
+    newApplicationValidation,
+    createNewApplication
+  );
 
   return (
     <Wrapper>
@@ -82,7 +213,7 @@ export default function AddRestuarant() {
               process.
             </p>
           </Heading>
-          <FormContainer>
+          <FormContainer onSubmit={handleSubmit}>
             <h1>Restaurant Details</h1>
             <Row>
               <FormControl>
@@ -92,24 +223,47 @@ export default function AddRestuarant() {
                   value={values.name}
                   onChange={handleChange}
                   type="text"
+                  error={errors.name}
                 />
               </FormControl>
               <FormControl>
                 <Input
-                  name="subDetails"
+                  name="famousFor"
                   title="Famous for"
-                  value={values.subDetails}
+                  value={values.fomousFor}
                   onChange={handleChange}
                   type="text"
+                  error={errors.famousFor}
                 />
               </FormControl>
               <FormControl>
                 <Input
-                  name="numberOfFoods"
+                  name="email"
+                  title="Email address"
+                  value={values.email}
+                  onChange={handleChange}
+                  type="email"
+                  error={errors.email}
+                />
+              </FormControl>
+              <FormControl>
+                <Input
+                  name="number"
+                  title="Contact number"
+                  value={values.number}
+                  onChange={handleChange}
+                  type="text"
+                  error={errors.number}
+                />
+              </FormControl>
+              <FormControl>
+                <Input
+                  name="numberOfFoodProducts"
                   title="Number of food products availabel"
                   value={values.numberOfFoods}
                   onChange={handleChange}
                   type="text"
+                  error={errors.numberOfFoodProducts}
                 />
               </FormControl>
               <FormControl>
@@ -122,50 +276,43 @@ export default function AddRestuarant() {
               </FormControl>
               <FormControl>
                 <Input
-                  name="minimumPriceOfFood"
+                  name="minimumFoodPrice"
                   title="Minimum price of food"
-                  value={values.minimumPriceOfFood}
+                  value={values.minimumFoodPrice}
                   onChange={handleChange}
                   type="text"
+                  error={errors.minimumFoodPrice}
                 />
               </FormControl>
               <FormControl>
                 <Input
-                  name="dailyCustomers"
+                  name="numberOfDailyCustomers"
                   title="Number of daily customers"
-                  value={values.dailyCustomers}
+                  value={values.numberOfDailyCustomers}
                   onChange={handleChange}
                   type="text"
+                  error={errors.numberOfDailyCustomers}
                 />
               </FormControl>
             </Row>
-            <h1>Location and contact details</h1>
+            <h1>Location details</h1>
+            <MapContainer>
+              <Map
+                currentCordinates={cordinates}
+                setCurrentCordinates={changeCordinates}
+              />
+            </MapContainer>
             <Row>
               <FormControl>
                 <Input
-                  name="city"
-                  title="City in which restaurant located"
-                  value={values.city}
-                  onChange={handleChange}
-                  type="text"
-                />
-              </FormControl>
-              <FormControl>
-                <Input
                   name="pinCode"
-                  title="Pin code of city"
+                  title="Pin Code"
                   value={values.pinCode}
-                  onChange={handleChange}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setAddressInfo({ ...addressInfo, pinCode: e.target.value })
+                  }
                   type="text"
-                />
-              </FormControl>
-              <FormControl>
-                <Input
-                  name="contactNumber"
-                  title="Restaurant contact number (if any)"
-                  value={values.contactNumber}
-                  onChange={handleChange}
-                  type="text"
+                  error={errors.pinCode}
                 />
               </FormControl>
             </Row>
@@ -281,13 +428,18 @@ export default function AddRestuarant() {
             </DocumentsDiv>
             <h1>Agreement</h1>
             <Agreement>
-              <input type="checkbox" />
+              <input onClick={(e) => setIsAgreed(true)} type="checkbox" />
               <p>
                 By clicking you are agreed our terms and condition of working
                 with you.
               </p>
             </Agreement>
-            <Button hover>
+            <Button
+              disabled={!isAgreed}
+              type="submit"
+              onClick={handleSubmit}
+              hover
+            >
               <PostAddIcon />
               <span>Submit application</span>
             </Button>

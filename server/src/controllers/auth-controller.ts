@@ -174,7 +174,10 @@ class AuthController {
     try {
       const user = await User.findOne({ email }).select("+password");
 
-      if (!user) return next(ErrorHandler.notFound("User not found!"));
+      if (!user)
+        return next(
+          ErrorHandler.notFound("Email Address or password is wrong!")
+        );
 
       const isValidePassword = await bcrypt.compare(password, user.password);
 

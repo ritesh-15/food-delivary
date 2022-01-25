@@ -10,6 +10,7 @@ export const MessageWrapper = styled.div<{ error?: boolean }>`
   max-width: 400px;
   padding: 1em;
   border-radius: 8px;
+  z-index: 500;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 
   &::before {
