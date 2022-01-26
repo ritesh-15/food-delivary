@@ -1,4 +1,10 @@
-import { HeaderContainer, Nav, NavBrand, NavItems } from "./Header.style";
+import {
+  DropItems,
+  HeaderContainer,
+  Nav,
+  NavBrand,
+  NavItems,
+} from "./Header.style";
 import Container from "../../styles/Container";
 import Flex from "../../styles/Flex";
 import {
@@ -57,12 +63,19 @@ export default function Header(props: HeaderProps) {
                   </li>
                   {user && (
                     <li>
-                      <Link to="/account">
-                        <Flex>
-                          <AccountCircle />
-                          <span>{user.name}</span>
-                        </Flex>
-                      </Link>
+                      <Flex>
+                        <AccountCircle />
+                        <span>{user.name}</span>
+                      </Flex>
+                      <DropItems>
+                        <Link to="/application">
+                          <li>My application</li>
+                        </Link>
+                        <Link to="/account">
+                          <li>Profile</li>
+                        </Link>
+                        <li>Log out</li>
+                      </DropItems>
                     </li>
                   )}
                 </Flex>

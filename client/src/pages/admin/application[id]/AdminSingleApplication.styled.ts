@@ -44,15 +44,15 @@ export const Title = styled.div<Props>`
     display: block;
     margin-top: 1rem;
     color: ${({ status }) =>
-      status === "Pending"
+      status === "pending"
         ? "#a68a00"
-        : status === "Rejected"
+        : status === "rejected"
         ? "#c62828"
         : "#388e3c"};
     background: ${({ status }) =>
-      status === "Pending"
+      status === "pending"
         ? "#fff0c2"
-        : status === "Rejected"
+        : status === "rejected"
         ? "#ffcdd2"
         : "#c8e6c9"};
     text-align: center;
@@ -166,4 +166,9 @@ export const TD = styled.td<Props>`
   p {
     max-width: 300px;
   }
+`;
+
+export const MapContainer = styled.div`
+  height: 350px;
+  margin-bottom: 1em;
 `;

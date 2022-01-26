@@ -1,11 +1,12 @@
 import { ObjectId } from "mongoose";
+import { User } from "./User-Interface";
 
 export interface ApplicationInterface {
   _id: ObjectId;
   createdAt: Date;
   restaurantID: string;
   updateAt: Date;
-  userId: ObjectId;
+  userId: User;
   isAgreed: boolean;
   status: string;
   restaurantInfo: {

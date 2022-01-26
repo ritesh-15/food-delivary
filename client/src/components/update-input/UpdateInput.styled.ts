@@ -19,4 +19,14 @@ export const UpdateContainer = styled.div`
       display: block;
     }
   }
+
+  input {
+    width: 100%;
+    padding: 1em;
+    border-radius: 4px;
+    margin-top: 0.5em;
+    outline: none;
+    border: none;
+    background: #f5f5f5;
+  }
 `;

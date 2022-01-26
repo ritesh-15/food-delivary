@@ -1,9 +1,10 @@
-import { application, NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import ErrorHandler from "../services/Error-Handler";
 import { newAplicationValidation } from "../validation/applicationValidation";
 import Application from "../models/applications-modal";
 import { APP_BASE_URL } from "../keys/secrets";
 import { User as UserInterface } from "../interfaces/User-Interface";
+import Restaurant from "../models/restaurant-modal";
 
 interface NewApplicationBody {
   isAgreed: boolean;
@@ -42,6 +43,7 @@ interface NewApplicationBody {
 
 interface UpdateApplicationInterface {
   isAgreed?: boolean;
+  status?: string;
   restaurantInfo?: {
     name?: string;
     famousFor?: string;
@@ -92,7 +94,6 @@ class ApplicationController {
         addressInfo,
       });
     } catch (error: any) {
-      console.log(error.message);
       return next(ErrorHandler.badRequest());
     }
 
@@ -118,6 +119,12 @@ class ApplicationController {
     };
 
     try {
+      const isApplicationAlreadyExits = await Application.findOne({
+        userId: activeUser._id,
+      });
+
+      if (isApplicationAlreadyExits)
+        return next(ErrorHandler.badRequest("Application already exits!"));
       const newApllication = await Application.create(data);
       return res.json({ ok: true, application: newApllication });
     } catch (error) {
@@ -131,12 +138,20 @@ class ApplicationController {
     res: Response,
     next: NextFunction
   ) {
-    const { id } = req.params;
+    const { id } = req.query;
 
-    if (!id) return next(ErrorHandler.badRequest());
+    const currentUser: UserInterface = <UserInterface>req.user;
 
     try {
-      const application = await Application.findById(id);
+      let application;
+
+      if (id) {
+        application = await Application.findById(id).populate("userId");
+      } else {
+        application = await Application.findOne({
+          userId: currentUser._id,
+        }).populate("userId");
+      }
 
       if (!application)
         return next(ErrorHandler.notFound("Application not found!"));
@@ -166,7 +181,8 @@ class ApplicationController {
     next: NextFunction
   ) {
     const body: UpdateApplicationInterface = req.body;
-    const { id } = req.params;
+    const { id } = req.query;
+    const currentUser = <UserInterface>req.user;
 
     if (!body || !id) return next(ErrorHandler.badRequest());
 
@@ -176,13 +192,38 @@ class ApplicationController {
       if (!foundApplication)
         return next(ErrorHandler.notFound("Application not found!"));
 
+      if (foundApplication.status === "pending")
+        return next(ErrorHandler.badRequest("Application is under process!"));
+
+      if (body.status === "accepted") {
+        // create a new restaurant if status is accepted
+
+        const isRestaurantFound = await Restaurant.findOne({
+          userId: currentUser._id,
+        });
+
+        if (isRestaurantFound)
+          return next(ErrorHandler.badRequest("Restaurant already exists!"));
+
+        const newRestaurantData = {
+          restaurantInfo: foundApplication.restaurantInfo,
+          addressInfo: foundApplication.addressInfo,
+          documents: foundApplication.documents,
+          userId: currentUser._id,
+          status: "active",
+          restaurantID: foundApplication.restaurantID,
+        };
+
+        await Restaurant.create(newRestaurantData);
+      }
+
       const updatedApplication = await Application.findOneAndUpdate(
         { _id: id },
         { $set: body },
         { new: true }
       );
       return res.json({ ok: true, application: updatedApplication });
-    } catch (error) {
+    } catch (error: any) {
       return next(ErrorHandler.serverError());
     }
   }
@@ -192,7 +233,7 @@ class ApplicationController {
     res: Response,
     next: NextFunction
   ) {
-    const { id } = req.params;
+    const { id } = req.query;
 
     if (!id) return next(ErrorHandler.badRequest());
 

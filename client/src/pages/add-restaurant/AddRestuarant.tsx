@@ -114,8 +114,8 @@ export default function AddRestuarant() {
 
       setAddressInfo(() => {
         return {
-          placeName: location.place_name,
-          cordinates: { lat: location.center[0], lng: location.center[1] },
+          placeName: location?.place_name,
+          cordinates: { lat: location?.center[0], lng: location?.center[1] },
           country: location.context.filter((e: any) =>
             e.id.includes("country")
           )[0]?.text,
@@ -192,6 +192,7 @@ export default function AddRestuarant() {
       setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
+      setMessage(error.response.data.error.message, true);
     }
   };
 

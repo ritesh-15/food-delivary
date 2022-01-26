@@ -1,10 +1,17 @@
 import { ObjectId } from "mongoose";
 
 interface Address {
-  city: string;
-  pinCode: number | string;
-  landmark: string;
-  street: string;
+  cordinates: {
+    lat: number;
+    lng: number;
+  };
+  placeName: string;
+  state: string;
+  country: string;
+  locality: string;
+  pinCode: number;
+  district: string;
+  _id: string;
 }
 
 export interface User {

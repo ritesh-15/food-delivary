@@ -101,15 +101,15 @@ export const TD = styled.td<Props>`
 
   small {
     color: ${({ status }) =>
-      status === "Pending"
+      status === "pending"
         ? "#a68a00"
-        : status === "Rejected"
+        : status === "rejected"
         ? "#c62828"
         : "#388e3c"};
     background: ${({ status }) =>
-      status === "Pending"
+      status === "pending"
         ? "#fff0c2"
-        : status === "Rejected"
+        : status === "rejected"
         ? "#ffcdd2"
         : "#c8e6c9"};
     text-align: center;

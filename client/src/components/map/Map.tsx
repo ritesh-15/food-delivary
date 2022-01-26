@@ -6,7 +6,7 @@ import { useState } from "react";
 
 interface MapProps {
   currentCordinates?: number[];
-  setCurrentCordinates(cordinates: number[]): any;
+  setCurrentCordinates?(cordinates: number[]): any;
 }
 
 const Map: FC<MapProps> = ({ currentCordinates, setCurrentCordinates }) => {
@@ -25,7 +25,9 @@ const Map: FC<MapProps> = ({ currentCordinates, setCurrentCordinates }) => {
     setMap(map);
 
     map.on("click", (e: mapboxgl.MapMouseEvent) => {
-      setCurrentCordinates(e.lngLat.toArray());
+      if (setCurrentCordinates) {
+        setCurrentCordinates(e.lngLat.toArray());
+      }
     });
   }, []);
 

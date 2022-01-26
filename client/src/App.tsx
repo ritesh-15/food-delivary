@@ -18,6 +18,7 @@ import {
   Orders,
   Profile,
   Register,
+  RestaurantApplication,
   RestaurantInfo,
   Restaurants,
   VerifyOtp,
@@ -76,6 +77,16 @@ function App() {
         {message && <ErrorMessage />}
         <Router>
           <Routes>
+            <Route
+              path="/application"
+              element={
+                <>
+                  <Header sticky />
+                  <RestaurantApplication />
+                </>
+              }
+            />
+
             <Route path="/" element={<HomeRoute />}>
               <Route
                 path="/"

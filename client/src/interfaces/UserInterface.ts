@@ -1,15 +1,19 @@
-interface Address {
-  city: string;
-  pinCode: number | string;
-  landmark: string;
-  street: string;
-}
-
 export interface UserInterface {
   name: string;
   email: string;
   number: number | string;
-  addresses: Address[];
+  addresses: {
+    cordinates: {
+      lat: number;
+      lng: number;
+    };
+    placeName: string;
+    state: string;
+    country: string;
+    locality: string;
+    pinCode: number;
+    district: string;
+  }[];
   isRestaurantOwner: boolean;
   isAdmin: boolean;
   isSuspended: boolean;

@@ -9,6 +9,7 @@ import Checkout from "./chekout/Checkout";
 import AddRestuarant from "./add-restaurant/AddRestuarant";
 import OrderInfo from "./order[id]/OrderInfo";
 import Orders from "./orders/Orders";
+import RestaurantApplication from "./application[id]/RestaurantApplication";
 
 export {
   Home,
@@ -22,4 +23,5 @@ export {
   AddRestuarant,
   OrderInfo,
   Orders,
+  RestaurantApplication,
 };

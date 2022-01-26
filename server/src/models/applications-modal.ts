@@ -7,6 +7,7 @@ const applicationSchema = new Schema<ApplicationInterface>(
       type: Schema.Types.ObjectId,
       ref: "users",
       required: true,
+      unique: true,
     },
     status: {
       type: String,
@@ -15,6 +16,7 @@ const applicationSchema = new Schema<ApplicationInterface>(
     restaurantID: {
       type: String,
       required: true,
+      unique: true,
     },
     isAgreed: {
       type: Boolean,
@@ -125,7 +127,7 @@ const applicationSchema = new Schema<ApplicationInterface>(
       },
       generatedAt: {
         type: Date,
-        default: new Date(Date.now()),
+        default: () => new Date(Date.now()),
       },
     },
   },

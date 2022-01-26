@@ -1,6 +1,7 @@
 import { model, Schema } from "mongoose";
+import { User } from "../interfaces/User-Interface";
 
-const UserSchema = new Schema(
+const UserSchema = new Schema<User>(
   {
     name: {
       type: String,
@@ -23,27 +24,41 @@ const UserSchema = new Schema(
       required: true,
       maxlength: 12,
     },
-    address: [
+    addresses: [
       {
-        city: {
+        cordinates: {
+          lat: {
+            type: Number,
+            required: true,
+          },
+          lng: {
+            type: Number,
+            required: true,
+          },
+        },
+        placeName: {
           type: String,
           required: true,
-          maxlength: 200,
+        },
+        state: {
+          type: String,
+          required: true,
+        },
+        country: {
+          type: String,
+          required: true,
+        },
+        locality: {
+          type: String,
+          required: true,
         },
         pinCode: {
-          type: String,
+          type: Number,
           required: true,
-          maxlength: 10,
         },
-        landmark: {
+        district: {
           type: String,
           required: true,
-          maxlength: 200,
-        },
-        street: {
-          type: String,
-          required: true,
-          maxlength: 200,
         },
       },
     ],

@@ -9,13 +9,33 @@ import {
   TH,
   TR,
 } from "./AdminApplication.styled";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
+import { getAllApplicationApi } from "../../api/applicationApi";
+import { ApplicationInterface } from "../../interfaces/ApplicationInterface";
+import moment from "moment";
 
 const AdminApplication: FC = () => {
   const [status, setStatus] = useState("Paid");
+
+  // applications
+  const [applications, setApplications] = useState<ApplicationInterface[]>([]);
+
+  // get all application
+  useEffect(() => {
+    const getAllApplications = async () => {
+      try {
+        const { data } = await getAllApplicationApi();
+        if (data.ok) {
+          setApplications(data.applications);
+        }
+      } catch (error) {}
+    };
+
+    getAllApplications();
+  }, []);
 
   return (
     <ApplicationContainer>
@@ -36,30 +56,22 @@ const AdminApplication: FC = () => {
             </TR>
           </TableHead>
           <TableBody>
-            <TR>
-              <TD>
-                <Link to="/admin/applications/4">13345698</Link>
-              </TD>
-              <TD>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-              </TD>
-              <TD status={status}>
-                <small>Pending</small>
-              </TD>
-              <TD>11/05/2002</TD>
-            </TR>
-            <TR>
-              <TD>
-                <a href="">13345698</a>
-              </TD>
-              <TD>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing.</p>
-              </TD>
-              <TD status={status}>
-                <small>Pending</small>
-              </TD>
-              <TD>11/05/2002</TD>
-            </TR>
+            {applications.map((application) => (
+              <TR>
+                <TD>
+                  <Link to={`/admin/applications/${application._id}`}>
+                    {application._id}
+                  </Link>
+                </TD>
+                <TD>
+                  <p>{application.restaurantInfo.name}</p>
+                </TD>
+                <TD status={application.status}>
+                  <small>{application.status}</small>
+                </TD>
+                <TD>{moment(application.createdAt).format("DD MMMM YYYY")}</TD>
+              </TR>
+            ))}
           </TableBody>
         </Table>
       </TableWrapper>

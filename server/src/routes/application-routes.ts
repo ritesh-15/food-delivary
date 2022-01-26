@@ -10,7 +10,7 @@ router
   .post(authMiddleware, ApplicationController.newApplication);
 
 router
-  .route("/application/:id")
+  .route("/application")
   .get(authMiddleware, ApplicationController.getSingleApplication)
   .put(authMiddleware, ApplicationController.updateApplication)
   .delete(authMiddleware, ApplicationController.deleteApplication);

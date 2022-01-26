@@ -12,6 +12,8 @@ import { passportJwt } from "./middlewares/passport";
 import applicationsRoutes from "./routes/application-routes";
 import uploadRouter from "./routes/uploadfile-routes";
 import path from "path";
+import morgan from "morgan";
+import userRouter from "./routes/user-routes";
 
 const app = express();
 
@@ -27,6 +29,10 @@ app.use(cookieParser());
 
 app.use(passport.initialize());
 passportJwt(passport);
+
+app.use(
+  morgan(":method :url :status :res[content-length] - :response-time ms")
+);
 
 app.use(
   rateLimit({
@@ -59,6 +65,8 @@ app.use(URL_START, authRoutes);
 app.use(URL_START, applicationsRoutes);
 
 app.use(URL_START, uploadRouter);
+
+app.use(`${URL_START}/user`, userRouter);
 
 // error handler
 

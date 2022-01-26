@@ -39,13 +39,40 @@ export const NavItems = styled.div`
     cursor: pointer;
     color: ${({ theme }) => theme.colors.textLight};
     transition: all 160ms ease-in;
+    position: relative;
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: ${({ theme }) => theme.colors.primary};
+
+      ul {
+        opacity: 1;
+        visibility: visible;
+        transition: all 250ms ease-in;
+      }
     }
 
     span {
       margin-left: 0.5em;
     }
+  }
+`;
+
+export const DropItems = styled.ul`
+  position: absolute;
+  background: #fff;
+  padding: 1em;
+  width: 100%;
+  top: calc(64px - 16px);
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+
+  li {
+    font-size: 0.95rem;
+    padding: 0.5em 0;
   }
 `;
