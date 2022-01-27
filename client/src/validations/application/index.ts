@@ -42,3 +42,16 @@ export const newApplicationValidation = (values: ApplicationState) => {
 
   return errors;
 };
+
+export const rejectionFormValidation = (values: {
+  reason: string;
+  message: string;
+}) => {
+  let errors: any = {};
+
+  if (!values.message) errors.message = "Message is required!";
+
+  if (!values.reason) errors.reason = "Reason is required!";
+
+  return errors;
+};

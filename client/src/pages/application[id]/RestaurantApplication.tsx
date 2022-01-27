@@ -1,16 +1,14 @@
 import Container from "../../styles/Container";
 import {
   Actions,
-  DetailsSkeleton,
   FormControl,
   Grid,
   HeadingContainer,
   Image,
-  ImageSkeleton,
   LocationNote,
   MainContainer,
   MapContainer,
-  SkeletonContainer,
+  RejectionContainer,
   SubTitle,
   Table,
   TableBody,
@@ -24,7 +22,12 @@ import {
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import Button from "../../styles/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Map, SkeletonElement, UpdateInput } from "../../components";
+import {
+  Map,
+  SkeletonElement,
+  UpdateInput,
+  ViewDocument,
+} from "../../components";
 import { ChangeEvent, useEffect, useState } from "react";
 import { ApplicationInterface } from "../../interfaces/ApplicationInterface";
 import {
@@ -35,14 +38,22 @@ import {
 import moment from "moment";
 import SaveIcon from "@mui/icons-material/Save";
 import { useFetchLoading, useMessage } from "../../hooks";
-import axios, { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+
+interface CurrentfileInterface {
+  src: string;
+  fileType: string;
+  title: string;
+}
 
 const RestaurantApplication = () => {
   // hooks
   const { setMessage } = useMessage();
   const { setIsLoading } = useFetchLoading();
   const navigate = useNavigate();
+
+  // view document state
+  const [currentFile, setCurrentFile] = useState<CurrentfileInterface>();
 
   // applications state
   const [application, setApplication] = useState<ApplicationInterface>();
@@ -84,7 +95,7 @@ const RestaurantApplication = () => {
     setIsLoading(true);
     try {
       const { data } = await updateApplicationApi(
-        application,
+        { restaurantInfo: application.restaurantInfo },
         application?._id
       );
       if (data.ok) {
@@ -121,21 +132,35 @@ const RestaurantApplication = () => {
     getApplicationDetails();
   }, []);
 
+  console.log(application);
+
   return (
     <Container>
+      {currentFile && (
+        <ViewDocument state={currentFile} changeState={setCurrentFile} />
+      )}
       <Wrapper>
         <HeadingContainer>
           <Image>
-            <img
-              src="https://images.unsplash.com/photo-1642420805609-157d2f1a7f1e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-              alt=""
-            />
+            <img src={application?.images[0].url} alt="" />
           </Image>
           <Title status={application?.status}>
             <h1>{application?.restaurantInfo.name}</h1>
             <p>{application?.restaurantInfo.famousFor}</p>
             <span>{application?.addressInfo.placeName}</span>
             <small>{application?.status}</small>
+            {application?.status === "rejected" && (
+              <RejectionContainer>
+                <div>
+                  <h1>Reason of rejection</h1>
+                  <p>{application?.rejectionDetails?.reason}</p>
+                </div>
+                <div>
+                  <h1>Message</h1>
+                  <p>{application?.rejectionDetails?.message}</p>
+                </div>
+              </RejectionContainer>
+            )}
           </Title>
         </HeadingContainer>
         <MainContainer>
@@ -251,36 +276,56 @@ const RestaurantApplication = () => {
             </FormControl>
           </Grid>
           <SubTitle>Documents uploaded</SubTitle>
-          <Table>
-            <TableHead>
-              <TR>
-                <TH>Document name</TH>
-                <TH>Action</TH>
-              </TR>
-            </TableHead>
-            <TableBody>
-              <TR>
-                <TD>
-                  <p>Applicant identity proof</p>
-                </TD>
-                <TD>
-                  <RemoveRedEyeIcon
-                    style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
-                  />
-                </TD>
-              </TR>
-              <TR>
-                <TD>
-                  <p>Food authority certificate</p>
-                </TD>
-                <TD>
-                  <RemoveRedEyeIcon
-                    style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
-                  />
-                </TD>
-              </TR>
-            </TableBody>
-          </Table>
+          {application && (
+            <Table>
+              <TableHead>
+                <TR>
+                  <TH>Document name</TH>
+                  <TH>Action</TH>
+                </TR>
+              </TableHead>
+              <TableBody>
+                <TR>
+                  <TD>
+                    <p>Applicant identity proof</p>
+                  </TD>
+                  <TD>
+                    <RemoveRedEyeIcon
+                      style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
+                      onClick={() =>
+                        setCurrentFile({
+                          src: application?.documents.applicantProof.url,
+                          fileType:
+                            application?.documents.applicantProof.fileType,
+                          title: "Applicant Identity Proof",
+                        })
+                      }
+                    />
+                  </TD>
+                </TR>
+                <TR>
+                  <TD>
+                    <p>Food authority certificate</p>
+                  </TD>
+                  <TD>
+                    <RemoveRedEyeIcon
+                      onClick={() =>
+                        setCurrentFile({
+                          src: application?.documents.foodAuthorityCertificate
+                            .url,
+                          fileType:
+                            application?.documents.foodAuthorityCertificate
+                              .fileType,
+                          title: "Food authority certificate",
+                        })
+                      }
+                      style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
+                    />
+                  </TD>
+                </TR>
+              </TableBody>
+            </Table>
+          )}
         </MainContainer>
         <Actions>
           {application?.status === "rejected" && (

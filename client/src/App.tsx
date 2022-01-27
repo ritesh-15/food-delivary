@@ -77,16 +77,6 @@ function App() {
         {message && <ErrorMessage />}
         <Router>
           <Routes>
-            <Route
-              path="/application"
-              element={
-                <>
-                  <Header sticky />
-                  <RestaurantApplication />
-                </>
-              }
-            />
-
             <Route path="/" element={<HomeRoute />}>
               <Route
                 path="/"
@@ -105,6 +95,18 @@ function App() {
                   <>
                     <Header sticky />
                     <Profile />
+                  </>
+                }
+              />
+            </Route>
+
+            <Route path="/application" element={<Protected />}>
+              <Route
+                path="/application"
+                element={
+                  <>
+                    <Header sticky />
+                    <RestaurantApplication />
                   </>
                 }
               />

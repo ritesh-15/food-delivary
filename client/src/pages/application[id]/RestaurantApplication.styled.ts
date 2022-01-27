@@ -201,3 +201,19 @@ export const LocationNote = styled.small`
   font-size: 0.75rem;
   color: #e31010;
 `;
+
+export const RejectionContainer = styled.div`
+  border: 1px solid red;
+  padding: 0.5em 1em;
+  margin-top: 1em;
+  border-radius: 8px;
+
+  h1 {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  p {
+    color: red;
+  }
+`;

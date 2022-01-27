@@ -30,9 +30,12 @@ const userSlice = createSlice({
     ) => {
       state.otpState = action.payload;
     },
+    unSetUser: (state) => {
+      state.user = null;
+    },
   },
 });
 
-export const { setUser, setOtpState } = userSlice.actions;
+export const { setUser, setOtpState, unSetUser } = userSlice.actions;
 
 export default userSlice.reducer;

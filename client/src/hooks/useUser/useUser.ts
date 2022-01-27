@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { setOtpState, setUser } from "../../features/user/userSlice";
+import { setOtpState, setUser, unSetUser } from "../../features/user/userSlice";
 import { UserInterface } from "../../interfaces/UserInterface";
 
 const useUser = () => {
@@ -15,7 +15,11 @@ const useUser = () => {
     dispatch(setOtpState(state));
   };
 
-  return { user, changeUserState, otpState, changeOtpState };
+  const removeUser = () => {
+    dispatch(unSetUser());
+  };
+
+  return { user, changeUserState, otpState, changeOtpState, removeUser };
 };
 
 export default useUser;

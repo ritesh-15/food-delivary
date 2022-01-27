@@ -14,14 +14,28 @@ import {
   AccountCircle,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useUser } from "../../hooks";
+import { useFetchLoading, useUser } from "../../hooks";
+import { logOutApi } from "../../api/authenticationApi";
 
 interface HeaderProps {
   sticky?: boolean;
 }
 
 export default function Header(props: HeaderProps) {
-  const { user } = useUser();
+  const { user, removeUser } = useUser();
+  const { setIsLoading } = useFetchLoading();
+
+  // logout user
+  const logOutUser = async () => {
+    setIsLoading(true);
+    try {
+      await logOutApi();
+      setIsLoading(false);
+      removeUser();
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <HeaderContainer sticky={props.sticky}>
@@ -74,7 +88,7 @@ export default function Header(props: HeaderProps) {
                         <Link to="/account">
                           <li>Profile</li>
                         </Link>
-                        <li>Log out</li>
+                        <li onClick={logOutUser}>Log out</li>
                       </DropItems>
                     </li>
                   )}

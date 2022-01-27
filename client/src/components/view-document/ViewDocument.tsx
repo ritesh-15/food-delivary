@@ -8,26 +8,32 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 interface ViewDocumentProps {
-  fileType: string;
-  src: string;
-  title: string;
+  state: {
+    fileType: string;
+    src: string;
+    title: string;
+  };
+  changeState(value: any): void;
 }
 
-const ViewDocument: FC<ViewDocumentProps> = ({ fileType, src, title }) => {
+const ViewDocument: FC<ViewDocumentProps> = ({ state, changeState }) => {
   return (
     <Wrapper>
       <MainContainer>
         <div>
-          <h1>{title}</h1>
-          <CloseIcon style={{ cursor: "pointer" }} />
+          <h1>{state.title}</h1>
+          <CloseIcon
+            onClick={() => changeState(undefined)}
+            style={{ cursor: "pointer" }}
+          />
         </div>
-        {fileType === "pdf" ? (
+        {state.fileType === "application/pdf" ? (
           <PDFContainer>
-            <iframe src={src} width="100%" height="500px" />
+            <iframe src={state.src} width="100%" height="500px" />
           </PDFContainer>
         ) : (
           <ImageContainer>
-            <img src={src} alt="" />
+            <img src={state.src} alt="" />
           </ImageContainer>
         )}
       </MainContainer>

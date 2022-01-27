@@ -63,7 +63,6 @@ export const DropItems = styled.ul`
   background: #fff;
   padding: 1em;
   width: 100%;
-  top: calc(64px - 16px);
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   display: flex;

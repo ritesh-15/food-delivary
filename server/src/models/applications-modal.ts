@@ -89,7 +89,7 @@ const applicationSchema = new Schema<ApplicationInterface>(
       },
       district: {
         type: String,
-        required: true,
+        default: Date.now,
       },
     },
     documents: {
@@ -103,6 +103,28 @@ const applicationSchema = new Schema<ApplicationInterface>(
           required: true,
         },
         uploadedAt: {
+          type: String,
+          default: Date.now,
+        },
+        filename: {
+          type: String,
+          required: true,
+        },
+      },
+      foodAuthorityCertificate: {
+        url: {
+          type: String,
+          required: true,
+        },
+        fileType: {
+          type: String,
+          required: true,
+        },
+        uploadedAt: {
+          type: String,
+          default: Date.now,
+        },
+        filename: {
           type: String,
           required: true,
         },
@@ -129,6 +151,10 @@ const applicationSchema = new Schema<ApplicationInterface>(
           required: true,
         },
         fileType: {
+          type: String,
+          required: true,
+        },
+        filename: {
           type: String,
           required: true,
         },

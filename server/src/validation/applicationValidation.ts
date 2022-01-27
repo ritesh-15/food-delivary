@@ -32,12 +32,10 @@ export const newAplicationValidation = Joi.object({
       applicantProof: Joi.object().required().keys({
         filename: Joi.string().required(),
         fileType: Joi.string().required(),
-        uploadedAt: Joi.date().required(),
       }),
       foodAuthorityCertificate: Joi.object().required().keys({
         filename: Joi.string().required(),
         fileType: Joi.string().required(),
-        uploadedAt: Joi.date().required(),
       }),
     }),
   images: Joi.array().items(

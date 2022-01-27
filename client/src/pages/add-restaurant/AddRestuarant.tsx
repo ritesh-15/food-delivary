@@ -149,8 +149,7 @@ export default function AddRestuarant() {
     formdata.append("file", file);
     try {
       const { data } = await uploadSingleFileApi(formdata);
-
-      return data.file;
+      return data.fileInfo;
     } catch (error) {}
   };
 
@@ -167,8 +166,17 @@ export default function AddRestuarant() {
       const foodCertificateFile = await uploadSingleDocument(foodCertificate);
 
       const restaurantData = {
-        restaurantInfo: values,
-        addressInfo,
+        isAgreed,
+        restaurantInfo: { ...values, foodType },
+        addressInfo: {
+          cordinates: addressInfo.cordinates,
+          country: addressInfo.country,
+          state: addressInfo.state,
+          pinCode: parseInt(addressInfo.pinCode),
+          placeName: addressInfo.placeName,
+          locality: addressInfo.placeName,
+          district: addressInfo.district,
+        },
         documents: {
           applicantProof: {
             filename: applicantProof.filename,
@@ -196,8 +204,7 @@ export default function AddRestuarant() {
       setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
-      // setMessage(error.response.data.error.message, true);
-      console.log(error.message);
+      setMessage(error.response.data.error.message, true);
     }
   };
 

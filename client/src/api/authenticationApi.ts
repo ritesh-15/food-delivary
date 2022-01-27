@@ -7,3 +7,5 @@ export const registerApi = (data: any) => api.post("/register", data);
 export const sendOtpApi = (data: any) => api.post("/send-otp", data);
 
 export const verifyOtpApi = (data: any) => api.post("/verify-otp", data);
+
+export const logOutApi = () => api.delete("/logout");

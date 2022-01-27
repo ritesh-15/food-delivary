@@ -7,6 +7,7 @@ export interface RestaurantInterface {
   restaurantID: string;
   updateAt: Date;
   userId: User;
+  isAgreed: boolean;
   status: string;
   restaurantInfo: {
     name: string;
@@ -30,13 +31,25 @@ export interface RestaurantInterface {
     pinCode: number;
     district: string;
   };
-  documents: [
-    {
-      nameOfDocument: string;
-      uploadStatus: boolean;
-      filePath: string;
-      uploadedAt: Date;
+  documents: {
+    applicantProof: {
       url: string;
+      fileType: string;
+      uploadedAt: Date;
+      filename: string;
+    };
+    foodAuthorityCertificate: {
+      url: string;
+      fileType: string;
+      uploadedAt: Date;
+      filename: string;
+    };
+  };
+  images: [
+    {
+      url: string;
+      fileType: string;
+      filename: string;
     }
   ];
   ratings?: [

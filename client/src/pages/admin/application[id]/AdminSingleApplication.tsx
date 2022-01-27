@@ -7,6 +7,7 @@ import {
   Image,
   MainContainer,
   MapContainer,
+  RejectionForm,
   SubTitle,
   Table,
   TableBody,
@@ -18,22 +19,36 @@ import {
   Wrapper,
 } from "./AdminSingleApplication.styled";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { useEffect, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, useEffect, useState } from "react";
 import Button from "../../../styles/Button";
-import { Map, SelectBox, ViewDocument } from "../../../components";
+import { Input, Map, SelectBox, ViewDocument } from "../../../components";
 import { ApplicationInterface } from "../../../interfaces/ApplicationInterface";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import {
   deleteApplicationApi,
   getApplication,
+  updateApplicationApi,
   updateApplicationStatusApi,
 } from "../../../api/applicationApi";
 import moment from "moment";
-import { useFetchLoading } from "../../../hooks";
+import { useFetchLoading, useForm } from "../../../hooks";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { rejectionFormValidation } from "../../../validations/application";
 
 // status change options
 const OPTIONS = ["accepted", "rejected"];
+
+interface CurrentfileInterface {
+  src: string;
+  fileType: string;
+  title: string;
+}
+
+// rejection form interface
+interface RejectionFormInterface {
+  reason: string;
+  message: string;
+}
 
 const AdminSingleApplication = () => {
   // hooks
@@ -44,8 +59,23 @@ const AdminSingleApplication = () => {
   // application state
   const [application, setApplication] = useState<ApplicationInterface>();
 
+  // rejection form initial state
+  const [initialState, setInitialState] = useState<RejectionFormInterface>({
+    reason: "",
+    message: "",
+  });
+
+  // handle change for rejction form
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setInitialState({ ...initialState, [name]: value });
+  };
+
+  // view document state
+  const [currentFile, setCurrentFile] = useState<CurrentfileInterface>();
+
   // application status state
-  const [status, setStatus] = useState("Accepted");
+  const [status, setStatus] = useState("pending");
 
   //get application data
   useEffect(() => {
@@ -58,6 +88,10 @@ const AdminSingleApplication = () => {
         if (data.ok) {
           setApplication(data.application);
           setStatus(data.application.status);
+          setInitialState({
+            reason: data.application.rejectionDetails.reason,
+            message: data.application.rejectionDetails.message,
+          });
         }
         setIsLoading(false);
       } catch (error) {
@@ -71,15 +105,18 @@ const AdminSingleApplication = () => {
   // update application status
   const updateApplicationStatus = async () => {
     if (!id) return;
+
     setIsLoading(true);
     try {
-      const { data } = await updateApplicationStatusApi(id, { status });
+      const { data } = await updateApplicationStatusApi(id, {
+        status,
+        rejectionDetails: { ...initialState },
+      });
       if (data.ok) {
         setApplication(data.application);
       }
       setIsLoading(false);
     } catch (error) {
-      console.log(error);
       setIsLoading(false);
     }
   };
@@ -99,17 +136,12 @@ const AdminSingleApplication = () => {
 
   return (
     <Wrapper>
-      {/* <ViewDocument
-        src="/acknowledgementSlip.pdf"
-        fileType="pdf"
-        title="Food certificate"
-      /> */}
+      {currentFile && (
+        <ViewDocument state={currentFile} changeState={setCurrentFile} />
+      )}
       <HeadingContainer>
         <Image>
-          <img
-            src="https://images.unsplash.com/photo-1642420805609-157d2f1a7f1e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-            alt=""
-          />
+          <img src={application?.images[0].url} alt="" />
         </Image>
         <Title status={application?.status}>
           <h1>{application?.restaurantInfo.name}</h1>
@@ -227,36 +259,56 @@ const AdminSingleApplication = () => {
         </Grid>
 
         <SubTitle>Documents uploaded</SubTitle>
-        <Table>
-          <TableHead>
-            <TR>
-              <TH>Document name</TH>
-              <TH>Action</TH>
-            </TR>
-          </TableHead>
-          <TableBody>
-            <TR>
-              <TD>
-                <p>Applicant identity proof</p>
-              </TD>
-              <TD>
-                <RemoveRedEyeIcon
-                  style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
-                />
-              </TD>
-            </TR>
-            <TR>
-              <TD>
-                <p>Food authority certificate</p>
-              </TD>
-              <TD>
-                <RemoveRedEyeIcon
-                  style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
-                />
-              </TD>
-            </TR>
-          </TableBody>
-        </Table>
+        {application && (
+          <Table>
+            <TableHead>
+              <TR>
+                <TH>Document name</TH>
+                <TH>Action</TH>
+              </TR>
+            </TableHead>
+            <TableBody>
+              <TR>
+                <TD>
+                  <p>Applicant identity proof</p>
+                </TD>
+                <TD>
+                  <RemoveRedEyeIcon
+                    style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
+                    onClick={() =>
+                      setCurrentFile({
+                        src: application?.documents.applicantProof.url,
+                        fileType:
+                          application?.documents.applicantProof.fileType,
+                        title: "Applicant Identity Proof",
+                      })
+                    }
+                  />
+                </TD>
+              </TR>
+              <TR>
+                <TD>
+                  <p>Food authority certificate</p>
+                </TD>
+                <TD>
+                  <RemoveRedEyeIcon
+                    style={{ color: "hsl(0,0%,40%)", cursor: "pointer" }}
+                    onClick={() =>
+                      setCurrentFile({
+                        src: application?.documents.foodAuthorityCertificate
+                          .url,
+                        fileType:
+                          application?.documents.foodAuthorityCertificate
+                            .fileType,
+                        title: "Food authority certificate",
+                      })
+                    }
+                  />
+                </TD>
+              </TR>
+            </TableBody>
+          </Table>
+        )}
       </MainContainer>
       {application?.status !== "accepted" && (
         <ActionSelectBox>
@@ -270,6 +322,24 @@ const AdminSingleApplication = () => {
             Save
           </Button>
         </ActionSelectBox>
+      )}
+      {status === "rejected" && (
+        <RejectionForm>
+          <Input
+            title="Reason of rejction"
+            value={initialState.reason}
+            onChange={handleChange}
+            name="reason"
+            type="text"
+          />
+          <Input
+            title="Message"
+            value={initialState.message}
+            onChange={handleChange}
+            name="message"
+            type="text"
+          />
+        </RejectionForm>
       )}
       <Actions>
         <Button hover onClick={deleteApplication}>

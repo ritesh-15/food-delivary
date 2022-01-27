@@ -88,30 +88,36 @@ const restaurantSchema = new Schema<RestaurantInterface>(
         required: true,
       },
     },
-    documents: [
-      {
-        nameOfDocument: {
-          type: String,
-          required: true,
-        },
-        uploadStatus: {
-          type: Boolean,
-          required: true,
-        },
-        filePath: {
-          type: String,
-          required: true,
-        },
-        uploadedAt: {
-          type: Date,
-          default: new Date(Date.now()),
-        },
+    documents: {
+      applicantProof: {
         url: {
           type: String,
           required: true,
         },
+        fileType: {
+          type: String,
+          required: true,
+        },
+        uploadedAt: {
+          type: String,
+          default: Date.now,
+        },
       },
-    ],
+      foodAuthorityCertificate: {
+        url: {
+          type: String,
+          required: true,
+        },
+        fileType: {
+          type: String,
+          required: true,
+        },
+        uploadedAt: {
+          type: String,
+          default: Date.now,
+        },
+      },
+    },
     ratings: [
       {
         userId: {
@@ -132,6 +138,18 @@ const restaurantSchema = new Schema<RestaurantInterface>(
         createdAt: {
           type: Date,
           default: () => new Date(Date.now()),
+        },
+      },
+    ],
+    images: [
+      {
+        url: {
+          type: String,
+          required: true,
+        },
+        fileType: {
+          type: String,
+          required: true,
         },
       },
     ],

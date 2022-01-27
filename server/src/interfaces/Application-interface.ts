@@ -36,17 +36,20 @@ export interface ApplicationInterface {
       url: string;
       fileType: string;
       uploadedAt: Date;
+      filename: string;
     };
     foodAuthorityCertificate: {
       url: string;
       fileType: string;
       uploadedAt: Date;
+      filename: string;
     };
   };
   images: [
     {
       url: string;
       fileType: string;
+      filename: string;
     }
   ];
   rejectionDetails?: {

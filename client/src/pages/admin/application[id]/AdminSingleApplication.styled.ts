@@ -170,12 +170,12 @@ export const TD = styled.td<Props>`
 
 export const MapContainer = styled.div`
   height: 350px;
-  margin-bottom: 1em;
 `;
 
 export const ActionSelectBox = styled.div`
   display: flex;
   align-items: center;
+  margin-top: 2em;
 
   button {
     background-color: ${({ theme }) => theme.colors.primary};
@@ -187,4 +187,11 @@ export const ActionSelectBox = styled.div`
     flex: 1;
     max-width: 200px;
   }
+`;
+
+export const RejectionForm = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2em;
+  margin-top: 2em;
 `;

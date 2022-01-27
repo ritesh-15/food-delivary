@@ -11,7 +11,7 @@ import Restaurant from "../models/restaurant-modal";
 import EmailService from "../services/EmailService";
 import { RestaurantInterface } from "../interfaces/Restaurant-interface";
 import User from "../models/user-model";
-import fs from "fs";
+import { unlink } from "fs/promises";
 import path from "path";
 
 interface NewApplicationBody {
@@ -41,17 +41,17 @@ interface NewApplicationBody {
   documents: {
     applicantProof: {
       filename: string;
-      type: string;
+      fileType: string;
     };
     foodAuthorityCertificate: {
       filename: string;
-      type: string;
+      fileType: string;
     };
   };
   images: [
     {
       filename: string;
-      type: string;
+      fileType: string;
     }
   ];
 }
@@ -78,25 +78,51 @@ class ApplicationController {
       documents,
     }: NewApplicationBody = req.body;
 
+    const currentUser: UserInterface = <UserInterface>req.user;
+
     try {
       await newAplicationValidation.validateAsync(req.body);
     } catch (error: any) {
-      console.log(error.message);
       return next(ErrorHandler.unProcessebleEntity());
     }
 
-    console.log(req.body);
-
     const newApplicationData = {
+      userId: currentUser._id,
       restaurantInfo,
       addressInfo,
       isAgreed,
-      restaurantId: `${new Date().getFullYear()}${Math.floor(Math.random())}`,
-      documents,
-      images,
+      restaurantID: `${new Date().getFullYear()}${Math.floor(
+        Math.random() * 1e10
+      )}`,
+      documents: {
+        applicantProof: {
+          url: `${APP_BASE_URL}/uploads/${documents.applicantProof.filename}`,
+          fileType: documents.applicantProof.fileType,
+          filename: documents.applicantProof.filename,
+        },
+        foodAuthorityCertificate: {
+          url: `${APP_BASE_URL}/uploads/${documents.foodAuthorityCertificate.filename}`,
+          fileType: documents.foodAuthorityCertificate.fileType,
+          filename: documents.foodAuthorityCertificate.filename,
+        },
+      },
+      images: images.map((img) => {
+        return {
+          url: `${APP_BASE_URL}/uploads/${img.filename}`,
+          fileType: img.fileType,
+          filename: img.filename,
+        };
+      }),
     };
 
     try {
+      const isApplicationAlreadyExists = await Application.findOne({
+        userId: currentUser._id,
+      });
+
+      if (isApplicationAlreadyExists)
+        return next(ErrorHandler.badRequest("Application already exists!"));
+
       const application = await Application.create(newApplicationData);
       return res.json({ ok: true, application });
     } catch (error) {
@@ -173,7 +199,7 @@ class ApplicationController {
 
       const updatedApplication = await Application.findOneAndUpdate(
         { _id: id },
-        { $set: body },
+        { $set: { ...body, status: "pending" } },
         { new: true }
       );
       return res.json({ ok: true, application: updatedApplication });
@@ -197,31 +223,44 @@ class ApplicationController {
       if (!foundApplication)
         return next(ErrorHandler.notFound("Application not found!"));
 
-      // foundApplication.documents.map((doc) => {
-      //   fs.unlink(`${path.join(__dirname, doc.filePath)}`, (error) =>
-      //     console.log(error)
-      //   );
-      // });
+      foundApplication.images.map(async (image) => {
+        await unlink(path.join(__dirname, `../uploads/${image.filename}`));
+      });
+
+      await unlink(
+        path.join(
+          __dirname,
+          `../uploads/${foundApplication.documents.applicantProof.filename}`
+        )
+      );
+
+      await unlink(
+        path.join(
+          __dirname,
+          `../uploads/${foundApplication.documents.foodAuthorityCertificate.filename}`
+        )
+      );
 
       await Application.deleteOne({ _id: id });
 
       return res.json({ ok: true, deleted: true });
     } catch (error) {
+      console.log(error);
       return next(ErrorHandler.serverError());
     }
   }
 
+  // admin route
   static async updateStatus(req: Request, res: Response, next: NextFunction) {
     const { id } = req.params;
-    const { status }: { status: string } = req.body;
-    const currentUser: UserInterface = <UserInterface>req.user;
+    const { status, rejectionDetails } = req.body;
 
     if (!id) return next(ErrorHandler.badRequest("Id not found!"));
 
     if (!status) return next(ErrorHandler.unProcessebleEntity());
 
     try {
-      const application = await Application.findOne({ _id: id });
+      let application = await Application.findOne({ _id: id });
 
       if (!application)
         return next(ErrorHandler.notFound("Application not found!"));
@@ -231,14 +270,21 @@ class ApplicationController {
           ErrorHandler.badRequest("Application is already accepted!")
         );
 
-      application.status = status;
+      application = await Application.findOneAndUpdate(
+        { _id: application._id },
+        {
+          $set: req.body,
+        },
+        { new: true }
+      );
 
-      await application.save();
+      if (!application)
+        return next(ErrorHandler.notFound("Application not found!"));
 
       if (application.status === "accepted") {
         // create new restaurant here
         const isRestaurantFound = await Restaurant.findOne({
-          userId: currentUser._id,
+          userId: application.userId,
         });
 
         if (isRestaurantFound)
@@ -248,7 +294,7 @@ class ApplicationController {
           restaurantInfo: application.restaurantInfo,
           addressInfo: application.addressInfo,
           documents: application.documents,
-          userId: currentUser._id,
+          userId: application.userId,
           status: "active",
           restaurantID: application.restaurantID,
         };
@@ -258,8 +304,8 @@ class ApplicationController {
         ).populate("userId");
 
         // update the user
-        await User.findOneAndUpdate(
-          { _id: currentUser._id },
+        await User.updateOne(
+          { _id: application.userId },
           {
             $set: {
               isRestaurantOwner: true,
