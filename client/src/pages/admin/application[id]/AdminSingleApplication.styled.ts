@@ -112,12 +112,11 @@ export const Actions = styled.div`
   button {
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
+    display: flex;
+    align-items: center;
 
-    &:last-child {
-      border: 1px solid ${({ theme }) => theme.colors.primary};
-      color: ${({ theme }) => theme.colors.primary};
-      background: transparent;
-      margin-left: 1rem;
+    span {
+      margin-left: 0.5em;
     }
   }
 `;
@@ -130,6 +129,7 @@ export const Table = styled.table`
   border-radius: 0.25em;
   width: 100%;
   text-align: left;
+  margin-bottom: 1em;
 `;
 
 export const TableHead = styled.thead`
@@ -171,4 +171,20 @@ export const TD = styled.td<Props>`
 export const MapContainer = styled.div`
   height: 350px;
   margin-bottom: 1em;
+`;
+
+export const ActionSelectBox = styled.div`
+  display: flex;
+  align-items: center;
+
+  button {
+    background-color: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+    margin-left: 1em;
+  }
+
+  div {
+    flex: 1;
+    max-width: 200px;
+  }
 `;

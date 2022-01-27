@@ -30,9 +30,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 passportJwt(passport);
 
-app.use(
-  morgan(":method :url :status :res[content-length] - :response-time ms")
-);
+app.use(morgan("dev"));
 
 app.use(
   rateLimit({

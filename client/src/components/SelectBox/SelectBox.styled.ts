@@ -36,6 +36,7 @@ export const OptionsContainer = styled.div<OptionContainerProps>`
   visibility: ${({ active }) => (!active ? "hidden" : "auto")};
   transition: opacity 0.3s ease;
   opacity: ${({ active }) => (!active ? "0" : "1")};
+  top: 0;
 
   div {
     padding: 1em;
@@ -51,6 +52,7 @@ export const OptionsContainer = styled.div<OptionContainerProps>`
       outline: none;
       width: 100%;
       height: 100%;
+      cursor: pointer;
       background: transparent;
       color: ${({ theme }) => theme.colors.textLight};
     }

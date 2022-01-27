@@ -27,11 +27,16 @@ import {
   useForm,
   useMessage,
   useSuccessModal,
+  useUser,
 } from "../../hooks";
 import { newApplicationValidation } from "../../validations/application";
 import axios from "axios";
-import { uploadMultipleFile } from "../../api/uploadDocumentApi";
+import {
+  uploadMultipleFile,
+  uploadSingleFileApi,
+} from "../../api/uploadDocumentApi";
 import { newApplicationApi } from "../../api/applicationApi";
+import { useNavigate } from "react-router-dom";
 
 const FOOD_TYPE = ["Vegiterian", "Non vegeterian", "Both"];
 
@@ -56,12 +61,15 @@ const initialState: ApplicationState = {
 };
 
 export default function AddRestuarant() {
-  const [isSubmited, setIsSubmited] = useState<boolean>(false);
-  const [foodType, setFoodType] = useState<string>("");
-  const [isAgreed, setIsAgreed] = useState<boolean>(false);
+  // hooks
   const { setIsLoading } = useFetchLoading();
   const { setMessage } = useMessage();
   const { setSuccessModal } = useSuccessModal();
+  const { user } = useUser();
+  const navigate = useNavigate();
+
+  const [foodType, setFoodType] = useState<string>("");
+  const [isAgreed, setIsAgreed] = useState<boolean>(false);
 
   const [cordinates, setCordinates] = useState<number[]>();
   const [addressInfo, setAddressInfo] = useState({
@@ -82,9 +90,9 @@ export default function AddRestuarant() {
   };
 
   // documents state
-  const [restaurantImage, setRestaurantImage] = useState<File | string>("");
-  const [identityProof, setIdentityProof] = useState<File | string>("");
-  const [foodCertificate, setFoodCetificate] = useState<File | string>("");
+  const [identityProof, setIdentityProof] = useState<File>();
+  const [foodCertificate, setFoodCetificate] = useState<File>();
+  const [restaurantImage, setRestaurantImage] = useState<File>();
 
   const setDocument = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
@@ -93,13 +101,11 @@ export default function AddRestuarant() {
 
     const file = files[0];
 
-    if (name === "restaurantImage") {
-      setRestaurantImage(file);
-    } else if (name === "identityProof") {
-      setIdentityProof(file);
-    } else if (name === "foodCertificate") {
-      setFoodCetificate(file);
-    }
+    if (name === "restaurantImage") return setRestaurantImage(file);
+
+    if (name === "identityProof") return setIdentityProof(file);
+
+    if (name === "foodCertificate") return setFoodCetificate(file);
   };
 
   // get the cordinates from the map
@@ -137,62 +143,61 @@ export default function AddRestuarant() {
     getUserLocation();
   }, [cordinates]);
 
-  // upload the documents
-  const uploadDocuments = async () => {
+  // upload the document
+  const uploadSingleDocument = async (file: File) => {
     const formdata = new FormData();
-
-    formdata.append("file", restaurantImage);
-    formdata.append("file", identityProof);
-    formdata.append("file", foodCertificate);
-
+    formdata.append("file", file);
     try {
-      const { data } = await uploadMultipleFile(formdata);
-      return data.files;
-    } catch (error: any) {}
+      const { data } = await uploadSingleFileApi(formdata);
+
+      return data.file;
+    } catch (error) {}
   };
 
+  // create new applicaion
   const createNewApplication = async (values: ApplicationState) => {
-    if (!restaurantImage || !identityProof || !foodCertificate || !foodType)
+    if (!identityProof || !restaurantImage || !foodCertificate || !foodType)
       return setMessage("All fields are required!", true);
 
     setIsLoading(true);
 
     try {
-      const files: any = await uploadDocuments();
-      const sendData = {
-        restaurantInfo: { ...values, foodType },
-        addressInfo: {
-          cordinates: {
-            lat: addressInfo.cordinates.lat,
-            lng: addressInfo.cordinates.lng,
+      const restaurantImageFile = await uploadSingleDocument(restaurantImage);
+      const applicantProof = await uploadSingleDocument(identityProof);
+      const foodCertificateFile = await uploadSingleDocument(foodCertificate);
+
+      const restaurantData = {
+        restaurantInfo: values,
+        addressInfo,
+        documents: {
+          applicantProof: {
+            filename: applicantProof.filename,
+            fileType: applicantProof.type,
           },
-          placeName: addressInfo.placeName,
-          country: addressInfo.country,
-          state: addressInfo.state,
-          district: addressInfo.district,
-          locality: addressInfo.locality,
-          pinCode: parseInt(addressInfo.pinCode),
+          foodAuthorityCertificate: {
+            filename: foodCertificateFile.filename,
+            fileType: foodCertificateFile.type,
+          },
         },
-        isAgreed,
-        documents: files.map((file: any) => {
-          return {
-            filename: file.filename,
-            destination: file.destination,
-            nameOfDocuement: file.originalname,
-            filepath: file.filename,
-          };
-        }),
+        images: [
+          {
+            filename: restaurantImageFile.filename,
+            fileType: restaurantImageFile.type,
+          },
+        ],
       };
 
-      const { data } = await newApplicationApi(sendData);
+      const { data } = await newApplicationApi(restaurantData);
 
       if (data.ok) {
         setSuccessModal("Application has been submited successfully!");
+        navigate("/application");
       }
       setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
-      setMessage(error.response.data.error.message, true);
+      // setMessage(error.response.data.error.message, true);
+      console.log(error.message);
     }
   };
 
@@ -205,10 +210,9 @@ export default function AddRestuarant() {
   return (
     <Wrapper>
       <Container>
-        {isSubmited && <AddRestaurantModal />}
         <AddRestaurantContainer>
           <Heading>
-            <h1>Hey, Ritesh welcome to foodies application portal !</h1>
+            <h1>Hey, {user?.name} welcome to foodies application portal !</h1>
             <p>
               Please complete the following steps to complete the application
               process.
@@ -330,7 +334,7 @@ export default function AddRestuarant() {
                 <TableBody>
                   <TR>
                     <TD>
-                      <p>Image of restaurant</p>
+                      <p>Images of restaurant</p>
                     </TD>
                     <TD status={!restaurantImage ? "Missing" : "Uploaded"}>
                       <small>
@@ -342,7 +346,7 @@ export default function AddRestuarant() {
                         <CheckCircleIcon />
                       ) : (
                         <>
-                          <label htmlFor="file">
+                          <label htmlFor="image">
                             <CloudUploadIcon
                               style={{
                                 color: "hsl(0,0%,50%)",
@@ -354,7 +358,7 @@ export default function AddRestuarant() {
                             name="restaurantImage"
                             onChange={setDocument}
                             type="file"
-                            id="file"
+                            id="image"
                           />
                         </>
                       )}
@@ -374,7 +378,7 @@ export default function AddRestuarant() {
                         <CheckCircleIcon />
                       ) : (
                         <>
-                          <label htmlFor="file">
+                          <label htmlFor="identityProof">
                             <CloudUploadIcon
                               style={{
                                 color: "hsl(0,0%,50%)",
@@ -386,7 +390,7 @@ export default function AddRestuarant() {
                             name="identityProof"
                             onChange={setDocument}
                             type="file"
-                            id="file"
+                            id="identityProof"
                           />
                         </>
                       )}
@@ -406,7 +410,7 @@ export default function AddRestuarant() {
                         <CheckCircleIcon />
                       ) : (
                         <>
-                          <label htmlFor="file">
+                          <label htmlFor="foodCertificate">
                             <CloudUploadIcon
                               style={{
                                 color: "hsl(0,0%,50%)",
@@ -418,7 +422,7 @@ export default function AddRestuarant() {
                             name="foodCertificate"
                             onChange={setDocument}
                             type="file"
-                            id="file"
+                            id="foodCertificate"
                           />
                         </>
                       )}

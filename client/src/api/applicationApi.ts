@@ -12,3 +12,6 @@ export const deleteApplicationApi = (id: string) =>
   api.delete(`/application?id=${id}`);
 
 export const getAllApplicationApi = () => api.get("/applications");
+
+export const updateApplicationStatusApi = (id: string, data: any) =>
+  api.put(`/application/update-status/${id}`, data);

@@ -30,13 +30,22 @@ export interface ApplicationInterface {
     pinCode: number;
     district: string;
   };
-  documents: [
-    {
-      nameOfDocument: string;
-      uploadStatus: boolean;
-      filePath: string;
-      uploadedAt: Date;
+  documents: {
+    applicantProof: {
       url: string;
+      fileType: string;
+      uploadedAt: Date;
+    };
+    foodAuthorityCertificate: {
+      url: string;
+      fileType: string;
+      uploadedAt: Date;
+    };
+  };
+  images: [
+    {
+      url: string;
+      fileType: string;
     }
   ];
   rejectionDetails?: {

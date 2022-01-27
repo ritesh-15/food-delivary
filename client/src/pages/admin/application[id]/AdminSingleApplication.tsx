@@ -1,5 +1,6 @@
 import {
   Actions,
+  ActionSelectBox,
   FormControl,
   Grid,
   HeadingContainer,
@@ -19,41 +20,82 @@ import {
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useEffect, useState } from "react";
 import Button from "../../../styles/Button";
-import { Map, ViewDocument } from "../../../components";
+import { Map, SelectBox, ViewDocument } from "../../../components";
 import { ApplicationInterface } from "../../../interfaces/ApplicationInterface";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import {
-  getAllApplicationApi,
+  deleteApplicationApi,
   getApplication,
+  updateApplicationStatusApi,
 } from "../../../api/applicationApi";
 import moment from "moment";
+import { useFetchLoading } from "../../../hooks";
+import DeleteIcon from "@mui/icons-material/Delete";
+
+// status change options
+const OPTIONS = ["accepted", "rejected"];
 
 const AdminSingleApplication = () => {
   // hooks
   const { id }: Readonly<Params<string>> = useParams();
-
-  const [status, setStatus] = useState("Accepted");
+  const { setIsLoading } = useFetchLoading();
+  const navigate = useNavigate();
 
   // application state
   const [application, setApplication] = useState<ApplicationInterface>();
+
+  // application status state
+  const [status, setStatus] = useState("Accepted");
 
   //get application data
   useEffect(() => {
     if (!id) return;
 
-    console.log(id);
-
+    setIsLoading(true);
     const getApplicationDetails = async () => {
       try {
         const { data } = await getApplication(id);
         if (data.ok) {
           setApplication(data.application);
+          setStatus(data.application.status);
         }
-      } catch (error) {}
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
     };
 
     getApplicationDetails();
   }, [id]);
+
+  // update application status
+  const updateApplicationStatus = async () => {
+    if (!id) return;
+    setIsLoading(true);
+    try {
+      const { data } = await updateApplicationStatusApi(id, { status });
+      if (data.ok) {
+        setApplication(data.application);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+
+  // delete application
+  const deleteApplication = async () => {
+    if (!id) return;
+    setIsLoading(true);
+    try {
+      await deleteApplicationApi(id);
+      setIsLoading(false);
+      navigate("/admin/applications");
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Wrapper>
@@ -216,9 +258,24 @@ const AdminSingleApplication = () => {
           </TableBody>
         </Table>
       </MainContainer>
+      {application?.status !== "accepted" && (
+        <ActionSelectBox>
+          <SelectBox
+            label="Select action"
+            options={OPTIONS}
+            current={status}
+            changeCurrent={setStatus}
+          />
+          <Button hover onClick={updateApplicationStatus}>
+            Save
+          </Button>
+        </ActionSelectBox>
+      )}
       <Actions>
-        <Button hover>Accept</Button>
-        <Button>Reject</Button>
+        <Button hover onClick={deleteApplication}>
+          <DeleteIcon />
+          <span>Delete Application</span>
+        </Button>
       </Actions>
     </Wrapper>
   );

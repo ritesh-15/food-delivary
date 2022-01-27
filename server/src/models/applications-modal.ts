@@ -11,7 +11,7 @@ const applicationSchema = new Schema<ApplicationInterface>(
     },
     status: {
       type: String,
-      required: true,
+      default: "pending",
     },
     restaurantID: {
       type: String,
@@ -92,30 +92,22 @@ const applicationSchema = new Schema<ApplicationInterface>(
         required: true,
       },
     },
-    documents: [
-      {
-        nameOfDocument: {
-          type: String,
-          required: true,
-        },
-        uploadStatus: {
-          type: Boolean,
-          required: true,
-        },
-        filePath: {
-          type: String,
-          required: true,
-        },
-        uploadedAt: {
-          type: Date,
-          default: new Date(Date.now()),
-        },
+    documents: {
+      applicantProof: {
         url: {
           type: String,
           required: true,
         },
+        fileType: {
+          type: String,
+          required: true,
+        },
+        uploadedAt: {
+          type: String,
+          required: true,
+        },
       },
-    ],
+    },
     rejectionDetails: {
       message: {
         type: String,
@@ -130,6 +122,18 @@ const applicationSchema = new Schema<ApplicationInterface>(
         default: () => new Date(Date.now()),
       },
     },
+    images: [
+      {
+        url: {
+          type: String,
+          required: true,
+        },
+        fileType: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
