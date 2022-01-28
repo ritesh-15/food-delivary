@@ -3,6 +3,8 @@ import { PassportStatic } from "passport";
 import { Strategy } from "passport-jwt";
 import { ACCESS_TOKEN_SECRET } from "../keys/secrets";
 import User from "../models/user-model";
+import fs from "fs";
+import path from "path";
 
 const extractCookie = (req: Request) => {
   let jwt = null;
@@ -13,11 +15,13 @@ const extractCookie = (req: Request) => {
 };
 
 export const passportJwt = (passport: PassportStatic) => {
+  const publicKey = fs.readFileSync(path.join(__dirname, "../keys/public.pem"));
   passport.use(
     new Strategy(
       {
         jwtFromRequest: extractCookie,
-        secretOrKey: ACCESS_TOKEN_SECRET,
+        secretOrKey: publicKey,
+        algorithms: ["RS256"],
       },
       async (payload, done) => {
         try {

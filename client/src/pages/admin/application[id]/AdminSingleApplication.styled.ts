@@ -175,7 +175,7 @@ export const MapContainer = styled.div`
 export const ActionSelectBox = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 2em;
+  margin: 1em 0;
 
   button {
     background-color: ${({ theme }) => theme.colors.primary};
@@ -193,5 +193,5 @@ export const RejectionForm = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 2em;
-  margin-top: 2em;
+  margin: 2em 0;
 `;

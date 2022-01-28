@@ -1,6 +1,6 @@
 import { UserInterface } from "./UserInterface";
 
-export interface ApplicationInterface {
+export interface RestaurantInterface {
   _id: string;
   createdAt: Date;
   restaurantID: string;
@@ -49,9 +49,12 @@ export interface ApplicationInterface {
     fileType: string;
     filename: string;
   };
-  rejectionDetails?: {
-    reason: string;
-    message: string;
-    geneteatedAt: Date;
-  };
+  ratings?: [
+    {
+      userId: string;
+      ratings: number;
+      review: string;
+      createdAt: Date;
+    }
+  ];
 }

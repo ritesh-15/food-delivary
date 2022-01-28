@@ -1,4 +1,9 @@
-import { Dashboard, ShoppingBag, ShoppingCart } from "@mui/icons-material";
+import {
+  Dashboard,
+  ShoppingBag,
+  ShoppingCart,
+  Home,
+} from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { RootState } from "../../app/store";
@@ -44,6 +49,15 @@ const RestaurantSidebar = () => {
           <li>
             <ShoppingCart />
             <span>Orders</span>
+          </li>
+        </NavLink>
+        <NavLink
+          style={({ isActive }) => (isActive ? activeStyle : notActiveStyle)}
+          to="/admin/restaurant/details"
+        >
+          <li>
+            <Home />
+            <span>Details</span>
           </li>
         </NavLink>
       </Menu>

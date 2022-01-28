@@ -4,6 +4,7 @@ import RestaurantProduct from "./product[id]/RestaurantProduct";
 import NewProduct from "./product-new/NewProduct";
 import RestaurantOrders from "./orders/RestaurantOrders";
 import RestaurantSingleOrder from "./order[id]/RestaurantSingleOrder";
+import RestaurantDetails from "./restaurant-details/RestaurantDetails";
 
 export {
   RestaurantDashboard,
@@ -12,4 +13,5 @@ export {
   NewProduct,
   RestaurantOrders,
   RestaurantSingleOrder,
+  RestaurantDetails,
 };

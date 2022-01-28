@@ -3,7 +3,10 @@ import { api } from "./axios";
 export const newApplicationApi = (data: any) =>
   api.post("/application/new", data);
 
-export const getApplication = (id?: string) => api.get(`/application?id=${id}`);
+export const getApplication = (id?: string) => {
+  if (id) return api.get(`/application?id=${id}`);
+  return api.get("/application");
+};
 
 export const updateApplicationApi = (data: any, id: string) =>
   api.put(`/application?id=${id}`, data);

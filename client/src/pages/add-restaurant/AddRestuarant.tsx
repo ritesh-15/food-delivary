@@ -31,10 +31,7 @@ import {
 } from "../../hooks";
 import { newApplicationValidation } from "../../validations/application";
 import axios from "axios";
-import {
-  uploadMultipleFile,
-  uploadSingleFileApi,
-} from "../../api/uploadDocumentApi";
+import { uploadSingleFileApi } from "../../api/uploadDocumentApi";
 import { newApplicationApi } from "../../api/applicationApi";
 import { useNavigate } from "react-router-dom";
 
@@ -118,6 +115,9 @@ export default function AddRestuarant() {
 
       const location = data.features[0];
 
+      if (!location)
+        return setMessage("Location not found please choose again!");
+
       setAddressInfo(() => {
         return {
           placeName: location?.place_name,
@@ -187,12 +187,10 @@ export default function AddRestuarant() {
             fileType: foodCertificateFile.type,
           },
         },
-        images: [
-          {
-            filename: restaurantImageFile.filename,
-            fileType: restaurantImageFile.type,
-          },
-        ],
+        images: {
+          filename: restaurantImageFile.filename,
+          fileType: restaurantImageFile.type,
+        },
       };
 
       const { data } = await newApplicationApi(restaurantData);

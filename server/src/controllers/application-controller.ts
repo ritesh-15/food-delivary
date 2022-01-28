@@ -48,12 +48,10 @@ interface NewApplicationBody {
       fileType: string;
     };
   };
-  images: [
-    {
-      filename: string;
-      fileType: string;
-    }
-  ];
+  images: {
+    filename: string;
+    fileType: string;
+  };
 }
 
 interface UpdateApplicationInterface {
@@ -68,6 +66,7 @@ interface UpdateApplicationInterface {
     number?: number;
   };
 }
+
 class ApplicationController {
   static async newApplication(req: Request, res: Response, next: NextFunction) {
     const {
@@ -106,13 +105,11 @@ class ApplicationController {
           filename: documents.foodAuthorityCertificate.filename,
         },
       },
-      images: images.map((img) => {
-        return {
-          url: `${APP_BASE_URL}/uploads/${img.filename}`,
-          fileType: img.fileType,
-          filename: img.filename,
-        };
-      }),
+      images: {
+        url: `${APP_BASE_URL}/uploads/${images.filename}`,
+        filename: images.filename,
+        fileType: images.fileType,
+      },
     };
 
     try {
@@ -142,7 +139,7 @@ class ApplicationController {
     try {
       let application;
 
-      if (id !== "undefined") {
+      if (id) {
         application = await Application.findById(id).populate("userId");
       } else {
         application = await Application.findOne({
@@ -201,7 +198,7 @@ class ApplicationController {
         { _id: id },
         { $set: { ...body, status: "pending" } },
         { new: true }
-      );
+      ).populate("userId");
       return res.json({ ok: true, application: updatedApplication });
     } catch (error: any) {
       return next(ErrorHandler.serverError());
@@ -223,9 +220,17 @@ class ApplicationController {
       if (!foundApplication)
         return next(ErrorHandler.notFound("Application not found!"));
 
-      foundApplication.images.map(async (image) => {
-        await unlink(path.join(__dirname, `../uploads/${image.filename}`));
-      });
+      const user = await User.findOne({ _id: foundApplication.userId });
+
+      if (!user) return next(ErrorHandler.notFound("User not found!"));
+
+      user.isRestaurantOwner = false;
+
+      await user.save();
+
+      await unlink(
+        path.join(__dirname, `../uploads/${foundApplication.images.filename}`)
+      );
 
       await unlink(
         path.join(
@@ -270,25 +275,26 @@ class ApplicationController {
           ErrorHandler.badRequest("Application is already accepted!")
         );
 
+      const isRestaurantFound = await Restaurant.findOne({
+        userId: application.userId,
+      });
+
+      if (isRestaurantFound)
+        return next(ErrorHandler.badRequest("Restaurant already exists!"));
+
       application = await Application.findOneAndUpdate(
         { _id: application._id },
         {
           $set: req.body,
         },
         { new: true }
-      );
+      ).populate("userId");
 
       if (!application)
         return next(ErrorHandler.notFound("Application not found!"));
 
       if (application.status === "accepted") {
         // create new restaurant here
-        const isRestaurantFound = await Restaurant.findOne({
-          userId: application.userId,
-        });
-
-        if (isRestaurantFound)
-          return next(ErrorHandler.badRequest("Restaurant already exists!"));
 
         const newRestaurantData = {
           restaurantInfo: application.restaurantInfo,
@@ -297,6 +303,11 @@ class ApplicationController {
           userId: application.userId,
           status: "active",
           restaurantID: application.restaurantID,
+          images: {
+            filename: application.images.filename,
+            fileType: application.images.fileType,
+            url: `${APP_BASE_URL}/uploads/${application.images.filename}`,
+          },
         };
 
         const restaurant: RestaurantInterface = await (
@@ -329,6 +340,8 @@ class ApplicationController {
 
       return res.json({ ok: true, application });
     } catch (error) {
+      console.log(error);
+
       return next(ErrorHandler.serverError());
     }
   }

@@ -31,7 +31,12 @@ import {
   updateApplicationStatusApi,
 } from "../../../api/applicationApi";
 import moment from "moment";
-import { useFetchLoading, useForm } from "../../../hooks";
+import {
+  useFetchLoading,
+  useForm,
+  useMessage,
+  useSocket,
+} from "../../../hooks";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { rejectionFormValidation } from "../../../validations/application";
 
@@ -55,6 +60,12 @@ const AdminSingleApplication = () => {
   const { id }: Readonly<Params<string>> = useParams();
   const { setIsLoading } = useFetchLoading();
   const navigate = useNavigate();
+  const { setMessage } = useMessage();
+  const socket = useSocket();
+
+  useEffect(() => {
+    socket?.emit("join-application", id);
+  }, [socket, id]);
 
   // application state
   const [application, setApplication] = useState<ApplicationInterface>();
@@ -70,6 +81,17 @@ const AdminSingleApplication = () => {
     const { name, value } = e.target;
     setInitialState({ ...initialState, [name]: value });
   };
+
+  // listen the updated application and update the state of application
+  useEffect(() => {
+    socket?.on("updated-application", (data: ApplicationInterface) => {
+      setApplication(data);
+    });
+
+    return () => {
+      socket?.off();
+    };
+  }, [socket]);
 
   // view document state
   const [currentFile, setCurrentFile] = useState<CurrentfileInterface>();
@@ -106,6 +128,12 @@ const AdminSingleApplication = () => {
   const updateApplicationStatus = async () => {
     if (!id) return;
 
+    if (
+      status === "rejected" &&
+      (!initialState.message || !initialState.reason)
+    )
+      return setMessage("Rejection reason and message is required!");
+
     setIsLoading(true);
     try {
       const { data } = await updateApplicationStatusApi(id, {
@@ -114,6 +142,8 @@ const AdminSingleApplication = () => {
       });
       if (data.ok) {
         setApplication(data.application);
+        setMessage("Application updated suceessfully!");
+        socket?.emit("update-application", data.application);
       }
       setIsLoading(false);
     } catch (error) {
@@ -128,6 +158,7 @@ const AdminSingleApplication = () => {
     try {
       await deleteApplicationApi(id);
       setIsLoading(false);
+      setMessage("Application deleted suceessfully!");
       navigate("/admin/applications");
     } catch (error) {
       setIsLoading(false);
@@ -141,7 +172,7 @@ const AdminSingleApplication = () => {
       )}
       <HeadingContainer>
         <Image>
-          <img src={application?.images[0].url} alt="" />
+          <img src={application?.images.url} alt="" />
         </Image>
         <Title status={application?.status}>
           <h1>{application?.restaurantInfo.name}</h1>
@@ -151,6 +182,40 @@ const AdminSingleApplication = () => {
         </Title>
       </HeadingContainer>
       <MainContainer>
+        <SubTitle>Application action</SubTitle>
+        {application?.status !== "accepted" && (
+          <ActionSelectBox>
+            <SelectBox
+              label="Select action"
+              options={OPTIONS}
+              current={status}
+              changeCurrent={setStatus}
+            />
+            <Button hover onClick={updateApplicationStatus}>
+              Save And Process
+            </Button>
+          </ActionSelectBox>
+        )}
+
+        {status === "rejected" && (
+          <RejectionForm>
+            <Input
+              title="Reason of rejction"
+              value={initialState.reason}
+              onChange={handleChange}
+              name="reason"
+              type="text"
+            />
+            <Input
+              title="Message"
+              value={initialState.message}
+              onChange={handleChange}
+              name="message"
+              type="text"
+            />
+          </RejectionForm>
+        )}
+
         <SubTitle>Application Details</SubTitle>
         <Grid>
           <FormControl>
@@ -310,39 +375,8 @@ const AdminSingleApplication = () => {
           </Table>
         )}
       </MainContainer>
-      {application?.status !== "accepted" && (
-        <ActionSelectBox>
-          <SelectBox
-            label="Select action"
-            options={OPTIONS}
-            current={status}
-            changeCurrent={setStatus}
-          />
-          <Button hover onClick={updateApplicationStatus}>
-            Save
-          </Button>
-        </ActionSelectBox>
-      )}
-      {status === "rejected" && (
-        <RejectionForm>
-          <Input
-            title="Reason of rejction"
-            value={initialState.reason}
-            onChange={handleChange}
-            name="reason"
-            type="text"
-          />
-          <Input
-            title="Message"
-            value={initialState.message}
-            onChange={handleChange}
-            name="message"
-            type="text"
-          />
-        </RejectionForm>
-      )}
       <Actions>
-        <Button hover onClick={deleteApplication}>
+        <Button onClick={deleteApplication} hover>
           <DeleteIcon />
           <span>Delete Application</span>
         </Button>

@@ -14,6 +14,8 @@ import uploadRouter from "./routes/uploadfile-routes";
 import path from "path";
 import morgan from "morgan";
 import userRouter from "./routes/user-routes";
+import { Server } from "socket.io";
+import restaurantsRouter from "./routes/restaurants-routes";
 
 const app = express();
 
@@ -66,6 +68,8 @@ app.use(URL_START, uploadRouter);
 
 app.use(`${URL_START}/user`, userRouter);
 
+app.use(URL_START, restaurantsRouter);
+
 // error handler
 
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -74,4 +78,22 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+const server = app.listen(PORT, () =>
+  console.log(`Server listening on port ${PORT}`)
+);
+
+const io = new Server(server, {
+  cors: { origin: "http://localhost:3000", credentials: true },
+});
+
+io.on("connection", (socket) => {
+  console.log("User Connected");
+
+  socket.on("join-application", (id: string) => {
+    socket.join(id);
+
+    socket.on("update-application", (data: any) => {
+      io.to(id).emit("updated-application", data);
+    });
+  });
+});

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Actions,
   FormControl,
@@ -10,6 +10,8 @@ import {
   SubTitle,
   Title,
   Wrapper,
+  MapContainer,
+  ActionSelectBox,
 } from "./AdminRestaurantSingle.styled";
 import { Line } from "react-chartjs-2";
 import {
@@ -24,6 +26,12 @@ import {
 } from "chart.js";
 import Button from "../../../styles/Button";
 import { Block, DeleteOutlineOutlined } from "@mui/icons-material";
+import { useParams } from "react-router-dom";
+import RestaurantApi from "../../../api/restaurantApi";
+import { useFetchLoading } from "../../../hooks";
+import { RestaurantInterface } from "../../../interfaces/RestaurantInterface";
+import moment from "moment";
+import { Map, SelectBox } from "../../../components";
 
 ChartJS.register(
   CategoryScale,
@@ -35,8 +43,51 @@ ChartJS.register(
   BarElement
 );
 
+const OPTIONS = ["active", "suspended"];
+
 const AdminRestaurantSingle = () => {
-  const [status, setStatus] = useState("active");
+  // hooks
+  const { id } = useParams();
+  const { setIsLoading } = useFetchLoading();
+
+  // status
+  const [status, setStatus] = useState<string>("");
+
+  // restaurant state
+  const [restaurant, setRestaurant] = useState<RestaurantInterface>();
+
+  const deleteRestaurant = async () => {
+    if (!id) return;
+
+    setIsLoading(true);
+    try {
+      const { data } = await RestaurantApi.deleteRestaurant(id);
+      console.log(data);
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!id) return;
+
+    const getRestaurantDetails = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await RestaurantApi.getSingleRestaurant(id);
+        if (data.ok) {
+          setRestaurant(data.restaurant);
+          setStatus(data.restaurant.status);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
+    };
+
+    getRestaurantDetails();
+  }, [id]);
 
   const data = {
     labels: [
@@ -82,101 +133,128 @@ const AdminRestaurantSingle = () => {
     <Wrapper>
       <HeadingContainer>
         <Image>
-          <img
-            src="https://images.unsplash.com/photo-1642420805609-157d2f1a7f1e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxNXx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"
-            alt=""
-          />
+          <img src={restaurant?.images.url} alt="" />
         </Image>
-        <Title status={status}>
-          <h1>PK Biryani House</h1>
-          <p>Biryani, Maharashtrian, Malwani, Mughlai</p>
-          <span>Swargate, Pune</span>
-          <small>Active</small>
+        <Title status={restaurant?.status}>
+          <h1>{restaurant?.restaurantInfo.name}</h1>
+          <p>{restaurant?.restaurantInfo.famousFor}</p>
+          <span>{restaurant?.addressInfo.placeName}</span>
+          <small>{restaurant?.status}</small>
         </Title>
       </HeadingContainer>
+      <ActionSelectBox>
+        <SelectBox
+          label="Select action"
+          options={OPTIONS}
+          current={status}
+          changeCurrent={setStatus}
+        />
+        <Button hover>Save And Process</Button>
+      </ActionSelectBox>
       <MainContainer>
         <SubTitle>Basic information</SubTitle>
         <Grid>
           <FormControl>
             <h1>Restaurant ID</h1>
-            <p>4789561236</p>
+            <p>{restaurant?.restaurantID}</p>
           </FormControl>
           <FormControl>
             <h1>Registration Date</h1>
-            <p>11-02-2003</p>
+            <p>
+              {restaurant &&
+                moment(restaurant.createdAt).format("DD MMMM YYYY")}
+            </p>
           </FormControl>
           <FormControl>
             <h1>Owner Name</h1>
-            <p>Khore Ritesh Pradip </p>
+            <p>{restaurant?.userId.name} </p>
           </FormControl>
           <FormControl>
             <h1>Onwer user ID</h1>
-            <p>4789561236</p>
+            <p>{restaurant?.userId._id} </p>
           </FormControl>
           <FormControl>
             <h1>Owner Email Address</h1>
-            <p>riteshkhore@gmail.com</p>
+            <p>{restaurant?.userId.email} </p>
           </FormControl>
           <FormControl>
             <h1>Owner contact number</h1>
-            <p>9960130524</p>
+            <p>{restaurant?.userId.number} </p>
           </FormControl>
         </Grid>
         <SubTitle>Restaurant Details</SubTitle>
         <Grid>
           <FormControl>
             <h1>Restaurnt Name</h1>
-            <p>Hotel Kaushalya</p>
+            <p>{restaurant?.restaurantInfo.name} </p>
           </FormControl>
           <FormControl>
             <h1>Famous For </h1>
-            <p>Pav bhaji</p>
+            <p>{restaurant?.restaurantInfo.famousFor} </p>
           </FormControl>
           <FormControl>
             <h1>Number of food products</h1>
-            <p>150</p>
+            <p>{restaurant?.restaurantInfo.numberOfFoodProducts} </p>
           </FormControl>
           <FormControl>
             <h1>Food type</h1>
-            <p>Vegeterain and non vegeterian</p>
+            <p>{restaurant?.restaurantInfo.foodType} </p>
           </FormControl>
           <FormControl>
             <h1>Minimum food price</h1>
-            <p>RS 450</p>
+            <p>Rs {restaurant?.restaurantInfo.minimumFoodPrice} </p>
           </FormControl>
           <FormControl>
             <h1>Number of daily customers</h1>
-            <p>40</p>
+            <p>{restaurant?.restaurantInfo.numberOfDailyCustomers} </p>
           </FormControl>
         </Grid>
 
-        <SubTitle>Location and contact details</SubTitle>
+        <SubTitle>Location details</SubTitle>
+        <MapContainer>
+          {restaurant && (
+            <Map
+              currentCordinates={[
+                restaurant.addressInfo.cordinates.lat,
+                restaurant.addressInfo.cordinates.lng,
+              ]}
+            />
+          )}
+        </MapContainer>
+
         <Grid>
           <FormControl>
-            <h1>Located in</h1>
-            <p>Baramati</p>
+            <h1>Country</h1>
+            <p>{restaurant?.addressInfo.country}</p>
+          </FormControl>
+          <FormControl>
+            <h1>State</h1>
+            <p>{restaurant?.addressInfo.state}</p>
+          </FormControl>
+          <FormControl>
+            <h1>District</h1>
+            <p>{restaurant?.addressInfo.district}</p>
+          </FormControl>
+          <FormControl>
+            <h1>Place name</h1>
+            <p>{restaurant?.addressInfo.placeName}</p>
+          </FormControl>
+          <FormControl>
+            <h1>Locality</h1>
+            <p>{restaurant?.addressInfo.locality}</p>
           </FormControl>
           <FormControl>
             <h1>Pin code</h1>
-            <p>412204</p>
-          </FormControl>
-          <FormControl>
-            <h1>Contact Number</h1>
-            <p>9960130524</p>
+            <p>{restaurant?.addressInfo.pinCode}</p>
           </FormControl>
         </Grid>
-
-        <Actions>
-          <Button hover>
-            <Block />
-            <span>Block</span>
-          </Button>
-          <Button>
-            <DeleteOutlineOutlined />
-            <span>Delete</span>
-          </Button>
-        </Actions>
       </MainContainer>
+      <Actions>
+        <Button onClick={deleteRestaurant} hover>
+          <DeleteOutlineOutlined />
+          <span>Delete</span>
+        </Button>
+      </Actions>
       <OrdersChart>
         <h1>Orders Per Month</h1>
         <Line data={data} options={options} />

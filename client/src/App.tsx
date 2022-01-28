@@ -43,11 +43,13 @@ import {
   RestaurantOrders,
   RestaurantProduct,
   RestaurantSingleOrder,
+  RestaurantDetails,
 } from "./pages/restaurant-admin";
 import {
   useFetchLoading,
   useMessage,
   useRefresh,
+  useSocket,
   useSuccessModal,
 } from "./hooks";
 import Protected from "./routes/Protected";
@@ -66,6 +68,7 @@ function App() {
   const { isLoading } = useFetchLoading();
   const { state } = useSuccessModal();
   useRefresh();
+  useSocket();
 
   return (
     <>
@@ -238,6 +241,19 @@ function App() {
                     <FlexContainer>
                       <RestaurantSidebar />
                       <AllProducts />
+                    </FlexContainer>
+                  </>
+                }
+              />
+
+              <Route
+                path="details"
+                element={
+                  <>
+                    <AdminTopBar />
+                    <FlexContainer>
+                      <RestaurantSidebar />
+                      <RestaurantDetails />
                     </FlexContainer>
                   </>
                 }

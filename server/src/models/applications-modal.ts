@@ -144,22 +144,20 @@ const applicationSchema = new Schema<ApplicationInterface>(
         default: () => new Date(Date.now()),
       },
     },
-    images: [
-      {
-        url: {
-          type: String,
-          required: true,
-        },
-        fileType: {
-          type: String,
-          required: true,
-        },
-        filename: {
-          type: String,
-          required: true,
-        },
+    images: {
+      url: {
+        type: String,
+        required: true,
       },
-    ],
+      fileType: {
+        type: String,
+        required: true,
+      },
+      filename: {
+        type: String,
+        required: true,
+      },
+    },
   },
   { timestamps: true }
 );

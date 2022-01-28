@@ -45,13 +45,11 @@ export interface ApplicationInterface {
       filename: string;
     };
   };
-  images: [
-    {
-      url: string;
-      fileType: string;
-      filename: string;
-    }
-  ];
+  images: {
+    url: string;
+    fileType: string;
+    filename: string;
+  };
   rejectionDetails?: {
     reason: string;
     message: string;

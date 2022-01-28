@@ -141,18 +141,20 @@ const restaurantSchema = new Schema<RestaurantInterface>(
         },
       },
     ],
-    images: [
-      {
-        url: {
-          type: String,
-          required: true,
-        },
-        fileType: {
-          type: String,
-          required: true,
-        },
+    images: {
+      url: {
+        type: String,
+        required: true,
       },
-    ],
+      fileType: {
+        type: String,
+        required: true,
+      },
+      filename: {
+        type: String,
+        required: true,
+      },
+    },
   },
 
   { timestamps: true }

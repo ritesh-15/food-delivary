@@ -38,12 +38,10 @@ export const newAplicationValidation = Joi.object({
         fileType: Joi.string().required(),
       }),
     }),
-  images: Joi.array().items(
-    Joi.object().required().keys({
-      filename: Joi.string().required(),
-      fileType: Joi.string().required(),
-    })
-  ),
+  images: Joi.object().required().keys({
+    filename: Joi.string().required(),
+    fileType: Joi.string().required(),
+  }),
 });
 
 export const updateApplicationValidation = Joi.object({

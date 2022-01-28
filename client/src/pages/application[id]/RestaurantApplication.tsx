@@ -37,7 +37,7 @@ import {
 } from "../../api/applicationApi";
 import moment from "moment";
 import SaveIcon from "@mui/icons-material/Save";
-import { useFetchLoading, useMessage } from "../../hooks";
+import { useFetchLoading, useMessage, useSocket } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 
 interface CurrentfileInterface {
@@ -51,12 +51,28 @@ const RestaurantApplication = () => {
   const { setMessage } = useMessage();
   const { setIsLoading } = useFetchLoading();
   const navigate = useNavigate();
+  const socket = useSocket();
 
   // view document state
   const [currentFile, setCurrentFile] = useState<CurrentfileInterface>();
 
   // applications state
   const [application, setApplication] = useState<ApplicationInterface>();
+
+  useEffect(() => {
+    if (!application) return;
+    socket?.emit("join-application", application._id);
+  }, [socket, application]);
+
+  useEffect(() => {
+    socket?.on("updated-application", (data: ApplicationInterface) => {
+      setApplication(data);
+    });
+
+    return () => {
+      socket?.off();
+    };
+  }, [socket]);
 
   // change restaurant info details
   const changeRestaurantInfo = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -100,6 +116,8 @@ const RestaurantApplication = () => {
       );
       if (data.ok) {
         setApplication(data.application);
+        setMessage("Application updated successfully!");
+        socket?.emit("update-application", data.application);
       }
       setIsLoading(false);
     } catch (error) {
@@ -132,8 +150,6 @@ const RestaurantApplication = () => {
     getApplicationDetails();
   }, []);
 
-  console.log(application);
-
   return (
     <Container>
       {currentFile && (
@@ -142,7 +158,7 @@ const RestaurantApplication = () => {
       <Wrapper>
         <HeadingContainer>
           <Image>
-            <img src={application?.images[0].url} alt="" />
+            <img src={application?.images.url} alt="" />
           </Image>
           <Title status={application?.status}>
             <h1>{application?.restaurantInfo.name}</h1>
@@ -335,13 +351,15 @@ const RestaurantApplication = () => {
               hover
             >
               <SaveIcon />
-              <span>Save Application</span>
+              <span>Save And Submit</span>
             </Button>
           )}
-          <Button onClick={deleteApplicationForm} hover>
-            <DeleteIcon />
-            <span>Delete Application</span>
-          </Button>
+          {application?.status === "rejected" && (
+            <Button onClick={deleteApplicationForm} hover>
+              <DeleteIcon />
+              <span>Delete Application</span>
+            </Button>
+          )}
         </Actions>
       </Wrapper>
     </Container>

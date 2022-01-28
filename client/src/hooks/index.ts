@@ -7,6 +7,7 @@ import useMessage from "./useMessage/useMessage";
 import useFetchLoading from "./useFetchLoading/useFetchLoading";
 import useSuccessModal from "./useSuccessModal/useSuccessModal";
 import useRefresh from "./useRefresh/useRefresh";
+import useSocket from "./useSocket/useSocket";
 
 export {
   useCompleteProfileSteps,
@@ -18,4 +19,5 @@ export {
   useFetchLoading,
   useSuccessModal,
   useRefresh,
+  useSocket,
 };

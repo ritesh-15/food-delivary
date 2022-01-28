@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  padding: 1em;
-  width: 100%;
+  padding: 2em 0;
 `;
 
 export const HeadingContainer = styled.div`
@@ -16,6 +15,11 @@ export const Image = styled.div`
   height: 200px;
   overflow: hidden;
   border-radius: 8px;
+  cursor: pointer;
+
+  input {
+    display: none;
+  }
 
   img {
     width: 100%;
@@ -44,15 +48,15 @@ export const Title = styled.div<Props>`
     display: block;
     margin-top: 1rem;
     color: ${({ status }) =>
-      status === "Pending"
+      status === "pending"
         ? "#a68a00"
-        : status === "Rejected"
+        : status === "rejected"
         ? "#c62828"
         : "#388e3c"};
     background: ${({ status }) =>
-      status === "Pending"
+      status === "pending"
         ? "#fff0c2"
-        : status === "Rejected"
+        : status === "rejected"
         ? "#ffcdd2"
         : "#c8e6c9"};
     text-align: center;
@@ -76,7 +80,7 @@ export const SubTitle = styled.h1`
 export const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  margin: 2rem 0;
+  margin: 1rem 0;
   grid-gap: 2rem;
 `;
 
@@ -84,17 +88,6 @@ export const FormControl = styled.div`
   button {
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
-  }
-
-  div {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-
-    p {
-      margin-left: 0.5em;
-      color: hsl(0, 0%, 50%);
-    }
   }
 
   h1 {
@@ -113,46 +106,108 @@ export const Actions = styled.div`
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
     display: flex;
-    align-items: center;
 
     span {
-      margin-left: 0.25em;
+      margin-left: 0.5em;
     }
   }
 `;
 
-export const OrdersChart = styled.div`
-  padding: 1em;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  margin-top: 2rem;
-  border-radius: 8px;
-  max-width: 500px;
+export const Table = styled.table`
+  border-collapse: collapse;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  overflow: hidden;
+  border-radius: 0.25em;
+  width: 100%;
+  text-align: left;
+`;
 
-  h1 {
-    margin-bottom: 2rem;
-    font-size: 1.25rem;
-    font-weight: 500;
+export const TableHead = styled.thead`
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+`;
+
+export const TableBody = styled.tbody``;
+
+export const TR = styled.tr`
+  padding: 1em;
+
+  &:nth-child(even) {
+    background: #fff5f7;
+  }
+`;
+
+export const TH = styled.th`
+  padding: 1em;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+`;
+
+interface Props {
+  status?: string;
+}
+
+export const TD = styled.td<Props>`
+  padding: 1em;
+
+  a {
+    color: ${({ theme }) => theme.colors.primary};
+  }
+
+  p {
+    max-width: 300px;
   }
 `;
 
 export const MapContainer = styled.div`
   height: 350px;
-  margin: 1em 0;
+  border-radius: 8px;
+  margin-bottom: 1em;
+  overflow: hidden;
 `;
 
-export const ActionSelectBox = styled.div`
+export const SkeletonContainer = styled.div`
   display: flex;
-  align-items: center;
-  margin: 1em 0;
+  width: 100%;
+  overflow: hidden;
+  padding-top: 2em;
+`;
 
-  button {
-    background-color: ${({ theme }) => theme.colors.primary};
-    color: #fff;
-    margin-left: 1em;
-  }
+export const ImageSkeleton = styled.div`
+  flex: 0.5;
+  width: 100%;
+  max-width: 200px;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+export const DetailsSkeleton = styled.div`
+  flex: 1;
+  margin-left: 1em;
 
   div {
-    flex: 1;
-    max-width: 200px;
+    margin-bottom: 1em;
+  }
+`;
+
+export const LocationNote = styled.small`
+  font-size: 0.75rem;
+  color: #e31010;
+`;
+
+export const RejectionContainer = styled.div`
+  border: 1px solid red;
+  padding: 0.5em 1em;
+  margin-top: 1em;
+  border-radius: 8px;
+
+  h1 {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  p {
+    color: red;
   }
 `;

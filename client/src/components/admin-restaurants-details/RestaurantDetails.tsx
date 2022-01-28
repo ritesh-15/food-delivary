@@ -11,8 +11,37 @@ import {
   Wrapper,
 } from "./RestaurantDetails.styled";
 import SearchIcon from "@mui/icons-material/Search";
+import { useEffect, useState } from "react";
+import RestaurantApi from "../../api/restaurantApi";
+import { RestaurantInterface } from "../../interfaces/RestaurantInterface";
+import moment from "moment";
+import { useFetchLoading, useMessage } from "../../hooks";
 
 const RestaurantDetails = () => {
+  // hooks
+  const { setIsLoading } = useFetchLoading();
+  const { setMessage } = useMessage();
+
+  const [restaurants, setRestaurants] = useState<RestaurantInterface[]>([]);
+
+  useEffect(() => {
+    const getRestaurants = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await RestaurantApi.getAllRestaurants();
+        if (data.ok) {
+          setRestaurants(data.restaurants);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        setMessage("Something went wrong");
+      }
+    };
+
+    getRestaurants();
+  }, []);
+
   return (
     <Wrapper>
       <SearchDiv>
@@ -32,30 +61,22 @@ const RestaurantDetails = () => {
             </TR>
           </TableHead>
           <TableBody>
-            <TR>
-              <TD>
-                <Link to="/admin/restaurants/4">4589123664</Link>
-              </TD>
-              <TD>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-              </TD>
-              <TD>
-                <small>Active</small>
-              </TD>
-              <TD>11/05/2002</TD>
-            </TR>
-            <TR>
-              <TD>
-                <Link to="/admin/restaurants/4">4589123664</Link>
-              </TD>
-              <TD>
-                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
-              </TD>
-              <TD>
-                <small>Active</small>
-              </TD>
-              <TD>11/05/2002</TD>
-            </TR>
+            {restaurants.map((restaurant) => (
+              <TR key={restaurant._id}>
+                <TD>
+                  <Link to={`/admin/restaurants/${restaurant._id}`}>
+                    {restaurant._id}
+                  </Link>
+                </TD>
+                <TD>
+                  <p>{restaurant.restaurantInfo.name}</p>
+                </TD>
+                <TD>
+                  <small>{restaurant.status}</small>
+                </TD>
+                <TD>{moment(restaurant.createdAt).format("DD MMMM YYYY")}</TD>
+              </TR>
+            ))}
           </TableBody>
         </Table>
       </TableWrapper>
