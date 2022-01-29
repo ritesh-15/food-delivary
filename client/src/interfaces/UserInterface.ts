@@ -18,4 +18,5 @@ export interface UserInterface {
   isAdmin: boolean;
   isSuspended: boolean;
   _id: string;
+  createdAt: Date;
 }

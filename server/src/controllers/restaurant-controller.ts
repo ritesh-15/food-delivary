@@ -6,6 +6,7 @@ import { unlink } from "fs/promises";
 import path from "path";
 import { updateRestaurantSchema } from "../validation/restaurantValidation";
 import Application from "../models/applications-modal";
+import User from "../models/user-model";
 
 class RestaurantController {
   static async getAllRestaurants(
@@ -79,11 +80,17 @@ class RestaurantController {
         path.join(__dirname, `../uploads/${restaurant.images.filename}`)
       );
 
+      await Application.deleteOne({ userId: restaurant.userId });
+
+      await User.updateOne(
+        { _id: restaurant.userId },
+        { $set: { isRestaurantOwner: false } }
+      );
+
       await restaurant.remove();
 
       return res.json({ ok: true, deleted: true });
     } catch (error) {
-      console.log(error);
       return next(ErrorHandler.serverError());
     }
   }

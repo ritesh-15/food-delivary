@@ -16,12 +16,22 @@ class TokenService {
 
     const refreshToken = jwt.sign({ _id }, privateKey, {
       expiresIn: "1y",
+      algorithm: "RS256",
     });
 
     return { accessToken, refreshToken };
   }
 
   static verifyAccessToken(token: string) {
+    const publicKey = fs.readFileSync(
+      path.join(__dirname, "../keys/public.pem")
+    );
+    return jwt.verify(token, publicKey, {
+      algorithms: ["RS256"],
+    });
+  }
+
+  static verifyRefreshToken(token: string) {
     const publicKey = fs.readFileSync(
       path.join(__dirname, "../keys/public.pem")
     );

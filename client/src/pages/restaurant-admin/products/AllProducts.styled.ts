@@ -72,9 +72,10 @@ export const TD = styled.td<Props>`
   }
 
   small {
-    color: ${({ status }) => (status === "nonveg" ? "#c62828" : "#388e3c")};
+    color: ${({ status }) =>
+      status === "non vegeterian" ? "#c62828" : "#388e3c"};
     background: ${({ status }) =>
-      status === "nonveg" ? "#ffcdd2" : "#c8e6c9"};
+      status === "non vegeterian" ? "#ffcdd2" : "#c8e6c9"};
     text-align: center;
     text-transform: capitalize;
     font-weight: 500;

@@ -16,6 +16,7 @@ import morgan from "morgan";
 import userRouter from "./routes/user-routes";
 import { Server } from "socket.io";
 import restaurantsRouter from "./routes/restaurants-routes";
+import productRouter from "./routes/product-routes";
 
 const app = express();
 
@@ -69,6 +70,8 @@ app.use(URL_START, uploadRouter);
 app.use(`${URL_START}/user`, userRouter);
 
 app.use(URL_START, restaurantsRouter);
+
+app.use(URL_START, productRouter);
 
 // error handler
 

@@ -24,6 +24,7 @@ class UserDto {
   isAdmin: boolean;
   isSuspended: boolean;
   _id: ObjectId;
+  createdAt: Date;
 
   constructor(user: User) {
     this.name = user.name;
@@ -34,6 +35,7 @@ class UserDto {
     this.isAdmin = user.isAdmin;
     this.isSuspended = user.isSuspended;
     this._id = user._id;
+    this.createdAt = user.createdAt;
   }
 }
 

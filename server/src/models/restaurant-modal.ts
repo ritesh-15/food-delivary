@@ -102,6 +102,10 @@ const restaurantSchema = new Schema<RestaurantInterface>(
           type: String,
           default: Date.now,
         },
+        filename: {
+          type: String,
+          default: "",
+        },
       },
       foodAuthorityCertificate: {
         url: {
@@ -115,6 +119,10 @@ const restaurantSchema = new Schema<RestaurantInterface>(
         uploadedAt: {
           type: String,
           default: Date.now,
+        },
+        filename: {
+          type: String,
+          default: "",
         },
       },
     },

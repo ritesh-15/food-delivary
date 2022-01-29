@@ -86,7 +86,7 @@ export const TH = styled.th`
 `;
 
 interface Props {
-  status?: string;
+  status?: boolean;
 }
 
 export const TD = styled.td<Props>`
@@ -101,10 +101,10 @@ export const TD = styled.td<Props>`
   }
 
   small {
-    color: ${({ status }) => (status === "Block" ? "#c62828" : "#388e3c")};
-    background: ${({ status }) => (status === "Block" ? "#ffcdd2" : "#c8e6c9")};
+    color: ${({ status }) => (!status ? "#c62828" : "#388e3c")};
+    background: ${({ status }) => (!status ? "#ffcdd2" : "#c8e6c9")};
     text-align: center;
-    text-transform: capitalize;
+    text-transform: lowercase;
     font-weight: 500;
     border-radius: 4px;
     width: fit-content;

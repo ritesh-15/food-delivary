@@ -11,32 +11,16 @@ interface UpdateProps {
 }
 
 const UpdateInput: FC<UpdateProps> = (props) => {
-  const [edit, setEdit] = useState(false);
-
   return (
     <UpdateContainer>
       <h1>{props.title}</h1>
-      {!edit ? (
-        <>
-          <div>
-            <p>{props.value}</p>
-            <Edit
-              onClick={() => setEdit(true)}
-              style={{ color: "hsl(0,0%,50%)", cursor: "pointer" }}
-            />
-          </div>
-        </>
-      ) : (
-        <>
-          <input
-            value={props.value}
-            onChange={props.onChange}
-            title={props.title}
-            name={props.name}
-            type="text"
-          />
-        </>
-      )}
+      <input
+        value={props.value}
+        onChange={props.onChange}
+        title={props.title}
+        name={props.name}
+        type="text"
+      />
     </UpdateContainer>
   );
 };

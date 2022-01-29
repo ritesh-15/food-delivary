@@ -25,10 +25,10 @@ import {
   BarElement,
 } from "chart.js";
 import Button from "../../../styles/Button";
-import { Block, DeleteOutlineOutlined } from "@mui/icons-material";
-import { useParams } from "react-router-dom";
+import { Block, Delete } from "@mui/icons-material";
+import { useNavigate, useParams } from "react-router-dom";
 import RestaurantApi from "../../../api/restaurantApi";
-import { useFetchLoading } from "../../../hooks";
+import { useFetchLoading, useMessage } from "../../../hooks";
 import { RestaurantInterface } from "../../../interfaces/RestaurantInterface";
 import moment from "moment";
 import { Map, SelectBox } from "../../../components";
@@ -49,6 +49,8 @@ const AdminRestaurantSingle = () => {
   // hooks
   const { id } = useParams();
   const { setIsLoading } = useFetchLoading();
+  const navigate = useNavigate();
+  const { setMessage } = useMessage();
 
   // status
   const [status, setStatus] = useState<string>("");
@@ -58,14 +60,15 @@ const AdminRestaurantSingle = () => {
 
   const deleteRestaurant = async () => {
     if (!id) return;
-
     setIsLoading(true);
     try {
-      const { data } = await RestaurantApi.deleteRestaurant(id);
-      console.log(data);
+      await RestaurantApi.deleteRestaurant(id);
+      setMessage("Restaurant deleted successfully!");
       setIsLoading(false);
+      navigate("/admin/restaurants");
     } catch (error) {
       setIsLoading(false);
+      setMessage("Something went wrong!");
     }
   };
 
@@ -83,6 +86,7 @@ const AdminRestaurantSingle = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
+        setMessage("Something went wrong!");
       }
     };
 
@@ -251,8 +255,8 @@ const AdminRestaurantSingle = () => {
       </MainContainer>
       <Actions>
         <Button onClick={deleteRestaurant} hover>
-          <DeleteOutlineOutlined />
-          <span>Delete</span>
+          <Delete />
+          <span>Delete Restaurant</span>
         </Button>
       </Actions>
       <OrdersChart>

@@ -6,8 +6,9 @@ import {
   MainContainer,
   OrdersChart,
   Wrapper,
+  ActionSelectBox,
 } from "./UserInfo.styled";
-import { Block, DeleteOutlineOutlined } from "@mui/icons-material";
+import { Block, Delete, DeleteOutlineOutlined } from "@mui/icons-material";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -19,6 +20,14 @@ import {
   Legend,
   BarElement,
 } from "chart.js";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from "react";
+import UserApi from "../../../api/usersApi";
+import { useState } from "react";
+import { UserInterface } from "../../../interfaces/UserInterface";
+import moment from "moment";
+import { SelectBox } from "../../../components";
+import { useFetchLoading, useMessage } from "../../../hooks";
 
 ChartJS.register(
   CategoryScale,
@@ -30,94 +39,125 @@ ChartJS.register(
   BarElement
 );
 
+const OPTIONS = ["make admin", "remove admin"];
+
 const UserInfo = () => {
-  const data = {
-    labels: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "July",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
-    datasets: [
-      {
-        label: "Orders",
-        data: [1, 2, 3, 4, 2, 3, 5, 7, 4, 5.7, 4, 6],
-        borderWidth: 1,
-        tension: 0.25,
-        backgroundColor: "hsl(349, 79%, 54%)",
-        borderColor: "hsl(349, 79%, 54%)",
-      },
-    ],
+  const { id } = useParams();
+  const { setIsLoading } = useFetchLoading();
+  const { setMessage } = useMessage();
+  const navigate = useNavigate();
+
+  // user state
+  const [user, setUser] = useState<UserInterface>();
+
+  const [roll, setRoll] = useState<string>("");
+
+  useEffect(() => {
+    if (!id) return;
+
+    const getUserDetails = async () => {
+      setIsLoading(true);
+      try {
+        const { data } = await UserApi.getSingleUser(id);
+
+        if (data.ok) {
+          setUser(data.user);
+        }
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
+    };
+
+    getUserDetails();
+  }, [id]);
+
+  // update user admin status
+  const updateAdminStatus = async () => {
+    if (!id) return;
+
+    setIsLoading(true);
+
+    try {
+      const { data } = await UserApi.adminUpdateUser(id, {
+        isAdmin: roll === "make admin",
+      });
+      setIsLoading(false);
+      setMessage("User updated successfully!");
+    } catch (error) {
+      setIsLoading(false);
+      setMessage("Something went wrong!");
+    }
   };
 
-  const options = {
-    scales: {
-      y: {
-        display: false,
-      },
-    },
-    plugins: {
-      legend: {
-        display: false,
-      },
-    },
+  // delete user
+  const deleteUser = async () => {
+    if (!id) return;
+
+    setIsLoading(true);
+
+    try {
+      const { data } = await UserApi.deleteUser(id);
+      setIsLoading(false);
+      setMessage("User deleted successfully!");
+      navigate("/admin/users");
+    } catch (error) {
+      setIsLoading(false);
+      setMessage("Something went wrong!");
+    }
   };
+
   return (
     <Wrapper>
       <MainContainer>
         <Grid>
           <FormControl>
             <h1>User ID</h1>
-            <p>47581236</p>
+            <p>{user?._id}</p>
           </FormControl>
           <FormControl>
             <h1>Joined date</h1>
-            <p>22 Jan 2022</p>
+            <p>{user && moment(user.createdAt).format("DD MMMM YYYY")}</p>
           </FormControl>
           <FormControl>
             <h1>Name</h1>
-            <p>Khore ritesh pradip</p>
+            <p>{user?.name}</p>
           </FormControl>
           <FormControl>
             <h1>Email address</h1>
-            <p>riteshkhore@gmail.com</p>
+            <p>{user?.email}</p>
           </FormControl>
           <FormControl>
-            <h1>Email address</h1>
-            <p>riteshkhore@gmail.com</p>
-          </FormControl>
-          <FormControl>
-            <h1>Contact number</h1>
-            <p>9970834262</p>
+            <h1>Number</h1>
+            <p>{user?.number}</p>
           </FormControl>
           <FormControl>
             <h1>Restaurant Owner</h1>
-            <p>false</p>
+            <p>{user?.isRestaurantOwner ? "true" : "false"}</p>
           </FormControl>
         </Grid>
       </MainContainer>
-      <Actions>
-        <Button hover>
-          <Block />
-          <span>Block</span>
+      <ActionSelectBox>
+        <SelectBox
+          label="Change roll"
+          options={OPTIONS}
+          current={roll}
+          changeCurrent={setRoll}
+        />
+        <Button onClick={updateAdminStatus} hover>
+          Save and Update
         </Button>
-        <Button>
-          <DeleteOutlineOutlined />
-          <span>Delete</span>
+      </ActionSelectBox>
+      <Actions>
+        <Button onClick={deleteUser} hover>
+          <Delete />
+          <span>Delete User</span>
         </Button>
       </Actions>
-      <OrdersChart>
+      {/* <OrdersChart>
         <h1>Orders Per Month</h1>
         <Line data={data} options={options} />
-      </OrdersChart>
+      </OrdersChart> */}
     </Wrapper>
   );
 };

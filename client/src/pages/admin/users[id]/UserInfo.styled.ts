@@ -5,6 +5,23 @@ export const Wrapper = styled.div`
   width: 100%;
 `;
 
+export const ActionSelectBox = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 1em 0;
+
+  button {
+    background-color: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+    margin-left: 1em;
+  }
+
+  div {
+    flex: 1;
+    max-width: 200px;
+  }
+`;
+
 export const MainContainer = styled.div``;
 
 export const Grid = styled.div`
@@ -51,13 +68,6 @@ export const Actions = styled.div`
 
     span {
       margin-left: 0.25em;
-    }
-
-    &:last-child {
-      border: 1px solid ${({ theme }) => theme.colors.primary};
-      color: ${({ theme }) => theme.colors.primary};
-      background: transparent;
-      margin-left: 1rem;
     }
   }
 `;

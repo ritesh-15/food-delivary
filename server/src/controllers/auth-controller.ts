@@ -226,7 +226,7 @@ class AuthController {
       if (!isTokenFound) return next(ErrorHandler.notFound("Token not found!"));
 
       const isValideToken: any =
-        TokenService.verifyAccessToken(recivedAccessToken);
+        TokenService.verifyRefreshToken(recivedRefreshToken);
 
       const user = await User.findById(isValideToken._id);
 

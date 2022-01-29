@@ -17,6 +17,10 @@ export const Image = styled.div`
   overflow: hidden;
   border-radius: 8px;
 
+  input {
+    display: none;
+  }
+
   img {
     width: 100%;
     height: 100%;
@@ -39,17 +43,16 @@ export const Title = styled.div<Props>`
     margin: 0.25em 0;
     color: rgba(0, 0, 0, 0.7);
     font-weight: 300;
-    max-width: 50%;
   }
 
   small {
     display: block;
     margin-top: 1rem;
-    color: ${({ status }) => (status === "nonveg" ? "#c62828" : "#388e3c")};
+    color: ${({ status }) =>
+      status?.includes("non vegeterian") ? "#c62828" : "#388e3c"};
     background: ${({ status }) =>
-      status === "nonveg" ? "#ffcdd2" : "#c8e6c9"};
+      status?.includes("non vegeterian") ? "#ffcdd2" : "#c8e6c9"};
     text-align: center;
-    text-transform: capitalize;
     font-weight: 500;
     border-radius: 4px;
     width: fit-content;
@@ -111,5 +114,20 @@ export const Actions = styled.div`
     span {
       margin-left: 0.5em;
     }
+
+    &:last-child {
+      margin-left: 1em;
+    }
+  }
+`;
+
+export const SelectBoxContainer = styled.div`
+  width: 100%;
+
+  h1 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
   }
 `;

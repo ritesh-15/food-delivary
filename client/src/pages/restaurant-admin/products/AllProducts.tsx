@@ -13,8 +13,30 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "../../../styles/Button";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
+import { useEffect } from "react";
+import ProductApi from "../../../api/productApi";
+import { useState } from "react";
+import { ProductInterface } from "../../../interfaces/ProductInterface";
+import moment from "moment";
 
 const AllProducts = () => {
+  // products
+  const [products, setProducts] = useState<ProductInterface[]>([]);
+
+  useEffect(() => {
+    const getAllProducts = async () => {
+      try {
+        const { data } = await ProductApi.allProducts();
+        if (data.ok) {
+          setProducts(data.products);
+        }
+        console.log(data);
+      } catch (error) {}
+    };
+
+    getAllProducts();
+  }, []);
+
   return (
     <Wrapper>
       <SearchDiv>
@@ -40,54 +62,22 @@ const AllProducts = () => {
             </TR>
           </TableHead>
           <TableBody>
-            <TR>
-              <TD>
-                <Link to="/admin/restaurant/products/4">13345698</Link>
-              </TD>
-              <TD>
-                <p>Misal pav</p>
-              </TD>
-              <TD>11/05/2002</TD>
-              <TD status={"Veg"}>
-                <small>Vegiterian</small>
-              </TD>
-            </TR>
-            <TR>
-              <TD>
-                <Link to="/admin/restaurant/products/4">13345698</Link>
-              </TD>
-              <TD>
-                <p>Misal pav</p>
-              </TD>
-              <TD>11/05/2002</TD>
-              <TD status={"nonveg"}>
-                <small>Non vegiterian</small>
-              </TD>
-            </TR>
-            <TR>
-              <TD>
-                <Link to="/admin/restaurant/products/4">13345698</Link>
-              </TD>
-              <TD>
-                <p>Misal pav</p>
-              </TD>
-              <TD>11/05/2002</TD>
-              <TD status={"Veg"}>
-                <small>Vegiterian</small>
-              </TD>
-            </TR>
-            <TR>
-              <TD>
-                <Link to="/admin/restaurant/products/4">13345698</Link>
-              </TD>
-              <TD>
-                <p>Misal pav</p>
-              </TD>
-              <TD>11/05/2002</TD>
-              <TD status={"Veg"}>
-                <small>Vegiterian</small>
-              </TD>
-            </TR>
+            {products.map((product) => (
+              <TR key={product._id}>
+                <TD>
+                  <Link to={`/admin/restaurant/products/${product._id}`}>
+                    {product._id}
+                  </Link>
+                </TD>
+                <TD>
+                  <p>{product.name}</p>
+                </TD>
+                <TD>{moment(product.createdAt).format("DD MMMM YYYY")}</TD>
+                <TD status={product.type}>
+                  <small>{product.type}</small>
+                </TD>
+              </TR>
+            ))}
           </TableBody>
         </Table>
       </TableWrapper>

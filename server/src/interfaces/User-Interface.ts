@@ -24,4 +24,5 @@ export interface User {
   isAdmin: boolean;
   isSuspended: boolean;
   _id: ObjectId;
+  createdAt: Date;
 }
