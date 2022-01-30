@@ -30,7 +30,9 @@ class AuthController {
       const isFoundUser = await User.findOne({ email });
 
       if (isFoundUser)
-        return next(ErrorHandler.badRequest("User already exists!"));
+        return next(
+          ErrorHandler.badRequest("This email address is already taken!")
+        );
 
       const hashedPassword = await bcrypt.hash(password, 10);
 

@@ -3,24 +3,27 @@ import Button from "../../styles/Button";
 import { ProductContainer, ProductImage, ProductInfo } from "./Product.styled";
 import AddIcon from "@mui/icons-material/Add";
 import Flex from "../../styles/Flex";
+import { ProductInterface } from "../../interfaces/ProductInterface";
 
-const Product: FC = () => {
+interface Props {
+  product: ProductInterface;
+}
+
+const Product: FC<Props> = ({ product }) => {
   return (
     <ProductContainer>
       <ProductImage>
-        <img
-          src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTF8fGZvb2R8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
-          alt=""
-        />
+        <img src={product.image.url} alt="" />
       </ProductImage>
-      <ProductInfo>
+      <ProductInfo type={product.type}>
         <div>
-          <h1>Special Amul Pav Bhaji</h1>
+          <h1>{product.name}</h1>
           <div>
             <span></span>
           </div>
         </div>
-        <p>Rs 250</p>
+        <small>{product.description}</small>
+        <p>Rs {product.price}</p>
         <Button>
           <Flex>
             <AddIcon />

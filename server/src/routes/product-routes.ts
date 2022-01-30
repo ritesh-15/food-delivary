@@ -12,9 +12,7 @@ router
     productController.createNewProduct
   );
 
-router
-  .route("/product")
-  .get([authMiddleware], productController.getAllProducts);
+router.route("/products/:id").get(productController.getAllProducts);
 
 router
   .route("/product/:id")

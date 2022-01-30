@@ -10,8 +10,7 @@ interface WrapperProps {
 }
 
 export const Wrapper = styled.div<WrapperProps>`
-  position: ${({ sticky }) => (sticky ? "fixed" : "static")};
-  position: -webkit-sticky;
+  position: sticky;
   top: 0;
   background: #fff;
   width: 100%;
@@ -34,11 +33,11 @@ export const DetailsContainer = styled.div`
 
 export const ImageContainer = styled.div<WrapperProps>`
   width: 100%;
-  max-width: ${({ sticky }) => (sticky ? "250px" : "200px")};
+  max-width: ${({ sticky }) => (sticky ? "200px" : "200px")};
   height: ${({ sticky }) => (sticky ? "150px" : "200px")};
   overflow: hidden;
   border-radius: 1em;
-  transition: all 250ms ease-in;
+  transition: all 160ms ease-in;
 
   img {
     width: 100%;
@@ -57,6 +56,7 @@ export const Information = styled.div<WrapperProps>`
 
   p {
     color: ${({ theme }) => theme.colors.textLight};
+    text-transform: capitalize;
   }
 
   button {
@@ -106,31 +106,30 @@ export const Rating = styled.div`
 export const Search = styled.div<WrapperProps>`
   display: flex;
   align-items: center;
+  padding: 1em;
+  background: #f7f7f7;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
   position: absolute;
-  bottom: 0;
-  background: #fff;
-  border: 1px solid hsl(0, 0%, 70%);
-  padding: 0.5em;
+  bottom: ${({ sticky }) => (sticky ? "0px" : "-20px")};
   left: 0;
   right: 0;
-  max-width: 300px;
   margin: 0 auto;
-  bottom: -20px;
-  border-radius: 0.2em;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-  transform: ${({ sticky }) => (sticky ? "translate(0px,-40px)" : "0")};
-  transition: transform 250ms ease-in;
 
   &:focus-within {
-    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    background: #fff;
   }
 
   input {
-    background: transparent;
+    outline: none;
     border: none;
     font-size: 1rem;
-    outline: none;
-    margin-left: 0.25em;
+    margin-left: 0.5em;
+    background: transparent;
   }
 `;
 

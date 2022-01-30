@@ -24,8 +24,10 @@ export default function Home() {
               with safety.
             </p>
             <HeroLocation>
-              <input type="text" placeholder="Enter your location" />
-              <Button hover>Locate</Button>
+              <Link to="/restaurants">
+                {" "}
+                <Button hover>Order Now</Button>
+              </Link>
             </HeroLocation>
           </HeroSectionInfo>
         </Container>

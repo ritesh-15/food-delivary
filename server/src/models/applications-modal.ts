@@ -12,6 +12,7 @@ const applicationSchema = new Schema<ApplicationInterface>(
     status: {
       type: String,
       default: "pending",
+      lowercase: true,
     },
     restaurantID: {
       type: String,
@@ -50,6 +51,7 @@ const applicationSchema = new Schema<ApplicationInterface>(
       email: {
         type: String,
         required: true,
+        lowercase: true,
       },
       foodType: {
         type: String,
@@ -70,26 +72,32 @@ const applicationSchema = new Schema<ApplicationInterface>(
       placeName: {
         type: String,
         required: true,
+        lowercase: true,
       },
       state: {
         type: String,
         required: true,
+        lowercase: true,
       },
       country: {
         type: String,
         required: true,
+        lowercase: true,
       },
       locality: {
         type: String,
         required: true,
+        lowercase: true,
       },
       pinCode: {
         type: Number,
         required: true,
+        lowercase: true,
       },
       district: {
         type: String,
         default: Date.now,
+        lowercase: true,
       },
     },
     documents: {

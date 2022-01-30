@@ -6,16 +6,11 @@ import { restaurantMiddleware } from "../middlewares/restaurantMiddleware";
 
 const router: Router = Router();
 
-router
-  .route("/restaurant/all")
-  .get(
-    [authMiddleware, adminMiddleware],
-    RestaurantController.getAllRestaurants
-  );
+router.route("/restaurant/all").get(RestaurantController.getAllRestaurants);
 
 router
   .route("/restaurant/:id")
-  .get([authMiddleware], RestaurantController.getRestaurant)
+  .get(RestaurantController.getRestaurant)
   .delete(
     [authMiddleware, adminMiddleware],
     RestaurantController.deleteRestaurant

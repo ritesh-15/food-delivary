@@ -12,12 +12,14 @@ interface MapProps {
 const Map: FC<MapProps> = ({ currentCordinates, setCurrentCordinates }) => {
   const [map, setMap] = useState<mapboxgl.Map>();
 
-  useEffect(() => {
-    mapboxgl.accessToken =
-      "pk.eyJ1Ijoicml0ZXNoa2hvcmUxNSIsImEiOiJja3lzN3JkaHMxMHh2Mm9tbWJ5YTJpbW1rIn0.3srv_m-eyJLcRvyNRNIKnQ";
+  const initMapbox = () => {
+    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
+      ? process.env.REACT_APP_MAPBOX_TOKEN
+      : "";
+
     const map = new mapboxgl.Map({
       container: "map",
-      style: "mapbox://styles/riteshkhore15/ckysgmqtudw6715pcfay0yrbu",
+      style: "mapbox://styles/riteshkhore15/ckyse28da6nbq14tfmp03rry5",
       center: [73.8567, 18.5204],
       zoom: 4,
     });
@@ -29,6 +31,10 @@ const Map: FC<MapProps> = ({ currentCordinates, setCurrentCordinates }) => {
         setCurrentCordinates(e.lngLat.toArray());
       }
     });
+  };
+
+  useEffect(() => {
+    initMapbox();
   }, []);
 
   useEffect(() => {

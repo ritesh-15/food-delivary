@@ -17,9 +17,43 @@ import { Star, FavoriteBorder, Search as Icon } from "@mui/icons-material";
 import Button from "../../styles/Button";
 import { Product } from "../../components";
 import { useWindowScroll } from "../../hooks";
+import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useState } from "react";
+import { RestaurantInterface } from "../../interfaces/RestaurantInterface";
+import RestaurantApi from "../../api/restaurantApi";
+import { ProductInterface } from "../../interfaces/ProductInterface";
+import ProductApi from "../../api/productApi";
 
 function RestaurantInfo() {
+  // hooks
   const isSticky = useWindowScroll(70);
+  const { id } = useParams();
+
+  // restaurant state
+  const [restaurant, setRestaurant] = useState<RestaurantInterface>();
+
+  // products state
+  const [products, setProducts] = useState<ProductInterface[]>([]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    (async () => {
+      try {
+        const { data } = await RestaurantApi.getSingleRestaurant(id);
+        const { data: productData } = await ProductApi.allProducts(id);
+
+        if (productData.ok) {
+          setProducts(productData.products);
+        }
+
+        if (data.ok) {
+          setRestaurant(data.restaurant);
+        }
+      } catch (error) {}
+    })();
+  }, [id]);
 
   return (
     <Container>
@@ -27,21 +61,21 @@ function RestaurantInfo() {
         <Wrapper sticky={isSticky}>
           <DetailsContainer>
             <ImageContainer sticky={isSticky}>
-              <img
-                src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?ixMenuListb=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=800&q=60"
-                alt=""
-              />
+              <img src={restaurant?.images.url} alt="" />
             </ImageContainer>
             <Information sticky={isSticky}>
               <InformationTop>
-                <h1>PK Biryani House</h1>
+                <h1>{restaurant?.restaurantInfo.name}</h1>
                 <Rating>
                   <Star style={{ fontSize: "0.85rem" }} />
-                  <span>4.2</span>
+                  <span>0</span>
                 </Rating>
               </InformationTop>
-              <h4>Biryani, Maharashtrian, Malwani, Mughlai</h4>
-              <p>Swargate, Pune</p>
+              <h4>{restaurant?.restaurantInfo.famousFor}</h4>
+              <p>
+                {restaurant?.addressInfo.district} ,
+                {" " + restaurant?.addressInfo.state}
+              </p>
               <Button>
                 <FavoriteBorder style={{ color: "hsl(0,0%,50%)" }} />
                 <span>Favorite</span>
@@ -71,33 +105,11 @@ function RestaurantInfo() {
             </ul>
           </Menu>
           <Products>
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
-            <Product />
+            {products.map((product) => (
+              <>
+                <Product product={product} />
+              </>
+            ))}
           </Products>
         </ProductsContainer>
       </InfoContainer>

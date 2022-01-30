@@ -130,10 +130,12 @@ class ProductController {
 
   // Get all product
   async getAllProducts(req: Request, res: Response, next: NextFunction) {
-    const { query } = req.query;
+    const { id } = req.params;
+
+    if (!id) return next(ErrorHandler.badRequest());
 
     try {
-      const products = await Product.find()
+      const products = await Product.find({ restaurant: id })
         .sort({ createdAt: -1 })
         .populate("restaurant");
       return res.json({ ok: true, products });

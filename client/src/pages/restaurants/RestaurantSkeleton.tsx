@@ -6,7 +6,7 @@ const margintop = {
 
 const RestaurantSkeleton = () => {
   return (
-    <div style={{ padding: "1em" }}>
+    <div style={{ padding: "1em", width: "100%" }}>
       <div>
         <SkeletonElement type="image" />
       </div>

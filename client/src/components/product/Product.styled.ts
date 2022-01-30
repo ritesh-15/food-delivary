@@ -20,7 +20,11 @@ export const ProductImage = styled.div`
   }
 `;
 
-export const ProductInfo = styled.div`
+interface TypeProps {
+  type?: string;
+}
+
+export const ProductInfo = styled.div<TypeProps>`
   width: 100%;
   margin-left: 2em;
 
@@ -37,8 +41,11 @@ export const ProductInfo = styled.div`
   }
 
   p {
-    margin-top: 0.5em;
-    color: ${({ theme }) => theme.colors.textLight};
+    margin-top: 0.25em;
+  }
+
+  small {
+    color: hsl(0, 0%, 40%);
   }
 
   div {
@@ -53,7 +60,9 @@ export const ProductInfo = styled.div`
     div {
       width: 15px;
       height: 15px;
-      border: 1px solid ${({ theme }) => theme.colors.secondary};
+      border: 1px solid
+        ${({ theme, type }) =>
+          type === "vegeterian" ? theme.colors.secondary : "red"};
       display: flex;
       align-items: center;
       justify-content: center;
@@ -61,7 +70,8 @@ export const ProductInfo = styled.div`
       span {
         width: 10px;
         height: 10px;
-        background: ${({ theme }) => theme.colors.secondary};
+        background: ${({ theme, type }) =>
+          type === "vegeterian" ? theme.colors.secondary : "red"};
         border-radius: 50%;
       }
     }

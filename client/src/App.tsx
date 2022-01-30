@@ -58,6 +58,7 @@ import AdminRoute from "./routes/AdminRoute";
 import AuthRoutes from "./routes/AuthRoutes";
 import VerifyOtpRoute from "./routes/VerifyOtpRoute";
 import HomeRoute from "./routes/HomeRoute";
+import useRestaurant from "./hooks/get-restaurant/useRestaurant";
 
 const FlexContainer = styled.div`
   display: flex;
@@ -69,6 +70,7 @@ function App() {
   const { state } = useSuccessModal();
   useRefresh();
   useSocket();
+  useRestaurant();
 
   return (
     <>

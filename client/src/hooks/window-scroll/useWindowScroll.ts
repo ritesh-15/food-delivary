@@ -18,7 +18,7 @@ export default function useWindowScroll(height: number): boolean {
     return () => {
       window.removeEventListener("scroll", () => {});
     };
-  }, [translateInfoContainer]);
+  }, []);
 
   return isScrolling;
 }

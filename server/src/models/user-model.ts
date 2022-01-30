@@ -7,11 +7,13 @@ const UserSchema = new Schema<User>(
       type: String,
       required: true,
       maxlength: 200,
+      lowercase: true,
     },
     email: {
       type: String,
       required: true,
       maxlength: 200,
+      lowercase: true,
     },
     password: {
       type: String,
@@ -39,26 +41,32 @@ const UserSchema = new Schema<User>(
         placeName: {
           type: String,
           required: true,
+          lowercase: true,
         },
         state: {
           type: String,
           required: true,
+          lowercase: true,
         },
         country: {
           type: String,
           required: true,
+          lowercase: true,
         },
         locality: {
           type: String,
           required: true,
+          lowercase: true,
         },
         pinCode: {
           type: Number,
           required: true,
+          lowercase: true,
         },
         district: {
           type: String,
           required: true,
+          lowercase: true,
         },
       },
     ],

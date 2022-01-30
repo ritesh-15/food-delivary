@@ -16,9 +16,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import { getAllApplicationApi } from "../../api/applicationApi";
 import { ApplicationInterface } from "../../interfaces/ApplicationInterface";
 import moment from "moment";
+import { useFetchLoading, useMessage } from "../../hooks";
 
 const AdminApplication: FC = () => {
-  const [status, setStatus] = useState("Paid");
+  const { setMessage } = useMessage();
+  const { setIsLoading } = useFetchLoading();
 
   // applications
   const [applications, setApplications] = useState<ApplicationInterface[]>([]);
@@ -26,12 +28,17 @@ const AdminApplication: FC = () => {
   // get all application
   useEffect(() => {
     const getAllApplications = async () => {
+      setIsLoading(true);
       try {
         const { data } = await getAllApplicationApi();
         if (data.ok) {
           setApplications(data.applications);
         }
-      } catch (error) {}
+        setIsLoading(false);
+      } catch (error) {
+        setMessage("Something went wrong!");
+        setIsLoading(false);
+      }
     };
 
     getAllApplications();

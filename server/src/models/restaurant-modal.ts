@@ -12,6 +12,7 @@ const restaurantSchema = new Schema<RestaurantInterface>(
     status: {
       type: String,
       required: true,
+      lowercase: true,
     },
     restaurantID: {
       type: String,
@@ -46,6 +47,7 @@ const restaurantSchema = new Schema<RestaurantInterface>(
       email: {
         type: String,
         required: true,
+        lowercase: true,
       },
       foodType: {
         type: String,
@@ -66,26 +68,32 @@ const restaurantSchema = new Schema<RestaurantInterface>(
       placeName: {
         type: String,
         required: true,
+        lowercase: true,
       },
       state: {
         type: String,
         required: true,
+        lowercase: true,
       },
       country: {
         type: String,
         required: true,
+        lowercase: true,
       },
       locality: {
         type: String,
         required: true,
+        lowercase: true,
       },
       pinCode: {
         type: Number,
         required: true,
+        lowercase: true,
       },
       district: {
         type: String,
         required: true,
+        lowercase: true,
       },
     },
     documents: {
@@ -142,6 +150,7 @@ const restaurantSchema = new Schema<RestaurantInterface>(
           type: String,
           required: true,
           maxlength: 100,
+          lowercase: true,
         },
         createdAt: {
           type: Date,

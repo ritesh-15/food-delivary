@@ -14,10 +14,34 @@ class RestaurantController {
     res: Response,
     next: NextFunction
   ) {
+    const { query } = req.query;
+
+    const findOptions = {
+      $or: [
+        {
+          "addressInfo.placeName": query,
+        },
+        {
+          "addressInfo.state": query,
+        },
+        {
+          "addressInfo.country": query,
+        },
+        {
+          "addressInfo.district": query,
+        },
+        {
+          "addressInfo.locality": query,
+        },
+      ],
+    };
+
     try {
-      const restaurants = await Restaurant.find()
-        .populate("userId")
-        .sort({ createdAt: -1 });
+      const restaurants = query
+        ? await Restaurant.find(findOptions)
+            .populate("userId")
+            .sort({ createdAt: -1 })
+        : await Restaurant.find().populate("userId").sort({ createdAt: -1 });
 
       return res.json({ ok: true, restaurants });
     } catch (err) {

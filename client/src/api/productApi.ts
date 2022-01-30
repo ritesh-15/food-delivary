@@ -5,8 +5,8 @@ class ProductApi {
     return api.post("/product/new", data);
   }
 
-  static allProducts() {
-    return api.get("/product");
+  static allProducts(id: string) {
+    return api.get(`/products/${id}`);
   }
 
   static singleProduct(id: string) {

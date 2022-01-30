@@ -18,7 +18,7 @@ import {
   Wrapper,
 } from "./RestaurantProduct.styled";
 import moment from "moment";
-import { SelectBox, UpdateInput } from "../../../components";
+import { InfoSkeleton, SelectBox, UpdateInput } from "../../../components";
 import SaveIcon from "@mui/icons-material/Save";
 import { uploadSingleFileApi } from "../../../api/uploadDocumentApi";
 
@@ -29,6 +29,9 @@ function RestaurantProduct() {
   const { setIsLoading } = useFetchLoading();
   const { setMessage } = useMessage();
   const navigate = useNavigate();
+
+  // loading state
+  const [loading, setLoading] = useState<boolean>(true);
 
   // food type state
   const [foodType, setFoodtype] = useState<string>("");
@@ -59,16 +62,15 @@ function RestaurantProduct() {
     if (!id) return;
 
     const getSingleProduct = async () => {
-      setIsLoading(true);
       try {
         const { data } = await ProductApi.singleProduct(id);
         if (data.ok) {
           setProduct(data.product);
           setFoodtype(data.product.type);
         }
-        setIsLoading(false);
+        setLoading(false);
       } catch (error) {
-        setIsLoading(false);
+        setLoading(false);
         setMessage("Something went wrong!");
       }
     };
@@ -103,7 +105,7 @@ function RestaurantProduct() {
       setMessage("Product updated  successfully!");
       setIsLoading(false);
     } catch (error) {
-      setMessage("Something went wrong!");
+      setMessage("Something went wrong!", true);
       setIsLoading(false);
     }
   };
@@ -119,90 +121,98 @@ function RestaurantProduct() {
       setMessage("Product delete successfully!");
       navigate("/admin/restaurant/products");
     } catch (error) {
-      setMessage("Something went wrong!");
+      setMessage("Something went wrong!", true);
       setIsLoading(false);
     }
   };
 
   return (
-    <Wrapper>
-      <HeadingContainer>
-        <Image>
-          <label>
-            <input id="image" type="file" onChange={changeImage} />
-            <img
-              src={image ? URL.createObjectURL(image) : product?.image.url}
-              alt=""
-            />
-          </label>
-        </Image>
-        <Title status={product?.type}>
-          <h1>{product?.name}</h1>
-          <p>{product?.description}</p>
-          <small>{product?.type}</small>
-        </Title>
-      </HeadingContainer>
-      <MainContainer>
-        <Grid>
-          <FormControl>
-            <h1>Product ID</h1>
-            <p>{product?._id}</p>
-          </FormControl>
-          <FormControl>
-            <h1>Added Date</h1>
-            <p>{product && moment(product.createdAt).format("DD MMMM YYYY")}</p>
-          </FormControl>
+    <>
+      {loading ? (
+        <InfoSkeleton />
+      ) : (
+        <Wrapper>
+          <HeadingContainer>
+            <Image>
+              <label>
+                <input id="image" type="file" onChange={changeImage} />
+                <img
+                  src={image ? URL.createObjectURL(image) : product?.image.url}
+                  alt=""
+                />
+              </label>
+            </Image>
+            <Title status={product?.type}>
+              <h1>{product?.name}</h1>
+              <p>{product?.description}</p>
+              <small>{product?.type}</small>
+            </Title>
+          </HeadingContainer>
+          <MainContainer>
+            <Grid>
+              <FormControl>
+                <h1>Product ID</h1>
+                <p>{product?._id}</p>
+              </FormControl>
+              <FormControl>
+                <h1>Added Date</h1>
+                <p>
+                  {product && moment(product.createdAt).format("DD MMMM YYYY")}
+                </p>
+              </FormControl>
 
-          <UpdateInput
-            title="Name"
-            value={product?.name}
-            onChange={handleChage}
-            name="name"
-          />
+              <UpdateInput
+                title="Name"
+                value={product?.name}
+                onChange={handleChage}
+                name="name"
+              />
 
-          <SelectBoxContainer>
-            <h1>Food type</h1>
-            <SelectBox
-              label="Food type"
-              current={foodType}
-              changeCurrent={setFoodtype}
-              options={OPTIONS}
-            />
-          </SelectBoxContainer>
+              <SelectBoxContainer>
+                <h1>Food type</h1>
+                <SelectBox
+                  label="Food type"
+                  current={foodType}
+                  changeCurrent={setFoodtype}
+                  options={OPTIONS}
+                />
+              </SelectBoxContainer>
 
-          <UpdateInput
-            title="Description"
-            value={product?.description}
-            onChange={handleChage}
-            name="description"
-          />
+              <UpdateInput
+                title="Description"
+                value={product?.description}
+                onChange={handleChage}
+                name="description"
+              />
 
-          <UpdateInput
-            title="Price"
-            value={product?.price.toString()}
-            onChange={handleChage}
-            name="price"
-          />
+              <UpdateInput
+                title="Price"
+                value={product?.price.toString()}
+                onChange={handleChage}
+                name="price"
+              />
 
-          <UpdateInput
-            title="Menu"
-            value={product?.menu}
-            onChange={handleChage}
-            name="menu"
-          />
-        </Grid>
-      </MainContainer>
-      <Actions>
-        <Button onClick={updateProduct} hover>
-          <SaveIcon />
-          <span>Save and Update</span>
-        </Button>
-        <Button onClick={deleteProduct} hover>
-          <Delete />
-          <span>Delete Product</span>
-        </Button>
-      </Actions>
-    </Wrapper>
+              <UpdateInput
+                title="Menu"
+                value={product?.menu}
+                onChange={handleChage}
+                name="menu"
+              />
+            </Grid>
+          </MainContainer>
+          <Actions>
+            <Button onClick={updateProduct} hover>
+              <SaveIcon />
+              <span>Save and Update</span>
+            </Button>
+            <Button onClick={deleteProduct} hover>
+              <Delete />
+              <span>Delete Product</span>
+            </Button>
+          </Actions>
+        </Wrapper>
+      )}
+    </>
   );
 }
 
