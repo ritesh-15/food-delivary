@@ -3,13 +3,13 @@ import styled from "styled-components";
 export const Product = styled.div`
   display: flex;
   margin: 1em 0;
-  /* border-bottom: 1px solid hsl(0, 0%, 80%); */
+
   padding-bottom: 1em;
 `;
 
 export const ProductImage = styled.div`
   width: 100px;
-  max-height: 100px;
+  height: 100px;
   overflow: hidden;
   border-radius: 1em;
 
@@ -24,7 +24,8 @@ export const ProductInfo = styled.div`
   margin-left: 1em;
   display: flex;
   justify-content: space-between;
-  width: 70%;
+  align-items: flex-start;
+  flex: 1;
 `;
 
 export const ProductMainInfo = styled.div`

@@ -1,5 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import addRestaurantSlice from "../features/addrestaurantsteps/addRestaurantSlice";
+import cartSidebarSlice from "../features/cart-sidebar/cartSidebarSlice";
+import cartSlice from "../features/cart/cartSlice";
 import completeProfileSlice from "../features/complete-profile-slice/completeProfileSlice";
 import errorMessageSlice from "../features/error-message/errorMessageSlice";
 import fetchLoaderSlice from "../features/fetch-loader/fetchLoaderSlice";
@@ -18,6 +20,8 @@ export const store = configureStore({
     fetchLoading: fetchLoaderSlice,
     successModal: successModalSlice,
     restaurant: restaurantSlice,
+    cart: cartSlice,
+    cartSidebar: cartSidebarSlice,
   },
 });
 

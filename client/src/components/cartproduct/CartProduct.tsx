@@ -1,3 +1,10 @@
+import { FC } from "react";
+import { useDispatch } from "react-redux";
+import {
+  decrementQuantity,
+  incrementQuantity,
+} from "../../features/cart/cartSlice";
+import { ProductInterface } from "../../interfaces/ProductInterface";
 import Button from "../../styles/Button";
 import {
   Product,
@@ -7,23 +14,35 @@ import {
   ProductSubDetails,
 } from "./CartProduct.styled";
 
-const CartProduct = () => {
+interface Props {
+  product: ProductInterface;
+  quantity: number;
+}
+
+const CartProduct: FC<Props> = ({ product, quantity }) => {
+  const dispatch = useDispatch();
+
+  const increment = () => {
+    dispatch(incrementQuantity(product._id));
+  };
+
+  const decrement = () => {
+    dispatch(decrementQuantity(product._id));
+  };
+
   return (
     <Product>
       <ProductImage>
-        <img
-          src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8Zm9vZHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
-          alt=""
-        />
+        <img src={product.image.url} alt="" />
       </ProductImage>
       <ProductInfo>
         <ProductMainInfo>
-          <h1>Special pav bhaji</h1>
-          <p>Rs 401</p>
+          <h1>{product.name}</h1>
+          <p>Rs {product.price}</p>
           <div>
-            <Button>-</Button>
-            <span>1</span>
-            <Button>+</Button>
+            <Button onClick={decrement}>-</Button>
+            <span>{quantity}</span>
+            <Button onClick={increment}>+</Button>
           </div>
         </ProductMainInfo>
         <ProductSubDetails>

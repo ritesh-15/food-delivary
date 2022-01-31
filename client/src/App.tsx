@@ -8,6 +8,7 @@ import {
   Loader,
   SucessModal,
   Address,
+  Cart,
 } from "./components";
 import {
   AddRestuarant,
@@ -59,6 +60,8 @@ import AuthRoutes from "./routes/AuthRoutes";
 import VerifyOtpRoute from "./routes/VerifyOtpRoute";
 import HomeRoute from "./routes/HomeRoute";
 import useRestaurant from "./hooks/get-restaurant/useRestaurant";
+import { useSelector } from "react-redux";
+import { RootState } from "./app/store";
 
 const FlexContainer = styled.div`
   display: flex;
@@ -68,6 +71,11 @@ function App() {
   const { message } = useMessage();
   const { isLoading } = useFetchLoading();
   const { state } = useSuccessModal();
+
+  const isCartSidebarOpen = useSelector(
+    (state: RootState) => state.cartSidebar.open
+  );
+
   useRefresh();
   useSocket();
   useRestaurant();
@@ -80,6 +88,7 @@ function App() {
         {isLoading && <Loader />}
         {/* <Address /> */}
         {message && <ErrorMessage />}
+        {isCartSidebarOpen && <Cart />}
         <Router>
           <Routes>
             <Route path="/" element={<HomeRoute />}>

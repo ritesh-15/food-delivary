@@ -9,30 +9,49 @@ import {
 import { Close } from "@mui/icons-material";
 import { CartProduct } from "..";
 import Button from "../../styles/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { setOpen } from "../../features/cart-sidebar/cartSidebarSlice";
+import { clearCart } from "../../features/cart/cartSlice";
 
 const Sidebar = () => {
+  const dispatch = useDispatch();
+
+  // hooks
+  const { products, totalPrice } = useSelector(
+    (state: RootState) => state.cart
+  );
+
+  function clearAllItems() {
+    dispatch(clearCart());
+  }
+
   return (
     <Wrapper>
       <MainSidebar>
         <MainContainer>
           <Top>
             <h1>Your cart</h1>
-            <Close style={{ cursor: "pointer", color: "hsl(0,0%,50%)" }} />
+            <Close
+              onClick={() => dispatch(setOpen(false))}
+              style={{ cursor: "pointer", color: "hsl(0,0%,50%)" }}
+            />
           </Top>
           <Products>
-            <CartProduct />
-            <CartProduct />
-            <CartProduct />
-            <CartProduct />
-            <CartProduct />
+            {products.map((product) => (
+              <CartProduct
+                product={product.product}
+                quantity={product.quantity}
+              />
+            ))}
           </Products>
           <SubTotal>
             <div>
               <h1>Subtotal : </h1>
-              <span>Rs 500</span>
+              <span>Rs {totalPrice}</span>
             </div>
             <div>
-              <Button>Clear cart</Button>
+              <Button onClick={clearAllItems}>Clear cart</Button>
               <Button>Checkout</Button>
             </div>
           </SubTotal>

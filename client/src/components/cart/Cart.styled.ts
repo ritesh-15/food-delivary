@@ -5,17 +5,17 @@ export const Wrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.3);
   top: 0;
-  bottom: 0;
+  background: hsla(0, 0%, 80%, 0.5);
   z-index: 300;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 `;
 
 export const MainSidebar = styled.div`
-  width: 100%;
+  width: 500px;
+  margin-left: auto;
+  background: #fff;
+  min-height: 100vh;
+  max-width: 100%;
 `;
 
 export const MainContainer = styled.div`
@@ -24,6 +24,7 @@ export const MainContainer = styled.div`
   padding: 1em;
   background: #fff;
   border-radius: 0.5em;
+  margin-left: auto;
 `;
 
 export const Top = styled.div`
@@ -42,7 +43,7 @@ export const Top = styled.div`
 
 export const Products = styled.div`
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 70vh;
 
   &::-webkit-scrollbar {
     width: 5px;

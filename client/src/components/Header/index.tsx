@@ -16,6 +16,9 @@ import {
 import { Link } from "react-router-dom";
 import { useFetchLoading, useUser } from "../../hooks";
 import { logOutApi } from "../../api/authenticationApi";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import { setOpen } from "../../features/cart-sidebar/cartSidebarSlice";
 
 interface HeaderProps {
   sticky?: boolean;
@@ -24,6 +27,8 @@ interface HeaderProps {
 export default function Header(props: HeaderProps) {
   const { user, removeUser } = useUser();
   const { setIsLoading } = useFetchLoading();
+  const { products } = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
 
   // logout user
   const logOutUser = async () => {
@@ -69,9 +74,10 @@ export default function Header(props: HeaderProps) {
                     </li>
                   )}
 
-                  <li>
+                  <li onClick={() => dispatch(setOpen(true))}>
                     <Flex>
                       <ShoppingBag />
+                      <h1>{products.length}</h1>
                       <span>Cart</span>
                     </Flex>
                   </li>

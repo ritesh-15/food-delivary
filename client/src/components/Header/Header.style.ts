@@ -69,6 +69,7 @@ export const DropItems = styled.ul`
   flex-direction: column;
   opacity: 0;
   visibility: hidden;
+  z-index: 300;
 
   li {
     font-size: 0.95rem;
