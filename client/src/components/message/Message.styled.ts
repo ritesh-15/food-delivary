@@ -3,9 +3,8 @@ import styled from "styled-components";
 export const MessageWrapper = styled.div<{ error?: boolean }>`
   position: fixed;
   background: ${({ error }) => (!error ? "#e8ffde" : "#fae3de")};
-  right: 0;
-  top: 60px;
-  left: 0;
+  left: 10px;
+  bottom: 20px;
   margin: 0 auto;
   width: 100%;
   max-width: 400px;

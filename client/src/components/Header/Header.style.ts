@@ -73,6 +73,21 @@ export const DropItems = styled.ul`
 
   li {
     font-size: 0.95rem;
+    position: relative;
     padding: 0.5em 0;
   }
+`;
+
+export const TotalCartItems = styled.div`
+  position: absolute;
+  background: ${({ theme }) => theme.colors.primary};
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.95rem;
+  top: -10px;
 `;

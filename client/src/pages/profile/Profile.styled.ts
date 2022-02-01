@@ -2,6 +2,15 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   padding-top: 2em;
+
+  button {
+    background: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+    margin-left: auto;
+    margin-top: 2em;
+    width: 150px;
+    justify-self: flex-end;
+  }
 `;
 
 export const ProfileTop = styled.div`
@@ -58,15 +67,6 @@ export const ProfileDetails = styled.div`
   margin-top: 2em;
   display: flex;
   flex-direction: column;
-
-  button {
-    background: ${({ theme }) => theme.colors.primary};
-    color: #fff;
-    margin-left: auto;
-    margin-top: 2em;
-    width: 150px;
-    justify-self: flex-end;
-  }
 `;
 
 export const Row = styled.div`
@@ -76,5 +76,40 @@ export const Row = styled.div`
 
   div {
     width: 45%;
+  }
+`;
+
+export const Title = styled.div`
+  margin-bottom: 1em;
+
+  h1 {
+    font-weight: 500;
+  }
+`;
+
+export const AddressContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const AddressMainContainer = styled.div`
+  width: 100%;
+  max-width: 300px;
+  line-height: 1.5;
+  border: 1px solid hsl(0, 0%, 90%);
+  padding: 1em;
+  border-radius: 4px;
+  margin-right: 1em;
+  height: 200px;
+
+  &:last-child {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    p {
+      margin-left: 1em;
+    }
   }
 `;

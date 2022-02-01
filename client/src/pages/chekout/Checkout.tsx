@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 import { SelectBox } from "../../components";
 import Container from "../../styles/Container";
 import Flex from "../../styles/Flex";
@@ -17,6 +19,7 @@ const METHODS = ["Pay online", "Pay on delivary"];
 
 export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("");
+  const { totalPrice } = useSelector((state: RootState) => state.cart);
 
   return (
     <Wrapper>
@@ -51,7 +54,7 @@ export default function Checkout() {
             <div>
               <Flex>
                 <p>Item total</p>
-                <span>Rs 450</span>
+                <span>Rs {totalPrice}</span>
               </Flex>
             </div>
             <div>
@@ -63,7 +66,7 @@ export default function Checkout() {
             <div>
               <Flex>
                 <h2>To pay</h2>
-                <small>Rs 450</small>
+                <small>Rs {totalPrice}</small>
               </Flex>
             </div>
           </Subtotal>

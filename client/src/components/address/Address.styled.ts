@@ -7,11 +7,11 @@ export const Wrapper = styled.div`
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 500;
+  z-index: 300;
 `;
 
 export const CenterContainer = styled.div`

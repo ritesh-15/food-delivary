@@ -116,7 +116,7 @@ export default function AddRestuarant() {
       const location = data.features[0];
 
       if (!location)
-        return setMessage("Location not found please choose again!");
+        return setMessage("Location not found please choose again!", true);
 
       setAddressInfo(() => {
         return {

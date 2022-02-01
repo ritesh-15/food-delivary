@@ -1,4 +1,5 @@
 import {
+  EmptyCartContainer,
   MainContainer,
   MainSidebar,
   Products,
@@ -13,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { setOpen } from "../../features/cart-sidebar/cartSidebarSlice";
 import { clearCart } from "../../features/cart/cartSlice";
+import { Link } from "react-router-dom";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -21,10 +23,6 @@ const Sidebar = () => {
   const { products, totalPrice } = useSelector(
     (state: RootState) => state.cart
   );
-
-  function clearAllItems() {
-    dispatch(clearCart());
-  }
 
   return (
     <Wrapper>
@@ -37,24 +35,33 @@ const Sidebar = () => {
               style={{ cursor: "pointer", color: "hsl(0,0%,50%)" }}
             />
           </Top>
-          <Products>
-            {products.map((product) => (
-              <CartProduct
-                product={product.product}
-                quantity={product.quantity}
-              />
-            ))}
-          </Products>
-          <SubTotal>
-            <div>
-              <h1>Subtotal : </h1>
-              <span>Rs {totalPrice}</span>
-            </div>
-            <div>
-              <Button onClick={clearAllItems}>Clear cart</Button>
-              <Button>Checkout</Button>
-            </div>
-          </SubTotal>
+          {products.length === 0 ? (
+            <EmptyCartContainer>
+              <img src="/images/empty-cart.svg" alt="" />
+              <h1>Oops your cart is empty!</h1>
+            </EmptyCartContainer>
+          ) : (
+            <>
+              <Products>
+                {products.map((product) => (
+                  <CartProduct
+                    product={product.product}
+                    quantity={product.quantity}
+                  />
+                ))}
+              </Products>
+              <SubTotal>
+                <div>
+                  <h1>Subtotal : </h1>
+                  <span>Rs {totalPrice}</span>
+                </div>
+
+                <Link to="/checkout">
+                  <Button hover>Procced To Checkout</Button>
+                </Link>
+              </SubTotal>
+            </>
+          )}
         </MainContainer>
       </MainSidebar>
     </Wrapper>

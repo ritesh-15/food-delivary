@@ -66,17 +66,7 @@ export const SubTotal = styled.div`
   button {
     background: ${({ theme }) => theme.colors.primary};
     color: #fff;
-
-    &:hover {
-      background: ${({ theme }) => theme.colors.primaryHover};
-    }
-
-    &:nth-child(1) {
-      background: #fff;
-      color: ${({ theme }) => theme.colors.primary};
-      border: 1px solid ${({ theme }) => theme.colors.primary};
-      margin-right: 1em;
-    }
+    width: 100%;
   }
 
   div {
@@ -100,5 +90,19 @@ export const SubTotal = styled.div`
       font-size: 1.1rem;
       margin-left: 1em;
     }
+  }
+`;
+
+export const EmptyCartContainer = styled.div`
+  img {
+    width: 100%;
+    height: 400px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    text-align: center;
+    margin-top: 1em;
+    font-size: 1.5rem;
   }
 `;

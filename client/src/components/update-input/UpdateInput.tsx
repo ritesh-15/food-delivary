@@ -20,6 +20,7 @@ const UpdateInput: FC<UpdateProps> = (props) => {
         title={props.title}
         name={props.name}
         type="text"
+        autoComplete="off"
       />
     </UpdateContainer>
   );
