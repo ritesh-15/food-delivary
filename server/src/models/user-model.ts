@@ -68,6 +68,10 @@ const UserSchema = new Schema<User>(
           required: true,
           lowercase: true,
         },
+        landmark: {
+          type: String,
+          required: true,
+        },
       },
     ],
     isRestaurantOwner: {

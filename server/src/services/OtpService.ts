@@ -12,8 +12,21 @@ class OtpService {
     this.time = new Date();
     this.expiresIn = expiresIn || Date.now() + 1000 * 60 * 2;
     this.payload = payload;
-    this.otp = otp || crypto.randomBytes(3).toString("hex");
+    this.otp = otp || this.generateOtp();
     this.data = `${this.payload}.${this.otp}.${this.expiresIn}`;
+  }
+
+  private generateOtp(): string {
+    // create array of letters
+    const letters =
+      "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    // generate random string from letters array
+    let otp = "";
+    for (let i = 0; i < 6; i++) {
+      otp += letters[Math.floor(Math.random() * letters.length)];
+    }
+
+    return otp.toUpperCase();
   }
 
   hash() {

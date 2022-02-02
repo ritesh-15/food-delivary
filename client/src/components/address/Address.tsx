@@ -22,15 +22,18 @@ import ApartmentIcon from "@mui/icons-material/Apartment";
 import Button from "../../styles/Button";
 import axios from "axios";
 import { FC } from "react";
-import { useMessage } from "../../hooks";
+import { useFetchLoading, useMessage, useUser } from "../../hooks";
 import { useRef } from "react";
+import UserApi from "../../api/usersApi";
 
 interface Props {
   setOpen(value: boolean): void;
 }
 
 const Address: FC<Props> = ({ setOpen }) => {
-  const [doorNumber, setDoorNumber] = useState("");
+  const { user, changeUserState } = useUser();
+  const { setIsLoading } = useFetchLoading();
+
   const [addressCordinates, setAddressCordinates] = useState<number[]>();
   const { setMessage } = useMessage();
 
@@ -45,7 +48,13 @@ const Address: FC<Props> = ({ setOpen }) => {
     district: "",
     locality: "",
     pinCode: "",
+    landmark: "",
   });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setAddressInfo({ ...addressInfo, [name]: value });
+  };
 
   const changeAddressCordinates = (cordinates: number[]): void => {
     setAddressCordinates(cordinates);
@@ -80,6 +89,7 @@ const Address: FC<Props> = ({ setOpen }) => {
             e.id.includes("place")
           )[0]?.text,
           pinCode: "",
+          landmark: "",
         };
       });
     } catch (err) {}
@@ -98,6 +108,35 @@ const Address: FC<Props> = ({ setOpen }) => {
     }
   };
 
+  // add addres
+  const saveAddress = async () => {
+    if (
+      !addressInfo.cordinates ||
+      !addressInfo.pinCode ||
+      !addressInfo.landmark
+    )
+      return setMessage("Please fill all the fields", true);
+
+    setIsLoading(true);
+
+    try {
+      const { data } = await UserApi.updateUser({
+        ...user,
+        address: addressInfo,
+      });
+
+      if (data.ok) {
+        setOpen(false);
+        changeUserState(data.user);
+        setMessage("Address addedd successfully!", false);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setMessage("Something went wrong!", true);
+    }
+  };
+
   return (
     <Wrapper ref={ref} onClick={closeAddressModal}>
       <CenterContainer>
@@ -113,27 +152,25 @@ const Address: FC<Props> = ({ setOpen }) => {
         </ShowAddress>
         <Details>
           <Input
-            title="Flat number"
-            value={doorNumber}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setDoorNumber(e.target.value)
-            }
+            title="Pin code"
+            value={addressInfo.pinCode}
+            onChange={handleChange}
             type="text"
-            name="doorNumber"
+            name="pinCode"
           />
         </Details>
         <Details>
           <Input
             title="Landmark"
-            value={doorNumber}
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setDoorNumber(e.target.value)
-            }
+            value={addressInfo.landmark}
+            onChange={handleChange}
             type="text"
-            name="doorNumber"
+            name="landmark"
           />
         </Details>
-        <Button hover>Save Address</Button>
+        <Button onClick={saveAddress} hover>
+          Save Address
+        </Button>
       </CenterContainer>
     </Wrapper>
   );

@@ -25,6 +25,7 @@
     "nodemailer": "^6.7.2",
     "passport": "^0.5.2",
     "passport-jwt": "^4.0.0",
+    "razorpay": "^2.8.0",
     "socket.io": "^4.4.1"
   },
   "devDependencies": {

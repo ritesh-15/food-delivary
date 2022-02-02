@@ -100,7 +100,8 @@ export const AddressMainContainer = styled.div`
   padding: 1em;
   border-radius: 4px;
   margin-right: 1em;
-  height: 200px;
+  height: 150px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 
   &:last-child {
     cursor: pointer;

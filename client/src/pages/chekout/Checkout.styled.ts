@@ -88,6 +88,13 @@ export const Subtotal = styled.div`
     text-transform: uppercase;
     font-weight: 500;
   }
+
+  button {
+    background: ${({ theme }) => theme.colors.primary};
+    color: #fff;
+    width: 100%;
+    margin-top: 1em;
+  }
 `;
 
 export const Address = styled.div`

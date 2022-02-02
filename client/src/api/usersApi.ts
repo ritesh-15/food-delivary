@@ -16,6 +16,14 @@ class UserApi {
   static deleteUser(id: string) {
     return api.delete(`/user/admin-update/${id}`);
   }
+
+  static updateUser(data: any) {
+    return api.put("/user/update", data);
+  }
+
+  static removeAddress(id: string) {
+    return api.delete(`/user/remove-address/${id}`);
+  }
 }
 
 export default UserApi;

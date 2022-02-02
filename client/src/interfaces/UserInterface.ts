@@ -13,6 +13,8 @@ export interface UserInterface {
     locality: string;
     pinCode: number;
     district: string;
+    landmark: string;
+    _id: string;
   }[];
   isRestaurantOwner: boolean;
   isAdmin: boolean;

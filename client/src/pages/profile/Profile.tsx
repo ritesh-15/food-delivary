@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { Address, UpdateInput } from "../../components";
-import { useUser } from "../../hooks";
+import { useFetchLoading, useMessage, useUser } from "../../hooks";
 import Button from "../../styles/Button";
 import Container from "../../styles/Container";
 import {
@@ -16,6 +16,7 @@ import {
 } from "./Profile.styled";
 import AddIcon from "@mui/icons-material/Add";
 import { Delete } from "@mui/icons-material";
+import UserApi from "../../api/usersApi";
 
 const iconStyle = {
   color: "hsl(0,0%,60%)",
@@ -24,20 +25,61 @@ const iconStyle = {
 };
 
 const Profile = () => {
-  const { user } = useUser();
+  const { user, changeUserState } = useUser();
+  const { setMessage } = useMessage();
+  const { setIsLoading } = useFetchLoading();
 
   // show address
   const [showAddress, setShowAddress] = useState<boolean>(false);
 
   const [values, setValues] = useState({
     name: user ? user.name : "",
-    email: user ? user.email : "",
     number: user ? user.number.toString() : "",
   });
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
+  };
+
+  // update user
+  const updateUser = async () => {
+    if (!values.name || !values.number)
+      return setMessage("Please fill all fields", true);
+
+    // mobile number validation
+    if (!values.number.match(/^[0-9]{10}$/)) {
+      return setMessage("Please enter a valid mobile number", true);
+    }
+
+    setIsLoading(true);
+    try {
+      const { data } = await UserApi.updateUser(values);
+      if (data.ok) {
+        changeUserState(data.user);
+        setMessage("Information updated successfully", false);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setMessage("Something went wrong", true);
+    }
+  };
+
+  // remove address
+  const removeAddress = async (id: string) => {
+    setIsLoading(true);
+    try {
+      const { data } = await UserApi.removeAddress(id);
+      if (data.ok) {
+        changeUserState(data.user);
+        setMessage("Address removed succesfully", false);
+      }
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      setMessage("Something went wrong", true);
+    }
   };
 
   return (
@@ -72,26 +114,24 @@ const Profile = () => {
             <h1>Address</h1>
           </Title>
           <AddressContainer>
-            <AddressMainContainer>
-              <p>
-                11, Mahatma Jyotiba Phule, Shop No.235/36/37, Fruit Market Rd,
-                Mandai, Shukrawar Peth, Pune, Maharashtra 411002, India
-              </p>
-              <Delete style={iconStyle} />
-            </AddressMainContainer>
-            <AddressMainContainer>
-              <p>
-                11, Mahatma Jyotiba Phule, Shop No.235/36/37, Fruit Market Rd,
-                Mandai, Shukrawar Peth, Pune, Maharashtra 411002, India
-              </p>{" "}
-              <Delete style={iconStyle} />
-            </AddressMainContainer>
+            {user?.addresses.map((address) => (
+              <AddressMainContainer key={address._id}>
+                <p>{address.placeName}</p>
+                <Delete
+                  onClick={() => removeAddress(address._id)}
+                  style={iconStyle}
+                />
+              </AddressMainContainer>
+            ))}
+
             <AddressMainContainer onClick={() => setShowAddress(true)}>
               <AddIcon />
               <p>Add new address</p>
             </AddressMainContainer>
           </AddressContainer>
-          <Button hover>Save</Button>
+          <Button onClick={updateUser} hover>
+            Save
+          </Button>
         </Wrapper>
       </Container>
     </>
