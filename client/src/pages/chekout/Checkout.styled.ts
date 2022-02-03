@@ -35,6 +35,13 @@ export const DelivaryAddress = styled.div`
   width: 100%;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   border-radius: 0.25em;
+
+  button {
+    background: transparent;
+    color: ${({ theme }) => theme.colors.primary};
+    border: 1px solid ${({ theme }) => theme.colors.primary};
+    margin-top: 1em;
+  }
 `;
 
 export const PaymentMethod = styled.div`
@@ -99,9 +106,24 @@ export const Subtotal = styled.div`
 
 export const Address = styled.div`
   margin-top: 1em;
-  max-width: 300px;
+  border: 1px solid hsl(0, 0%, 90%);
+  padding: 1em;
+  margin: 1em 0;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  height: 100px;
+  width: 100%;
+
+  input {
+    cursor: pointer;
+  }
 
   p {
+    margin-left: 1em;
+  }
+
+  h1 {
     color: ${({ theme }) => theme.colors.textLight};
   }
 `;

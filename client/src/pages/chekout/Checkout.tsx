@@ -18,10 +18,14 @@ import useRazorpay, { RazorpayOptions } from "react-razorpay";
 import Button from "../../styles/Button";
 import axios from "axios";
 import { api } from "../../api/axios";
+import { useUser } from "../../hooks";
+import { Link } from "react-router-dom";
 
 const METHODS = ["Pay online", "Pay on delivary"];
 
 export default function Checkout() {
+  const { user } = useUser();
+
   const Razorpay = useRazorpay();
 
   const handlePayment = useCallback(async () => {
@@ -68,14 +72,19 @@ export default function Checkout() {
           <CheckoutDetails>
             <DelivaryAddress>
               <h1>Delivary address</h1>
-              <Flex justify="flex-start">
-                <Address>
-                  <p>
-                    11, Mahatma Jyotiba Phule, Shop No.235/36/37, Fruit Market
-                    Rd, Mandai, Shukrawar Peth, Pune, Maharashtra 411002, India
-                  </p>
-                </Address>
-              </Flex>
+
+              {user && user.addresses.length > 2 ? (
+                user.addresses.map((address) => (
+                  <Address>
+                    <input type="radio" name="address" />
+                    {/* <p>{address.placeName}</p> */}
+                  </Address>
+                ))
+              ) : (
+                <Link to="/account">
+                  <Button>Add address</Button>
+                </Link>
+              )}
             </DelivaryAddress>
             <PaymentMethod>
               <h1>Payment method</h1>
