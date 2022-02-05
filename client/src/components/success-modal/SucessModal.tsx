@@ -95,10 +95,15 @@ const checkStyle = {
 };
 
 function SucessModal() {
-  const { state, setSuccessModal } = useSuccessModal();
+  const { state, setSuccessModal, callback } = useSuccessModal();
 
   const closeSuccessModal = () => {
-    setSuccessModal(state.title, false);
+    if (callback) {
+      callback();
+      setSuccessModal(state.title, false);
+    } else {
+      setSuccessModal(state.title, false);
+    }
   };
 
   return (

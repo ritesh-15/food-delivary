@@ -1,3 +1,5 @@
+import { Search } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import Button from "../../styles/Button";
 import Container from "../../styles/Container";
 import {
@@ -6,60 +8,68 @@ import {
   OrderRight,
   OrdersContainer,
   OrdersWrapper,
+  SearchDiv,
+  Table,
+  TableBody,
+  TableHead,
+  TableWrapper,
+  TD,
+  TH,
+  TR,
 } from "./Orders.styled";
 
 const Orders = () => {
   return (
     <Container>
       <OrdersContainer>
-        <OrdersWrapper>
-          <Order>
-            <OrderLeft>
-              <h1>
-                Order ID <span>4125468325</span>
-              </h1>
-              <p>
-                11, Mahatma Jyotiba Phule, Shop No.235/36/37, Fruit Market Rd,
-                Mandai, Shukrawar Peth, Pune, Maharashtra 411002, India
-              </p>
-            </OrderLeft>
-            <OrderRight>
-              <p>
-                Total Payment : <span>Rs 451</span>
-              </p>
-              <p>
-                Payment Status : <span>Paid</span>
-              </p>
-              <p>
-                Order Status : <span>Order placed</span>
-              </p>{" "}
-              <Button>View</Button>
-            </OrderRight>
-          </Order>
-          <Order>
-            <OrderLeft>
-              <h1>
-                Order ID <span>4125468325</span>
-              </h1>
-              <p>
-                11, Mahatma Jyotiba Phule, Shop No.235/36/37, Fruit Market Rd,
-                Mandai, Shukrawar Peth, Pune, Maharashtra 411002, India
-              </p>
-            </OrderLeft>
-            <OrderRight>
-              <p>
-                Total Payment : <span>Rs 451</span>
-              </p>
-              <p>
-                Payment Status : <span>Paid</span>
-              </p>
-              <p>
-                Order Status : <span>Order placed</span>
-              </p>
-              <Button>View</Button>
-            </OrderRight>
-          </Order>
-        </OrdersWrapper>
+        <SearchDiv>
+          <div>
+            <Search style={{ color: "hsl(0,0%,40%)" }} />
+            <input type="text" placeholder="Search order" />
+          </div>
+        </SearchDiv>
+        <TableWrapper>
+          <Table>
+            <TableHead>
+              <TR>
+                <TH>Order ID</TH>
+                <TH>Ordered Date</TH>
+                <TH>Order status</TH>
+                <TH>Payment status</TH>
+              </TR>
+            </TableHead>
+            <TableBody>
+              <TR>
+                <TD>
+                  <Link to="/order/4">4589123664</Link>
+                </TD>
+                <TD>
+                  <p>11/02/2022</p>
+                </TD>
+                <TD status="Pending">
+                  <small>Pending</small>
+                </TD>
+                <TD status="paid">
+                  <small>Paid</small>
+                </TD>
+              </TR>
+              <TR>
+                <TD>
+                  <Link to="/order/4">4589123664</Link>
+                </TD>
+                <TD>
+                  <p>11/02/2022</p>
+                </TD>
+                <TD status="Pending">
+                  <small>Pending</small>
+                </TD>
+                <TD status="paid">
+                  <small>Paid</small>
+                </TD>
+              </TR>
+            </TableBody>
+          </Table>
+        </TableWrapper>
       </OrdersContainer>
     </Container>
   );

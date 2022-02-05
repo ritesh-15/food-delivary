@@ -18,7 +18,12 @@ const Product: FC<Props> = ({ product }) => {
   const { setMessage } = useMessage();
 
   const addProductToCart = () => {
-    dispatch(addProduct({ product, quantity: 1 }));
+    dispatch(
+      addProduct({
+        productInfo: { product, quantity: 1 },
+        restaurantId: product.restaurant._id,
+      })
+    );
     setMessage("Product added to cart successfully!");
   };
 

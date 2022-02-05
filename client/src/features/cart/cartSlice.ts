@@ -6,27 +6,40 @@ interface ProductCartInterface {
   quantity: number;
 }
 
+interface InputState {
+  productInfo: ProductCartInterface;
+  restaurantId: string;
+}
 interface CartState {
   products: ProductCartInterface[];
   totalPrice: number;
+  restaurantId: string | null;
 }
 
 const initialState: CartState = {
   products: [],
   totalPrice: 0,
+  restaurantId: null,
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addProduct: (state, action: PayloadAction<ProductCartInterface>) => {
-      // check if product already exists
+    addProduct: (state, action: PayloadAction<InputState>) => {
+      const { productInfo, restaurantId } = action.payload;
+      const { product } = productInfo;
+
+      if (state.restaurantId && restaurantId !== state.restaurantId) {
+        state.products = [];
+        state.totalPrice = 0;
+        state.restaurantId = "";
+      }
 
       let alreadyExists: boolean = false;
 
       state.products.forEach((o) => {
-        if (o.product._id === action.payload.product._id) {
+        if (o.product._id === product._id) {
           alreadyExists = true;
         }
       });
@@ -34,20 +47,19 @@ const cartSlice = createSlice({
       if (alreadyExists) {
         // if exists then increment the quantity
         state.products.map((o) => {
-          if (o.product._id === action.payload.product._id) {
+          if (o.product._id === product._id) {
             o.quantity += 1;
             state.totalPrice = state.totalPrice + o.product.price;
           }
         });
-      } else {
-        // add new product to the cart
-        return {
-          totalPrice:
-            state.totalPrice +
-            action.payload.product.price * action.payload.quantity,
-          products: [...state.products, action.payload],
-        };
+
+        state.restaurantId = restaurantId;
+
+        return;
       }
+
+      state.products = [...state.products, productInfo];
+      state.restaurantId = restaurantId;
     },
 
     incrementQuantity: (state, action: PayloadAction<string>) => {
@@ -83,6 +95,7 @@ const cartSlice = createSlice({
       // clear the cart
       state.products = [];
       state.totalPrice = 0;
+      state.restaurantId = "";
     },
   },
 });

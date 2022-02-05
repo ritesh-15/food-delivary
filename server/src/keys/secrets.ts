@@ -23,3 +23,7 @@ export const SENDER_MAIL = <string>process.env.SENDER_MAIL;
 export const SENDER_MAIL_PASSWORD = <string>process.env.SENDER_MAIL_PASSWORD;
 
 export const APP_BASE_URL = <string>process.env.APP_BASE_URL;
+
+export const RAZORPAY_KEY_ID = <string>process.env.RAZORPAY_KEY_ID;
+
+export const RAZORPAY_SECRET = <string>process.env.RAZORPAY_SECRET;

@@ -4,6 +4,10 @@ import { authMiddleware } from "../middlewares/authMiddleware";
 
 const router = Router();
 
-router.route("/new-order").post(authMiddleware, OrderController.newOrder);
+router
+  .route("/order/make-order")
+  .post(authMiddleware, OrderController.makeOrder);
+
+router.route("/order/new-order").post(authMiddleware, OrderController.newOrder);
 
 export default router;

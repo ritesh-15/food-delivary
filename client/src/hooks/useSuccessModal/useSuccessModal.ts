@@ -9,12 +9,15 @@ const useSuccessModal = () => {
   const setSuccessModal = (
     title: string,
     open: boolean = true,
-    description?: string
+    description?: string,
+    callback?: () => void
   ) => {
-    dispatch(setSuccessModalState({ open: open, title, description }));
+    dispatch(
+      setSuccessModalState({ open: open, title, description, callback })
+    );
   };
 
-  return { state, setSuccessModal };
+  return { state, setSuccessModal, callback: state.callback };
 };
 
 export default useSuccessModal;

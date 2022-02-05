@@ -24,6 +24,8 @@ const Sidebar = () => {
     (state: RootState) => state.cart
   );
 
+  console.log(products);
+
   return (
     <Wrapper>
       <MainSidebar>
@@ -43,11 +45,8 @@ const Sidebar = () => {
           ) : (
             <>
               <Products>
-                {products.map((product) => (
-                  <CartProduct
-                    product={product.product}
-                    quantity={product.quantity}
-                  />
+                {products.map(({ product, quantity }) => (
+                  <CartProduct product={product} quantity={quantity} />
                 ))}
               </Products>
               <SubTotal>

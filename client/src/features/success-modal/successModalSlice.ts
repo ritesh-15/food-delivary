@@ -4,12 +4,14 @@ interface State {
   open: boolean;
   title: string;
   description?: string;
+  callback?: () => void;
 }
 
 const initialState: State = {
   open: false,
   title: "",
   description: "",
+  callback: undefined,
 };
 
 const successModalSlice = createSlice({
@@ -20,6 +22,7 @@ const successModalSlice = createSlice({
       state.description = action.payload.description;
       state.open = action.payload.open;
       state.title = action.payload.title;
+      state.callback = action.payload.callback || undefined;
     },
   },
 });
