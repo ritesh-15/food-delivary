@@ -10,9 +10,11 @@ import { useMessage } from "../../hooks";
 
 interface Props {
   product: ProductInterface;
+  hideAdd?: boolean;
+  quantity?: number;
 }
 
-const Product: FC<Props> = ({ product }) => {
+const Product: FC<Props> = ({ product, hideAdd, quantity }) => {
   // hooks
   const dispatch = useDispatch();
   const { setMessage } = useMessage();
@@ -41,12 +43,15 @@ const Product: FC<Props> = ({ product }) => {
         </div>
         <small>{product.description}</small>
         <p>Rs {product.price}</p>
-        <Button onClick={addProductToCart}>
-          <Flex>
-            <AddIcon />
-            <span>Add</span>
-          </Flex>
-        </Button>
+        {quantity && <p>Quantity {quantity}</p>}
+        {!hideAdd && (
+          <Button onClick={addProductToCart}>
+            <Flex>
+              <AddIcon />
+              <span>Add</span>
+            </Flex>
+          </Button>
+        )}
       </ProductInfo>
     </ProductContainer>
   );

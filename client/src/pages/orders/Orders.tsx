@@ -1,5 +1,8 @@
 import { Search } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import OrderApi from "../../api/order-api";
+import { OrderInterface } from "../../interfaces/OrderInterface";
 import Button from "../../styles/Button";
 import Container from "../../styles/Container";
 import {
@@ -17,8 +20,22 @@ import {
   TH,
   TR,
 } from "./Orders.styled";
+import moment from "moment";
 
 const Orders = () => {
+  const [orders, setOrders] = useState<OrderInterface[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await OrderApi.getUserOrders();
+        if (data.ok) {
+          setOrders(data.orders);
+        }
+      } catch (error) {}
+    })();
+  }, []);
+
   return (
     <Container>
       <OrdersContainer>
@@ -39,34 +56,24 @@ const Orders = () => {
               </TR>
             </TableHead>
             <TableBody>
-              <TR>
-                <TD>
-                  <Link to="/order/4">4589123664</Link>
-                </TD>
-                <TD>
-                  <p>11/02/2022</p>
-                </TD>
-                <TD status="Pending">
-                  <small>Pending</small>
-                </TD>
-                <TD status="paid">
-                  <small>Paid</small>
-                </TD>
-              </TR>
-              <TR>
-                <TD>
-                  <Link to="/order/4">4589123664</Link>
-                </TD>
-                <TD>
-                  <p>11/02/2022</p>
-                </TD>
-                <TD status="Pending">
-                  <small>Pending</small>
-                </TD>
-                <TD status="paid">
-                  <small>Paid</small>
-                </TD>
-              </TR>
+              {orders.map(
+                ({ orderId, orderStatus, createdAt, paymentDetails }) => (
+                  <TR key={orderId}>
+                    <TD>
+                      <Link to={`/order/${orderId}`}>{orderId}</Link>
+                    </TD>
+                    <TD>
+                      <p>{moment(createdAt).format("DD MMMM YYYY")}</p>
+                    </TD>
+                    <TD>
+                      <p>{orderStatus}</p>
+                    </TD>
+                    <TD status={paymentDetails.paymentStatus}>
+                      <small>{paymentDetails.paymentStatus}</small>
+                    </TD>
+                  </TR>
+                )
+              )}
             </TableBody>
           </Table>
         </TableWrapper>

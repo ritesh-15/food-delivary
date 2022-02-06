@@ -8,6 +8,22 @@ class OrderApi {
   static newOrder(data: any) {
     return api.post("/order/new-order", data);
   }
+
+  static getUserOrders() {
+    return api.get("/order/get-orders");
+  }
+
+  static singleOrder(id: string) {
+    return api.get(`/order/${id}`);
+  }
+
+  static changeStatus(id: string, data: any) {
+    return api.put(`/order/${id}`, data);
+  }
+
+  static allOrders() {
+    return api.get("/order/all-orders");
+  }
 }
 
 export default OrderApi;

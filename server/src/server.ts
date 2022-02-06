@@ -93,13 +93,19 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log("User Connected");
-
   socket.on("join-application", (id: string) => {
     socket.join(id);
 
     socket.on("update-application", (data: any) => {
       io.to(id).emit("updated-application", data);
+    });
+  });
+
+  socket.on("order-room", (id: string) => {
+    socket.join(id);
+
+    socket.on("order-status-updated", (order) => {
+      io.to(id).emit("order-updated", order);
     });
   });
 });

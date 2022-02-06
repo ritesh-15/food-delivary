@@ -104,6 +104,9 @@ export default function Header(props: HeaderProps) {
                           <Link to="/account">
                             <li>Profile</li>
                           </Link>
+                          <Link to="/orders">
+                            <li>My orders</li>
+                          </Link>
                           <li onClick={logOutUser}>Log out</li>
                         </DropItems>
                       </li>

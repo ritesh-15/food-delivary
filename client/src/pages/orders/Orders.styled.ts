@@ -147,18 +147,9 @@ export const TD = styled.td<Props>`
 
   small {
     display: block;
-    color: ${({ status }) =>
-      status === "Pending"
-        ? "#a68a00"
-        : status === "Rejected"
-        ? "#c62828"
-        : "#388e3c"};
+    color: ${({ status }) => (status === "unpaid" ? "#c62828" : "#388e3c")};
     background: ${({ status }) =>
-      status === "Pending"
-        ? "#fff0c2"
-        : status === "Rejected"
-        ? "#ffcdd2"
-        : "#c8e6c9"};
+      status === "unpaid" ? "#ffcdd2" : "#c8e6c9"};
     text-align: center;
     text-transform: capitalize;
     font-weight: 500;

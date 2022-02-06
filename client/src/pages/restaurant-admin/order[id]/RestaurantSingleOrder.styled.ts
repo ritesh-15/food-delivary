@@ -122,3 +122,17 @@ export const Actions = styled.div`
     max-width: 250px;
   }
 `;
+
+export const Mapcontainer = styled.div`
+  height: 300px;
+  margin-bottom: 1em;
+  max-width: 450px;
+`;
+
+export const ProductContainer = styled.div``;
+
+export const DelivaredTitle = styled.h1`
+  margin-bottom: 1em;
+  font-size: 1.25rem;
+  color: ${({ theme }) => theme.colors.secondary};
+`;

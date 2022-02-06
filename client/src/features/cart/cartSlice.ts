@@ -60,6 +60,7 @@ const cartSlice = createSlice({
 
       state.products = [...state.products, productInfo];
       state.restaurantId = restaurantId;
+      state.totalPrice = state.totalPrice + product.price;
     },
 
     incrementQuantity: (state, action: PayloadAction<string>) => {

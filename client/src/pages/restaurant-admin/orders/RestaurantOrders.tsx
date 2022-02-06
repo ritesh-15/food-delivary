@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   SearchDiv,
   Table,
@@ -12,8 +12,24 @@ import {
 } from "./RestaurantOrders.styled";
 import SearchIcon from "@mui/icons-material/Search";
 import { Link } from "react-router-dom";
+import OrderApi from "../../../api/order-api";
+import { OrderInterface } from "../../../interfaces/OrderInterface";
+import moment from "moment";
 
 function RestaurantOrders() {
+  const [orders, setOrders] = useState<OrderInterface[]>([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await OrderApi.allOrders();
+        if (data.ok) {
+          setOrders(data.orders);
+        }
+      } catch (error) {}
+    })();
+  }, []);
+
   return (
     <Wrapper>
       <SearchDiv>
@@ -33,34 +49,24 @@ function RestaurantOrders() {
             </TR>
           </TableHead>
           <TableBody>
-            <TR>
-              <TD>
-                <Link to="/admin/restaurant/orders/1">4589123664</Link>
-              </TD>
-              <TD>
-                <p>Ritesh Khore</p>
-              </TD>
-              <TD>
-                <p>11/02/2022</p>
-              </TD>
-              <TD status="Pending">
-                <small>Pending</small>
-              </TD>
-            </TR>
-            <TR>
-              <TD>
-                <Link to="/admin/restaurant/orders/1">4589123664</Link>
-              </TD>
-              <TD>
-                <p>Ritesh Khore</p>
-              </TD>
-              <TD>
-                <p>11/02/2022</p>
-              </TD>
-              <TD status="Delivered">
-                <small>Delivered</small>
-              </TD>
-            </TR>
+            {orders.map((order) => (
+              <TR>
+                <TD>
+                  <Link to={`/admin/restaurant/orders/${order.orderId}`}>
+                    {order.orderId}
+                  </Link>
+                </TD>
+                <TD>
+                  <p>{order.user.name}</p>
+                </TD>
+                <TD>
+                  <p>{moment(order.createdAt).format("DD MMMM YYYY")}</p>
+                </TD>
+                <TD status={order.orderStatus}>
+                  <small>{order.orderStatus}</small>
+                </TD>
+              </TR>
+            ))}
           </TableBody>
         </Table>
       </TableWrapper>

@@ -28,28 +28,23 @@ export const OrderInformation = styled.div`
 
   button {
     border: 1px solid ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.primary};
     margin-top: 1em;
+    color: ${({ theme }) => theme.colors.primary};
   }
+`;
+
+export const OrderTitle = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 1em;
 
   h1 {
-    font-size: 1.15rem;
-
-    span {
-      color: ${({ theme }) => theme.colors.secondary};
-      font-weight: 500;
-      font-size: 1.15rem;
-    }
+    font-size: 1.05rem;
+    font-weight: 500;
   }
 
   p {
-    margin-top: 0.5em;
-
-    span {
-      color: ${({ theme }) => theme.colors.secondary};
-      font-weight: 500;
-      font-size: 1.15rem;
-    }
+    margin-left: 1em;
   }
 `;
 
@@ -81,14 +76,14 @@ export const StatusDiv = styled.div<StatusDivProps>`
 
   p {
     color: ${({ theme, active }) =>
-      active ? theme.colors.primary : "hsl(24, 100%, 92%)"};
+      active ? theme.colors.secondary : "#dedede"};
   }
 
   div {
     width: 15px;
     height: 15px;
     background: ${({ theme, active }) =>
-      active ? theme.colors.primary : "hsl(24, 100%, 92%)"};
+      active ? theme.colors.secondary : "#dedede"};
     border-radius: 50%;
     margin: 0 1em;
     position: relative;
@@ -97,7 +92,7 @@ export const StatusDiv = styled.div<StatusDivProps>`
       content: "";
       width: 3px;
       background: ${({ theme, active }) =>
-        active ? theme.colors.primary : "hsl(24, 100%, 92%)"};
+        active ? theme.colors.secondary : "#dedede"};
       height: 570%;
       top: 15px;
       bottom: 0;

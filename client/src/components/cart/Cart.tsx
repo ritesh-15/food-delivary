@@ -24,8 +24,6 @@ const Sidebar = () => {
     (state: RootState) => state.cart
   );
 
-  console.log(products);
-
   return (
     <Wrapper>
       <MainSidebar>

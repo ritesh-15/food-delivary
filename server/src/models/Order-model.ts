@@ -105,7 +105,7 @@ const orderSchema = new Schema<OrderInterface>(
     },
     orderStatus: {
       type: String,
-      default: "order placed",
+      default: "placed",
     },
     restaurant: {
       type: Schema.Types.ObjectId,

@@ -8,6 +8,7 @@ import Order from "../models/Order-model";
 import ErrorHandler from "../services/Error-Handler";
 import { generateOrderId } from "../util/generateOrderId";
 import { validateNewOrderBody } from "../validation/order-validations";
+import Restaurant from "../models/restaurant-modal";
 
 interface NewOrderBody {
   products: {
@@ -77,7 +78,6 @@ class OrderController {
     try {
       await validateNewOrderBody.validateAsync(req.body);
     } catch (error: any) {
-      console.log(error.message);
       return next(ErrorHandler.unProcessebleEntity());
     }
 
@@ -93,6 +93,112 @@ class OrderController {
       const order = await Order.create(body);
 
       return res.json({ ok: true, order });
+    } catch (error) {
+      return next(ErrorHandler.serverError());
+    }
+  }
+
+  static async getUserOrders(req: Request, res: Response, next: NextFunction) {
+    const activeUser: User = <User>req.user;
+
+    try {
+      const orders = await Order.find({ user: activeUser._id })
+        .populate("user", "-addresses")
+        .populate("restaurant", "-documents")
+        .populate("products.product");
+
+      return res.json({ orders, ok: true });
+    } catch (error) {
+      return next(ErrorHandler.serverError());
+    }
+  }
+
+  static async allOrders(req: Request, res: Response, next: NextFunction) {
+    const activeUser: User = <User>req.user;
+
+    try {
+      const restaurant = await Restaurant.findOne({ userId: activeUser._id });
+
+      if (!restaurant) return next(ErrorHandler.notFound());
+
+      const orders = await Order.find({ restaurant: restaurant._id })
+        .populate("user", "-addresses")
+        .populate("restaurant", "-documents")
+        .populate("products.product");
+
+      return res.json({ orders, ok: true });
+    } catch (error) {
+      return next(ErrorHandler.serverError());
+    }
+  }
+
+  static async singleOrder(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+
+    if (!id) return next(ErrorHandler.unProcessebleEntity());
+
+    try {
+      const order = await Order.findOne({ orderId: id })
+        .populate("user", "-addresses")
+        .populate("restaurant", "-documents")
+        .populate("products.product");
+
+      if (!order) return next(ErrorHandler.notFound("Order not found!"));
+
+      return res.json({ order, ok: true });
+    } catch (error) {
+      return next(ErrorHandler.serverError());
+    }
+  }
+
+  // user
+  static async cancelOrder(req: Request, res: Response, next: NextFunction) {
+    const { id } = req.params;
+
+    if (!id) return next(ErrorHandler.unProcessebleEntity());
+
+    try {
+      const order = await Order.findOne({ orderId: id })
+        .populate("user", "-addresses")
+        .populate("restaurant", "-documents")
+        .populate("products.product");
+
+      if (!order) return next(ErrorHandler.notFound("Order not found!"));
+
+      order.orderStatus = "cancled";
+
+      await order.save();
+
+      return res.json({ order, ok: true });
+    } catch (error) {
+      return next(ErrorHandler.serverError());
+    }
+  }
+
+  // restaurant
+  static async changeOrderStatus(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!id || !status) return next(ErrorHandler.unProcessebleEntity());
+
+    try {
+      const order = await Order.findOne({ orderId: id })
+        .populate("user", "-addresses")
+        .populate("restaurant", "-documents")
+        .populate("products.product");
+
+      if (!order) return next(ErrorHandler.notFound("Order not found!"));
+
+      order.orderStatus = status;
+
+      await order.save();
+
+      return res.json({ order, ok: true });
     } catch (error) {
       return next(ErrorHandler.serverError());
     }
