@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.RAZORPAY_SECRET = exports.RAZORPAY_KEY_ID = exports.APP_BASE_URL = exports.SENDER_MAIL_PASSWORD = exports.SENDER_MAIL = exports.FORGOT_PASSWORD_SECRET = exports.MONGO_URI = exports.HASH_SECRET = exports.REFRESH_TOKEN_SECRET = exports.ACCESS_TOKEN_SECRET = void 0;
+var dotenv_1 = require("dotenv");
+(0, dotenv_1.config)();
+exports.ACCESS_TOKEN_SECRET = (process.env.ACCESS_TOKEN_SECRET);
+exports.REFRESH_TOKEN_SECRET = (process.env.REFRESH_TOKEN_SECRET);
+exports.HASH_SECRET = process.env.HASH_SECRET;
+exports.MONGO_URI = process.env.MONGO_URI;
+exports.FORGOT_PASSWORD_SECRET = (process.env.FORGOT_PASSWORD_SECRET);
+exports.SENDER_MAIL = process.env.SENDER_MAIL;
+exports.SENDER_MAIL_PASSWORD = process.env.SENDER_MAIL_PASSWORD;
+exports.APP_BASE_URL = process.env.APP_BASE_URL;
+exports.RAZORPAY_KEY_ID = process.env.RAZORPAY_KEY_ID;
+exports.RAZORPAY_SECRET = process.env.RAZORPAY_SECRET;
