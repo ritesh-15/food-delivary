@@ -18,7 +18,7 @@ import useRazorpay, { RazorpayOptions } from "react-razorpay";
 import Button from "../../styles/Button";
 import axios from "axios";
 import { api } from "../../api/axios";
-import { useMessage, useUser, useSuccessModal } from "../../hooks";
+import { useMessage, useUser, useSuccessModal, useSocket } from "../../hooks";
 import { Link, useNavigate } from "react-router-dom";
 import OrderApi from "../../api/order-api";
 import { clearCart } from "../../features/cart/cartSlice";
@@ -54,6 +54,7 @@ export default function Checkout() {
   const { setMessage } = useMessage();
   const { setSuccessModal } = useSuccessModal();
   const dispatch = useDispatch();
+  const socket = useSocket();
 
   const { totalPrice, products, restaurantId } = useSelector(
     (state: RootState) => state.cart
@@ -161,6 +162,7 @@ export default function Checkout() {
               }
             );
             dispatch(clearCart());
+            socket?.emit("new-order", data.order);
           }
         } catch (error) {
           setMessage("Something went wrong!", true);
@@ -190,6 +192,7 @@ export default function Checkout() {
     try {
       const { data } = await OrderApi.newOrder(body);
       if (data.ok) {
+        socket?.emit("new-order", data.order);
         setSuccessModal(
           "Order Placed Successfully",
           true,

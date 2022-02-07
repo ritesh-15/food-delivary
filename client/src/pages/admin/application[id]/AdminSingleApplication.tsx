@@ -102,6 +102,7 @@ const AdminSingleApplication = () => {
   const [status, setStatus] = useState("pending");
 
   //get application data
+
   useEffect(() => {
     if (!id) return;
 
@@ -159,6 +160,7 @@ const AdminSingleApplication = () => {
     setIsLoading(true);
     try {
       await deleteApplicationApi(id);
+      socket?.emit("deleted-application", { message: "Application deleted!" });
       setIsLoading(false);
       setMessage("Application deleted suceessfully!");
       navigate("/admin/applications");

@@ -8,8 +8,10 @@ import useFetchLoading from "./useFetchLoading/useFetchLoading";
 import useSuccessModal from "./useSuccessModal/useSuccessModal";
 import useRefresh from "./useRefresh/useRefresh";
 import useSocket from "./useSocket/useSocket";
+import useFetch from "./usefetch/useFetch";
 
 export {
+  useFetch,
   useCompleteProfileSteps,
   useWindowScroll,
   useRestaurantStep,

@@ -25,6 +25,8 @@ import {
   Legend,
   BarElement,
 } from "chart.js";
+import { useEffect } from "react";
+import { useSocket } from "../../../hooks";
 ChartJS.register(
   CategoryScale,
   LinearScale,

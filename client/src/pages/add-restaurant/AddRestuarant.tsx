@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { AddRestaurantModal, Input, Map, SelectBox } from "../../components";
+import { Input, Map, SelectBox } from "../../components";
 import Button from "../../styles/Button";
 import Container from "../../styles/Container";
 import {
@@ -26,6 +26,7 @@ import {
   useFetchLoading,
   useForm,
   useMessage,
+  useSocket,
   useSuccessModal,
   useUser,
 } from "../../hooks";
@@ -64,6 +65,7 @@ export default function AddRestuarant() {
   const { setSuccessModal } = useSuccessModal();
   const { user } = useUser();
   const navigate = useNavigate();
+  const socket = useSocket();
 
   const [foodType, setFoodType] = useState<string>("");
   const [isAgreed, setIsAgreed] = useState<boolean>(false);
@@ -197,12 +199,15 @@ export default function AddRestuarant() {
 
       if (data.ok) {
         setSuccessModal("Application has been submited successfully!");
+        socket?.emit("new-application", data.application);
         navigate("/application");
       }
       setIsLoading(false);
     } catch (error: any) {
       setIsLoading(false);
-      setMessage(error.response.data.error.message, true);
+      if (error.response) {
+        setMessage(error.response.data.error.message, true);
+      }
     }
   };
 

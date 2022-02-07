@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import OrderApi from "../../../api/order-api";
-import { Map, Product, SelectBox } from "../../../components";
+import { DataLoader, Map, Product, SelectBox } from "../../../components";
 import { OrderInterface } from "../../../interfaces/OrderInterface";
 import Button from "../../../styles/Button";
 import {
   Actions,
+  CanceledTitle,
   DelivaredTitle,
   FormControl,
   Grid,
@@ -19,7 +20,12 @@ import {
   Title,
 } from "./RestaurantSingleOrder.styled";
 import moment from "moment";
-import { useFetchLoading, useMessage, useSocket } from "../../../hooks";
+import {
+  useFetch,
+  useFetchLoading,
+  useMessage,
+  useSocket,
+} from "../../../hooks";
 
 const OPTIONS = [
   "canceled",
@@ -59,110 +65,129 @@ function RestaurantSingleOrder() {
   };
 
   useEffect(() => {
+    socket?.on("order-canceled", (order: OrderInterface) => {
+      setOrder(order);
+    });
+
+    return () => {
+      socket?.off();
+    };
+  }, [socket]);
+
+  const { loading, data } = useFetch(`/order/${orderId}`, [orderId]);
+
+  useEffect(() => {
+    if (!data) return;
+
+    setOrder(data.order);
+    setCurrent(data.order.orderStatus);
+  }, [data]);
+
+  useEffect(() => {
     if (!orderId) return;
 
     socket?.emit("order-room", orderId);
   }, [orderId, socket]);
 
-  useEffect(() => {
-    if (!orderId) return;
-
-    (async () => {
-      try {
-        const { data } = await OrderApi.singleOrder(orderId);
-        if (data.ok) {
-          setOrder(data.order);
-          setCurrent(data.order.orderStatus);
-        }
-      } catch (error) {}
-    })();
-  }, [orderId]);
+  const showOrderChangeStatus = (): boolean => {
+    return (
+      order?.orderStatus === "delivared" || order?.orderStatus === "canceled"
+    );
+  };
 
   return (
-    <RestaurantSingleOrderContainer>
-      <SubTitle>Order status</SubTitle>
-
-      {order?.orderStatus !== "delivared" ? (
-        <Actions>
-          <SelectBox
-            options={OPTIONS}
-            current={current}
-            changeCurrent={setCurrent}
-            label="Change Status"
-          />
-          <Button onClick={changeStatus} hover>
-            Process
-          </Button>
-        </Actions>
+    <>
+      {loading ? (
+        <DataLoader />
       ) : (
-        <DelivaredTitle>Order delivared!</DelivaredTitle>
+        <RestaurantSingleOrderContainer>
+          <SubTitle>Order status</SubTitle>
+
+          {!showOrderChangeStatus() ? (
+            <Actions>
+              <SelectBox
+                options={OPTIONS}
+                current={current}
+                changeCurrent={setCurrent}
+                label="Change Status"
+              />
+              <Button onClick={changeStatus} hover>
+                Process
+              </Button>
+            </Actions>
+          ) : order?.orderStatus === "delivared" ? (
+            <DelivaredTitle>Order delivared!</DelivaredTitle>
+          ) : (
+            <CanceledTitle>Order canceled!</CanceledTitle>
+          )}
+          <MainContainer>
+            <SubTitle>User Details</SubTitle>
+            <Grid>
+              <FormControl>
+                <h1>User ID</h1>
+                <p>{order?.user._id}</p>
+              </FormControl>
+              <FormControl>
+                <h1>User Name</h1>
+                <p>{order?.user.name}</p>
+              </FormControl>
+              <FormControl>
+                <h1>User email</h1>
+                <p>{order?.user.email}</p>
+              </FormControl>
+              <FormControl>
+                <h1>User Contact</h1>
+                <p>{order?.user.number}</p>
+              </FormControl>
+            </Grid>
+            <SubTitle>Order Details</SubTitle>
+            <Grid>
+              <FormControl>
+                <h1>Order ID</h1>
+                <p>{order?.orderId}</p>
+              </FormControl>
+              <FormControl>
+                <h1>Ordered Date</h1>
+                <p>{order && moment(order.createdAt).format("DD MMMM YYYY")}</p>
+              </FormControl>
+              <FormControl>
+                <h1>Payment status</h1>
+                <p>{order?.paymentDetails.paymentStatus}</p>
+              </FormControl>
+              <FormControl>
+                <h1>Total payment</h1>
+                <p>Rs {order?.paymentDetails.amount}</p>
+              </FormControl>
+              <FormControl>
+                <h1>Delivary address</h1>
+                <p>{order?.addressDetails.placeName}</p>
+              </FormControl>
+            </Grid>
+            <SubTitle>Delivary location</SubTitle>
+            {order && (
+              <Mapcontainer>
+                <Map
+                  currentCordinates={[
+                    order.addressDetails.cordinates.lat,
+                    order.addressDetails.cordinates.lng,
+                  ]}
+                />
+              </Mapcontainer>
+            )}
+            <SubTitle>Products</SubTitle>
+            <ProductContainer>
+              {order?.products.map((product) => (
+                <Product
+                  quantity={product.quantity}
+                  hideAdd
+                  product={product.product}
+                />
+              ))}
+            </ProductContainer>
+          </MainContainer>
+        </RestaurantSingleOrderContainer>
       )}
-      <MainContainer>
-        <SubTitle>User Details</SubTitle>
-        <Grid>
-          <FormControl>
-            <h1>User ID</h1>
-            <p>{order?.user._id}</p>
-          </FormControl>
-          <FormControl>
-            <h1>User Name</h1>
-            <p>{order?.user.name}</p>
-          </FormControl>
-          <FormControl>
-            <h1>User email</h1>
-            <p>{order?.user.email}</p>
-          </FormControl>
-          <FormControl>
-            <h1>User Contact</h1>
-            <p>{order?.user.number}</p>
-          </FormControl>
-        </Grid>
-        <SubTitle>Order Details</SubTitle>
-        <Grid>
-          <FormControl>
-            <h1>Order ID</h1>
-            <p>{order?.orderId}</p>
-          </FormControl>
-          <FormControl>
-            <h1>Ordered Date</h1>
-            <p>{order && moment(order.createdAt).format("DD MMMM YYYY")}</p>
-          </FormControl>
-          <FormControl>
-            <h1>Payment status</h1>
-            <p>{order?.paymentDetails.paymentStatus}</p>
-          </FormControl>
-          <FormControl>
-            <h1>Total payment</h1>
-            <p>Rs {order?.paymentDetails.amount}</p>
-          </FormControl>
-          <FormControl>
-            <h1>Delivary address</h1>
-            <p>{order?.addressDetails.placeName}</p>
-          </FormControl>
-        </Grid>
-        <SubTitle>Delivary location</SubTitle>
-        {order && (
-          <Mapcontainer>
-            <Map
-              currentCordinates={[
-                order.addressDetails.cordinates.lat,
-                order.addressDetails.cordinates.lng,
-              ]}
-            />
-          </Mapcontainer>
-        )}
-        <SubTitle>Products</SubTitle>
-        <ProductContainer>
-          {order?.products.map((product) => (
-            <Product
-              quantity={product.quantity}
-              hideAdd
-              product={product.product}
-            />
-          ))}
-        </ProductContainer>
-      </MainContainer>
-    </RestaurantSingleOrderContainer>
+    </>
   );
 }
 

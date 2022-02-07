@@ -136,3 +136,9 @@ export const DelivaredTitle = styled.h1`
   font-size: 1.25rem;
   color: ${({ theme }) => theme.colors.secondary};
 `;
+
+export const CanceledTitle = styled.h1`
+  margin-bottom: 1em;
+  font-size: 1.25rem;
+  color: ${({ theme }) => theme.colors.red};
+`;

@@ -53,6 +53,20 @@ const RestaurantApplication = () => {
   const navigate = useNavigate();
   const socket = useSocket();
 
+  useEffect(() => {
+    socket?.on("application-deleted", () => {
+      setMessage(
+        "Your application is deleted from admin side please apply again!",
+        true
+      );
+      navigate("/");
+    });
+
+    return () => {
+      socket?.off();
+    };
+  }, [socket]);
+
   // view document state
   const [currentFile, setCurrentFile] = useState<CurrentfileInterface>();
 

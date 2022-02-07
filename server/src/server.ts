@@ -89,7 +89,11 @@ const server = app.listen(PORT, () =>
 );
 
 const io = new Server(server, {
-  cors: { origin: "http://localhost:3000", credentials: true },
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    credentials: true,
+  },
 });
 
 io.on("connection", (socket) => {
@@ -99,10 +103,34 @@ io.on("connection", (socket) => {
     socket.on("update-application", (data: any) => {
       io.to(id).emit("updated-application", data);
     });
+
+    socket.on("deleted-application", (data: any) => {
+      io.to(id).emit("application-deleted", data);
+    });
+  });
+
+  socket.on("join-admin", () => {
+    socket.join("admin");
+  });
+
+  socket.on("new-application", (application: any) => {
+    io.to("admin").emit("new-restaurant-application", application);
+  });
+
+  socket.on("join-restaurant", (id: string) => {
+    socket.join(id);
+  });
+
+  socket.on("new-order", (order: any) => {
+    io.to(order.restaurant.userId).emit("new-order-created", order);
   });
 
   socket.on("order-room", (id: string) => {
     socket.join(id);
+
+    socket.on("canceled-order", (order) => {
+      io.to(id).emit("order-canceled", order);
+    });
 
     socket.on("order-status-updated", (order) => {
       io.to(id).emit("order-updated", order);

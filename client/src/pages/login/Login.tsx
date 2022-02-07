@@ -34,7 +34,9 @@ export default function Login() {
       setIsLoading(false);
     } catch (err: any) {
       setIsLoading(false);
-      setMessage(err.response.data.error.message, true);
+      if (err.response) {
+        setMessage(err.response.data.error.message, true);
+      }
     }
   };
 

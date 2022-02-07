@@ -23,6 +23,7 @@ import Address from "./address/Address";
 import Map from "./map/Map";
 import InfoSkeleton from "./Infoskeleton/InfoSkeleton";
 import TableSkeleton from "./table-skeleton/TableSkeleton";
+import DataLoader from "./data-loader/DataLoader";
 
 export {
   Header,
@@ -50,4 +51,5 @@ export {
   Map,
   InfoSkeleton,
   TableSkeleton,
+  DataLoader,
 };

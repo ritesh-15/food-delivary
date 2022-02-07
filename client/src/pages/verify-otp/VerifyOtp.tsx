@@ -63,6 +63,7 @@ export default function VerifyOtp() {
       });
       if (data.ok) {
         changeUserState(data.user);
+        changeOtpState({ email: "", hash: "" });
       }
       setIsLoading(false);
     } catch (err: any) {

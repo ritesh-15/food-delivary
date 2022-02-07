@@ -21,64 +21,71 @@ import {
   TR,
 } from "./Orders.styled";
 import moment from "moment";
+import { DataLoader } from "../../components";
+import { useFetch } from "../../hooks";
 
 const Orders = () => {
   const [orders, setOrders] = useState<OrderInterface[]>([]);
 
+  const { data, loading } = useFetch("/order/get-orders");
+
   useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await OrderApi.getUserOrders();
-        if (data.ok) {
-          setOrders(data.orders);
-        }
-      } catch (error) {}
-    })();
-  }, []);
+    if (!data) return;
+
+    if (data.ok) {
+      setOrders(data.orders);
+    }
+  }, [data]);
 
   return (
-    <Container>
-      <OrdersContainer>
-        <SearchDiv>
-          <div>
-            <Search style={{ color: "hsl(0,0%,40%)" }} />
-            <input type="text" placeholder="Search order" />
-          </div>
-        </SearchDiv>
-        <TableWrapper>
-          <Table>
-            <TableHead>
-              <TR>
-                <TH>Order ID</TH>
-                <TH>Ordered Date</TH>
-                <TH>Order status</TH>
-                <TH>Payment status</TH>
-              </TR>
-            </TableHead>
-            <TableBody>
-              {orders.map(
-                ({ orderId, orderStatus, createdAt, paymentDetails }) => (
-                  <TR key={orderId}>
-                    <TD>
-                      <Link to={`/order/${orderId}`}>{orderId}</Link>
-                    </TD>
-                    <TD>
-                      <p>{moment(createdAt).format("DD MMMM YYYY")}</p>
-                    </TD>
-                    <TD>
-                      <p>{orderStatus}</p>
-                    </TD>
-                    <TD status={paymentDetails.paymentStatus}>
-                      <small>{paymentDetails.paymentStatus}</small>
-                    </TD>
+    <>
+      {loading ? (
+        <DataLoader />
+      ) : (
+        <Container>
+          <OrdersContainer>
+            <SearchDiv>
+              <div>
+                <Search style={{ color: "hsl(0,0%,40%)" }} />
+                <input type="text" placeholder="Search order" />
+              </div>
+            </SearchDiv>
+            <TableWrapper>
+              <Table>
+                <TableHead>
+                  <TR>
+                    <TH>Order ID</TH>
+                    <TH>Ordered Date</TH>
+                    <TH>Order status</TH>
+                    <TH>Payment status</TH>
                   </TR>
-                )
-              )}
-            </TableBody>
-          </Table>
-        </TableWrapper>
-      </OrdersContainer>
-    </Container>
+                </TableHead>
+                <TableBody>
+                  {orders.map(
+                    ({ orderId, orderStatus, createdAt, paymentDetails }) => (
+                      <TR key={orderId}>
+                        <TD>
+                          <Link to={`/order/${orderId}`}>{orderId}</Link>
+                        </TD>
+                        <TD>
+                          <p>{moment(createdAt).format("DD MMMM YYYY")}</p>
+                        </TD>
+                        <TD>
+                          <p>{orderStatus}</p>
+                        </TD>
+                        <TD status={paymentDetails.paymentStatus}>
+                          <small>{paymentDetails.paymentStatus}</small>
+                        </TD>
+                      </TR>
+                    )
+                  )}
+                </TableBody>
+              </Table>
+            </TableWrapper>
+          </OrdersContainer>
+        </Container>
+      )}
+    </>
   );
 };
 

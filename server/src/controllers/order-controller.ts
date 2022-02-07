@@ -90,7 +90,11 @@ class OrderController {
         restaurant,
       };
 
-      const order = await Order.create(body);
+      const order = await (
+        await (
+          await (await Order.create(body)).populate("user", "-addresses")
+        ).populate("restaurant", "-documents")
+      ).populate("products.product");
 
       return res.json({ ok: true, order });
     } catch (error) {
@@ -105,7 +109,8 @@ class OrderController {
       const orders = await Order.find({ user: activeUser._id })
         .populate("user", "-addresses")
         .populate("restaurant", "-documents")
-        .populate("products.product");
+        .populate("products.product")
+        .sort({ createdAt: -1 });
 
       return res.json({ orders, ok: true });
     } catch (error) {
@@ -124,7 +129,8 @@ class OrderController {
       const orders = await Order.find({ restaurant: restaurant._id })
         .populate("user", "-addresses")
         .populate("restaurant", "-documents")
-        .populate("products.product");
+        .populate("products.product")
+        .sort({ createdAt: -1 });
 
       return res.json({ orders, ok: true });
     } catch (error) {
@@ -165,7 +171,7 @@ class OrderController {
 
       if (!order) return next(ErrorHandler.notFound("Order not found!"));
 
-      order.orderStatus = "cancled";
+      order.orderStatus = "canceled";
 
       await order.save();
 

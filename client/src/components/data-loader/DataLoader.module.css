@@ -1,0 +1,28 @@
+.loaderContainer {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.loader {
+  width: 45px;
+  height: 45px;
+  background: transparent;
+  border: 3px solid transparent;
+  border-top: 3px solid hsl(27, 97%, 54%);
+  border-bottom: 3px solid hsl(27, 97%, 54%);
+  border-left: 3px solid hsl(27, 97%, 54%);
+  margin-top: 6em;
+  border-radius: 50%;
+  animation: spin ease-in infinite 1s;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

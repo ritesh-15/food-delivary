@@ -21,6 +21,10 @@ class OrderApi {
     return api.put(`/order/${id}`, data);
   }
 
+  static cancelOrder(id: string) {
+    return api.delete(`/order/${id}`);
+  }
+
   static allOrders() {
     return api.get("/order/all-orders");
   }
