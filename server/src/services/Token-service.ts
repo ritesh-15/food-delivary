@@ -1,43 +1,26 @@
 import jwt from "jsonwebtoken";
 import { ObjectId } from "mongoose";
-import fs from "fs";
-import path from "path";
+import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../keys/secrets";
 
 class TokenService {
   static generateTokens(_id: ObjectId) {
-    const privateKey = fs.readFileSync(
-      path.join(__dirname, "../keys/private.pem")
-    );
-
-    const accessToken = jwt.sign({ _id }, privateKey, {
+    const accessToken = jwt.sign({ _id }, ACCESS_TOKEN_SECRET, {
       expiresIn: "30min",
-      algorithm: "RS256",
     });
 
-    const refreshToken = jwt.sign({ _id }, privateKey, {
+    const refreshToken = jwt.sign({ _id }, REFRESH_TOKEN_SECRET, {
       expiresIn: "1y",
-      algorithm: "RS256",
     });
 
     return { accessToken, refreshToken };
   }
 
   static verifyAccessToken(token: string) {
-    const publicKey = fs.readFileSync(
-      path.join(__dirname, "../keys/public.pem")
-    );
-    return jwt.verify(token, publicKey, {
-      algorithms: ["RS256"],
-    });
+    return jwt.verify(token, ACCESS_TOKEN_SECRET);
   }
 
   static verifyRefreshToken(token: string) {
-    const publicKey = fs.readFileSync(
-      path.join(__dirname, "../keys/public.pem")
-    );
-    return jwt.verify(token, publicKey, {
-      algorithms: ["RS256"],
-    });
+    return jwt.verify(token, REFRESH_TOKEN_SECRET);
   }
 }
 

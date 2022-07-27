@@ -100,14 +100,13 @@ class AuthController {
       `
       );
 
-      // await mail.send();
+      await mail.send();
 
       return res.json({
         ok: true,
         otp: {
           hash: hashedOtp,
           email: email,
-          otp: otp.otp,
         },
       });
     } catch (error) {
