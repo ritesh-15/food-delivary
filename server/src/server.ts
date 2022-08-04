@@ -45,11 +45,7 @@ app.use(
 
 app.use(
   cors({
-    origin: [
-      "https://62ebc03bc4be44055896ef7c--distracted-kalam-1b8e02.netlify.app",
-      "http://localhost:3000",
-      "https://distracted-kalam-1b8e02.netlify.app",
-    ],
+    origin: ["http://localhost:3000", "https://foodies-client.netlify.app"],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })
@@ -92,11 +88,7 @@ const server = app.listen(PORT, () =>
 
 const io = new Server(server, {
   cors: {
-    origin: [
-      "https://62ebc03bc4be44055896ef7c--distracted-kalam-1b8e02.netlify.app",
-      "http://localhost:3000",
-      "https://distracted-kalam-1b8e02.netlify.app",
-    ],
+    origin: ["http://localhost:3000", "https://foodies-client.netlify.app"],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   },
