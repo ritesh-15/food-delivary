@@ -91,7 +91,10 @@ const server = app.listen(PORT, () =>
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: [
+      "https://62ebc03bc4be44055896ef7c--distracted-kalam-1b8e02.netlify.app",
+      "http://localhost:3000",
+    ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   },
