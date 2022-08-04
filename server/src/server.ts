@@ -45,7 +45,10 @@ app.use(
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "http://localhost:3000",
+      "https://62ebc03bc4be44055896ef7c--distracted-kalam-1b8e02.netlify.app/",
+    ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })
