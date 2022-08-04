@@ -48,6 +48,7 @@ app.use(
     origin: [
       "https://62ebc03bc4be44055896ef7c--distracted-kalam-1b8e02.netlify.app",
       "http://localhost:3000",
+      "https://distracted-kalam-1b8e02.netlify.app",
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
@@ -94,6 +95,7 @@ const io = new Server(server, {
     origin: [
       "https://62ebc03bc4be44055896ef7c--distracted-kalam-1b8e02.netlify.app",
       "http://localhost:3000",
+      "https://distracted-kalam-1b8e02.netlify.app",
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
