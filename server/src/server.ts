@@ -23,8 +23,6 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-// middlewares
-
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(express.json({ limit: "10mb" }));
