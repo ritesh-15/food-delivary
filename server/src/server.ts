@@ -47,7 +47,7 @@ app.use(
   cors({
     origin: [
       "https://foodies-client.netlify.app",
-      "https://6321cf26f426741fb2ae9d20--foodies-client.netlify.app/",
+      "https://6321cf26f426741fb2ae9d20--foodies-client.netlify.app",
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
@@ -93,7 +93,7 @@ const io = new Server(server, {
   cors: {
     origin: [
       "https://foodies-client.netlify.app",
-      "https://6321cf26f426741fb2ae9d20--foodies-client.netlify.app/",
+      "https://6321cf26f426741fb2ae9d20--foodies-client.netlify.app",
     ],
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
