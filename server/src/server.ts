@@ -45,7 +45,6 @@ app.use(
 
 app.use(
   cors({
-    origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   })
@@ -88,7 +87,6 @@ const server = app.listen(PORT, () =>
 
 const io = new Server(server, {
   cors: {
-    origin: "*",
     methods: ["GET", "POST", "DELETE", "PUT"],
     credentials: true,
   },
