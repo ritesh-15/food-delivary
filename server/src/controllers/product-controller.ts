@@ -6,6 +6,7 @@ import { APP_BASE_URL } from "../keys/secrets";
 import Product from "../models/product-modal";
 import { unlink } from "fs/promises";
 import path from "path";
+import { existsSync } from "fs";
 
 class ProductController {
   async createNewProduct(req: Request, res: Response, next: NextFunction) {
@@ -53,9 +54,13 @@ class ProductController {
 
       if (!product) return ErrorHandler.notFound("Product not found!");
 
-      await unlink(
-        path.join(__dirname, `../uploads/${product.image.filename}`)
-      );
+      if (
+        existsSync(path.join(__dirname, `../uploads/${product.image.filename}`))
+      ) {
+        await unlink(
+          path.join(__dirname, `../uploads/${product.image.filename}`)
+        );
+      }
 
       await Product.deleteOne({ _id: id });
 
@@ -97,14 +102,20 @@ class ProductController {
       let images;
 
       if (image) {
-        await unlink(
-          path.join(__dirname, `../uploads/${product.image.filename}`)
-        );
+        if (
+          existsSync(
+            path.join(__dirname, `../uploads/${product.image.filename}`)
+          )
+        ) {
+          await unlink(
+            path.join(__dirname, `../uploads/${product.image.filename}`)
+          );
 
-        images = {
-          url: `${APP_BASE_URL}/uploads/${image}`,
-          filename: image,
-        };
+          images = {
+            url: `${APP_BASE_URL}/uploads/${image}`,
+            filename: image,
+          };
+        }
       }
 
       const updatedProduct = await Product.findOneAndUpdate(

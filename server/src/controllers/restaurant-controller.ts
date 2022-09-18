@@ -7,6 +7,7 @@ import path from "path";
 import { updateRestaurantSchema } from "../validation/restaurantValidation";
 import Application from "../models/applications-modal";
 import User from "../models/user-model";
+import { existsSync } from "fs";
 
 class RestaurantController {
   static async getAllRestaurants(
@@ -144,12 +145,21 @@ class RestaurantController {
         return next(ErrorHandler.notFound("Restaurant not found!"));
 
       if (body.images) {
-        await unlink(
-          path.join(
-            __dirname,
-            `../uploads/${isResstaurantFound.images.filename}`
+        if (
+          existsSync(
+            path.join(
+              __dirname,
+              `../uploads/${isResstaurantFound.images.filename}`
+            )
           )
-        );
+        ) {
+          await unlink(
+            path.join(
+              __dirname,
+              `../uploads/${isResstaurantFound.images.filename}`
+            )
+          );
+        }
 
         await Application.findOneAndUpdate(
           { userId: isResstaurantFound.userId },
