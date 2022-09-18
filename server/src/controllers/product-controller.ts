@@ -54,13 +54,9 @@ class ProductController {
 
       if (!product) return ErrorHandler.notFound("Product not found!");
 
-      if (
-        existsSync(path.join(__dirname, `../uploads/${product.image.filename}`))
-      ) {
-        await unlink(
-          path.join(__dirname, `../uploads/${product.image.filename}`)
-        );
-      }
+      await unlink(
+        path.join(__dirname, `../../uploads${product.image.filename}`)
+      );
 
       await Product.deleteOne({ _id: id });
 
@@ -102,20 +98,14 @@ class ProductController {
       let images;
 
       if (image) {
-        if (
-          existsSync(
-            path.join(__dirname, `../uploads/${product.image.filename}`)
-          )
-        ) {
-          await unlink(
-            path.join(__dirname, `../uploads/${product.image.filename}`)
-          );
+        await unlink(
+          path.join(__dirname, `../../uploads/${product.image.filename}`)
+        );
 
-          images = {
-            url: `${APP_BASE_URL}/uploads/${image}`,
-            filename: image,
-          };
-        }
+        images = {
+          url: `${APP_BASE_URL}/uploads/${image}`,
+          filename: image,
+        };
       }
 
       const updatedProduct = await Product.findOneAndUpdate(

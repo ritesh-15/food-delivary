@@ -145,21 +145,12 @@ class RestaurantController {
         return next(ErrorHandler.notFound("Restaurant not found!"));
 
       if (body.images) {
-        if (
-          existsSync(
-            path.join(
-              __dirname,
-              `../uploads/${isResstaurantFound.images.filename}`
-            )
+        await unlink(
+          path.join(
+            __dirname,
+            `../../uploads${isResstaurantFound.images.filename}`
           )
-        ) {
-          await unlink(
-            path.join(
-              __dirname,
-              `../uploads/${isResstaurantFound.images.filename}`
-            )
-          );
-        }
+        );
 
         await Application.findOneAndUpdate(
           { userId: isResstaurantFound.userId },
