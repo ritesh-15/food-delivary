@@ -18,12 +18,15 @@ import { Server } from "socket.io";
 import restaurantsRouter from "./routes/restaurants-routes";
 import productRouter from "./routes/product-routes";
 import orderRouter from "./routes/order-routes";
+import { existsSync } from "fs";
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
 console.log(`Path  is ${path.join(__dirname, "uploads")} ✅✅✅`);
+
+console.log(existsSync(path.join(__dirname, "uploads")));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
