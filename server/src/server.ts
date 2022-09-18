@@ -24,11 +24,11 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-console.log(`Path  is ${path.join(__dirname, "uploads")} ✅✅✅`);
+console.log(`Path  is ${path.join("uploads")} ✅✅✅`);
 
 console.log(existsSync(path.join(__dirname, "uploads")));
 
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.join("uploads")));
 
 app.use(express.json({ limit: "10mb" }));
 
