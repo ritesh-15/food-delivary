@@ -1,11 +1,16 @@
 import multer from "multer";
 import path from "path";
 import crypto from "crypto";
+import fs from "fs";
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
+  destination: async (req, file, cb) => {
+    const dirPath = path.join(__dirname, "../uploads");
+    if (!fs.existsSync("dirPath")) {
+      fs.mkdirSync(dirPath);
+    }
     console.log("Path 👇👇👇");
-    console.log(path.join(__dirname, "../uploads"));
+    console.log(dirPath);
     cb(null, path.join(__dirname, "../uploads"));
   },
   filename: (req, file, cb) => {
