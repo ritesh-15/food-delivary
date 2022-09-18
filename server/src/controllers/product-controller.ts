@@ -124,6 +124,7 @@ class ProductController {
 
       return res.json({ ok: true, product: updatedProduct });
     } catch (error) {
+      console.log(error);
       return next(ErrorHandler.serverError());
     }
   }
