@@ -87,24 +87,6 @@ class RestaurantController {
         return next(ErrorHandler.notFound("Restaurant not found!"));
       }
 
-      await unlink(
-        path.join(
-          __dirname,
-          `../uploads/${restaurant.documents.applicantProof.filename}`
-        )
-      );
-
-      await unlink(
-        path.join(
-          __dirname,
-          `../uploads/${restaurant.documents.foodAuthorityCertificate.filename}`
-        )
-      );
-
-      await unlink(
-        path.join(__dirname, `../uploads/${restaurant.images.filename}`)
-      );
-
       await Application.deleteOne({ userId: restaurant.userId });
 
       await User.updateOne(
@@ -145,13 +127,6 @@ class RestaurantController {
         return next(ErrorHandler.notFound("Restaurant not found!"));
 
       if (body.images) {
-        await unlink(
-          path.join(
-            __dirname,
-            `../../uploads${isResstaurantFound.images.filename}`
-          )
-        );
-
         await Application.findOneAndUpdate(
           { userId: isResstaurantFound.userId },
           {

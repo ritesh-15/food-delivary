@@ -54,10 +54,6 @@ class ProductController {
 
       if (!product) return ErrorHandler.notFound("Product not found!");
 
-      await unlink(
-        path.join(__dirname, `../../uploads${product.image.filename}`)
-      );
-
       await Product.deleteOne({ _id: id });
 
       return res.json({ ok: true, message: "Product deleted successfully!" });
@@ -98,10 +94,6 @@ class ProductController {
       let images;
 
       if (image) {
-        await unlink(
-          path.join(__dirname, `../../uploads/${product.image.filename}`)
-        );
-
         images = {
           url: `${APP_BASE_URL}/uploads/${image}`,
           filename: image,
