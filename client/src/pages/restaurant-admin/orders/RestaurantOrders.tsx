@@ -42,7 +42,6 @@ function RestaurantOrders() {
 
   useEffect(() => {
     if (!data) return;
-
     setOrders(data.orders);
   }, [data]);
 
@@ -77,7 +76,7 @@ function RestaurantOrders() {
                       </Link>
                     </TD>
                     <TD>
-                      <p>{order.user.name}</p>
+                      <p>{order?.user.name}</p>
                     </TD>
                     <TD>
                       <p>{moment(order.createdAt).format("DD MMMM YYYY")}</p>

@@ -5,7 +5,7 @@ const useSocket = () => {
   const [socket, setSocket] = useState<Socket<any>>();
 
   useEffect(() => {
-    const s = io("http://localhost:5000");
+    const s = io("https://foodies-15.herokuapp.com/api/v1");
 
     setSocket(s);
 

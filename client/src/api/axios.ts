@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://localhost:5000/api/v1",
+  baseURL: "https://foodies-15.herokuapp.com/api/v1",
   withCredentials: true,
 });
 
@@ -21,7 +21,7 @@ api.interceptors.response.use(
 
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/v1/refresh",
+          "https://foodies-15.herokuapp.com/api/v1",
           {
             withCredentials: true,
           }

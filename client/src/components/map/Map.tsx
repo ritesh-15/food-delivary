@@ -13,9 +13,8 @@ const Map: FC<MapProps> = ({ currentCordinates, setCurrentCordinates }) => {
   const [map, setMap] = useState<mapboxgl.Map>();
 
   const initMapbox = () => {
-    mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN
-      ? process.env.REACT_APP_MAPBOX_TOKEN
-      : "";
+    mapboxgl.accessToken =
+      "pk.eyJ1Ijoicml0ZXNoa2hvcmUxNSIsImEiOiJja3lzN3JkaHMxMHh2Mm9tbWJ5YTJpbW1rIn0.3srv_m-eyJLcRvyNRNIKnQ";
 
     const map = new mapboxgl.Map({
       container: "map",
