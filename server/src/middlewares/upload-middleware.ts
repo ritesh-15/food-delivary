@@ -4,14 +4,12 @@ import crypto from "crypto";
 import fs from "fs";
 
 const storage = multer.diskStorage({
-  destination: async (req, file, cb) => {
+  destination: (req, file, cb) => {
     const dirPath = path.join(__dirname, "../uploads");
     if (!fs.existsSync("dirPath")) {
       fs.mkdirSync(dirPath);
     }
-    console.log("Path 👇👇👇");
-    console.log(dirPath);
-    cb(null, path.join(__dirname, "../uploads"));
+    cb(null, path.join(dirPath));
   },
   filename: (req, file, cb) => {
     const uniqueFileName = `${Date.now()}-${crypto
